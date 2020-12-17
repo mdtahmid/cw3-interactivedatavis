@@ -74,7 +74,6 @@
 
         // Get movie detail url for current movie
         var movie_detail_url = "https://api.themoviedb.org/3/movie/" + movie_id[i] + "?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
-        var movie_images_url = "https://api.themoviedb.org/3/movie/" + movie_id[i] + "/images?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
 
         $.getJSON(movie_detail_url, returnMovieDetails);
         // $.getJSON(movie_images_url, returnMovieImages); // TMDb returns empty array
@@ -83,29 +82,19 @@
             if (verbose === 2) { console.log("Movie Details API result:", data)}
 
             // Movie Details we are interested in
-            var requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries'];
+            var requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'poster_path', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries'];
 
             // Loop through request, populate dict with responses
             for (var j = 0; j < requestedMovieDetails.length; j++) {
                 movieData[movie_id[i]][requestedMovieDetails[j]] = data[requestedMovieDetails[j]];
             }
 
+            // Add full poster path to dict
+            movieData[movie_id[i]]['poster_path'] = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/" + movieData[movie_id[i]]['poster_path'];
+
             // On last loop, proceed to sort data
             if (i === Object.keys(movieData).length-1) { sortArray() }
         } // END: returnMovieDetails
-
-
-// ** TMDb returns empty array
-// 			function returnMovieImages(data) {
-// 				if (verbose === 2) { console.log("Movie Images API results:", data) }
-// 				// Movie poster url path
-// 				movieData[movie_id[i]]['poster_file_path'] = data['posters'];
-//
-// 				if (i === Object.keys(movieData).length-1) {
-// 					console.log("movieRev", movieData[movie_id[i]]['revenue']);
-// 					sortArray()
-// 				}
-// 			} //END: returnMovieImages
     } // END: getMovieDetails
 
 
