@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Version 7 - Chart</title>
+    <!-- JQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- FusionChart JS -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <!-- FusionCharts Themes -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+
+    <style>
+        div#chart-container {
+            width: 800px;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <p id="test">Placeholder</p>
+    <div id="chart-container"></div>
+</div>
+
+<script type="text/javascript">
+    // Defines how much is printed to console. 0: Nothing, 1: Mainly full arrays, 2: Individual elements
+    var verbose = 1;
+    // Dict of all data
+    var movieData = {};
+    // TMDb API urls
+    var movie_ranking_url = "https://api.themoviedb.org/3/discover/movie?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US&sort_by=revenue.desc&include_adult=false&include_video=false&page=1";
+
+
+    // Make API Call
+    function apiCall() {
+        $.getJSON(movie_ranking_url, getData);
+    }
+
+
+    // Get Movie Details for API Call
+    function getData(data) {
+        if (verbose !== 0) { console.log("1st Data Request", data); }
+
+        // Loop through results, populate to dict
+        for (var i = 0; i < data['results'].length - 1; i++) {
+            movieID = data['results'][i].id;											// Get Movie ID
+            movieData[movieID] = {};											// Initiate Dict w/ movie ID
+            movieData[movieID]['name'] = data['results'][i].original_title;	// Populate w/ movie Name
+        } // END: for loop
+
+        if (verbose !== 0) { console.log("Dict w/ Movies", movieData); }
+        if (verbose === 2) { console.log("1st movie:", movieData[Object.keys(movieData)[0]]['name']); }
+
+        // Get All Movie Data
+        getMovieData(movieData);
+    } // END: getData
+
+
+    // Get revenue of highest grossing movies
+    function getMovieData() {
+        // Loop through dict, add revenue
+        for (var i = 0; i < Object.keys(movieData).length; i++) {
+            var movie_id = Object.keys(movieData); 	// Get movie IDs
+
+            getMovieDetails(movie_id, i);
+        } // END: Movie Data Loop
+    } // END: getMovieData
+
+
+    // Get all requested Movie Details
+    function getMovieDetails(movie_id, i) {
+
+        // Get movie detail url for current movie
+        var movie_detail_url = "https://api.themoviedb.org/3/movie/" + movie_id[i] + "?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
+        var movie_images_url = "https://api.themoviedb.org/3/movie/" + movie_id[i] + "/images?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
+
+        $.getJSON(movie_detail_url, returnMovieDetails);
+        // $.getJSON(movie_images_url, returnMovieImages); // TMDb returns empty array
+
+        function returnMovieDetails(data) {
+            if (verbose === 2) { console.log("Movie Details API result:", data)}
+
+            // Movie Details we are interested in
+            var requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries'];
+
+            // Loop through request, populate dict with responses
+            for (var j = 0; j < requestedMovieDetails.length; j++) {
+                movieData[movie_id[i]][requestedMovieDetails[j]] = data[requestedMovieDetails[j]];
+            }
+
+            // On last loop, proceed to sort data
+            if (i === Object.keys(movieData).length-1) { sortArray() }
+        } // END: returnMovieDetails
+
+
+// ** TMDb returns empty array
+// 			function returnMovieImages(data) {
+// 				if (verbose === 2) { console.log("Movie Images API results:", data) }
+// 				// Movie poster url path
+// 				movieData[movie_id[i]]['poster_file_path'] = data['posters'];
+//
+// 				if (i === Object.keys(movieData).length-1) {
+// 					console.log("movieRev", movieData[movie_id[i]]['revenue']);
+// 					sortArray()
+// 				}
+// 			} //END: returnMovieImages
+    } // END: getMovieDetails
+
+
+    // Sort array based on revenue
+    function sortArray() {
+        // Get items Array
+        var data_items = Object.keys(movieData).map(function(key) {
+            return [key, movieData[key]['revenue'], movieData[key]['name']]
+        });
+
+        // Sort based on revenue
+        data_items.sort(function(first, second) { return second[1] - first[1] });
+
+        // Add Position to Dict
+        data_items.forEach(function(key, i) { return movieData[key[0]]['position'] = i });
+
+        if (verbose === 2) { printResults(); }
+
+        // Update placeholder on DOM
+        addDom();
+
+        // Build Fusion Chart w/ data
+        buildRevenueChart(data_items);
+    } // END: sortArray
+
+
+    // Build fusion chart w/ revenue
+    function buildRevenueChart(sortedArray) {
+
+        // Pull name & revenue from movieData
+        var data = sortedArray.map(function(key) {
+            return {
+                "label": movieData[key[0]]['name'],
+                "value": movieData[key[0]]['revenue']
+            }
+        });
+
+        var highestGrossingChart = new FusionCharts({
+            type: 'bar2d',
+            renderAt: 'chart-container',
+            width: '100%',
+            height: '100%',
+            dataFormat: 'json',
+            dataSource:
+                {
+                    "chart": {
+                        caption: "Highest grossing movies of all time",
+                        yaxisname: "Box office gross ($)",
+                        aligncaptionwithcanvas: "0",
+                        plottooltext: "<b>$dataValue</b> revenue",
+                        theme: "fusion"
+                    },
+                    "data": data
+                }
+        }).render();
+
+        if (verbose === 2) { console.log("Chart-data:", data); }
+    } // END: buildRevenueChart
+
+
+    // Print Results
+    function printResults() {
+        // Final Formated Data
+        console.log("Final Data:", movieData);
+        // 1st movie all details
+        console.log("1st movie Rev:", movieData[Object.keys(movieData)[0]]);
+        // 1st movie Revenue onlyLast movie revenue
+        console.log("1st movie Rev Only:", movieData[Object.keys(movieData)[0]]['revenue']);
+        // Last Movie, Rev only
+        console.log("Last movie Rev Only:", movieData[Object.keys(movieData)[Object.keys(movieData).length-1]]['revenue'])
+    } //END: printResults
+
+
+    // Update Dom w/ first Movie Name & Revenue
+    function addDom() {
+        // Content to post
+        content = "The movie " + movieData[Object.keys(movieData)[0]]['name'] + " made $" + movieData[Object.keys(movieData)[0]]['revenue'] + " at the box office.";
+        // Call to update content
+        $(document).ready(function() {
+            $("#test").text(content);
+        });
+    } // END: addDom
+
+    // Make API Call
+    apiCall();
+
+</script>
+</body>
+</html>
