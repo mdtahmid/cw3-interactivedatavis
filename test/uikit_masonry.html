@@ -2,15 +2,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IDV</title>
+
+    <title>Masonry Template</title>
+
+    <!--  JQuery Library  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <!-- UIkit CSS -->
+
+    <!--  Google Fonts  -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,700,700i,900" rel="stylesheet">
+
+    <!--  UIKit CSS  -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.17/dist/css/uikit.min.css" />
-    <!-- UIkit JS -->
+    <!--  UIKit JS  -->
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.17/dist/js/uikit.min.js"></script>
+    <!--  UIKit Icons  -->
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.17/dist/js/uikit-icons.min.js"></script>
+
     <style>
+        /* Background styling */
         html, body {
             background-color: #eee;
         }
@@ -18,112 +27,130 @@
             font-family: 'Roboto', sans-serif;
             font-weight: 400;
         }
-        .gridWrapper {
+
+        /* Grid container*/
+        div.gridWrapper {
             padding: 50px;
         }
-        .uk-card {
+
+        /* Grid Cards*/
+        div.uk-card {
             background: #fff;
             color: #888;
             border-radius: 14px;
             padding: 20px;
         }
-        .movieImage {
+
+        /* Movie image */
+        img.movieImage {
             width:122px;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        .movieImage:hover {
+        img.movieImage:hover {
             opacity: 0.7;
         }
-        .movieTitle {
+        p.movieTitle {
             width: 125px;
             word-break: break-all;
             white-space: normal;
         }
-        .moveWrapper {
+        div.moveWrapper {
             display: inline-block;
             padding: 20px;
             vertical-align: top;
         }
-        #scrollWrapper1 {
+        div#scrollWrapper1 {
             overflow-x: auto;
             white-space: nowrap;
         }
-        .card-title {
+        p.card-title {
             font-size: 20px;
             font-weight: 500;
-            color: 000;
-            padding: 14px 0px 0px 14px;
+            color: #000000;
+            padding: 14px 0 0 14px;
         }
     </style>
+
     <script>
+        verbose = 1; // 0: nothing, 1: important info, 2: all details
         currentTrendingURL = "https://api.themoviedb.org/3/discover/movie?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1";
 
+        // Current trending API request
         $.getJSON(currentTrendingURL, getCurrentlyTrending);
 
+        // Response from trending API request
         function getCurrentlyTrending(data) {
-            console.log(data);
-            for(var i =0; i < 10;i++) {
+            if (verbose !== 0) {console.log("Trending API Respons:", data); }
 
+            // Loop over top 10 trending movies
+            for (var i=0; i<10; i++) {
+                // Get movie details
                 poster_path = data['results'][i].poster_path;
                 original_title = data['results'][i].original_title;
                 movie_id = data['results'][i].id;
 
+                // Get full path to poster
                 full_backdrop_path = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/" + poster_path;
 
-                console.log(original_title + " " + full_backdrop_path);
+                if (verbose === 2) { console.log("Title + poster path", original_title + " " + full_backdrop_path); }
 
+                // Add trending elements to DOM
                 addTrendingToDOM(full_backdrop_path, original_title, movie_id);
+            } // END: for loop
+        } // END: getCurrentlyTrending
 
-            }
-        }
 
+        // Add Trending elements to DOM
         function addTrendingToDOM(backdropURL, movieTitle, movieID) {
             $(document).ready(function() { //do i need this??
 
+                // Create wrapper div
                 var moveWrapper = document.createElement("div");
                 moveWrapper.className = "moveWrapper";
 
+                // Create movie title
                 var title = document.createElement("p");
                 title.className = "movieTitle";
+                title.innerHTML = movieTitle;
 
+                // Create poster img element
                 var moviePoster = document.createElement("img");
                 moviePoster.className = "movieImage";
                 moviePoster.id = movieID;
                 moviePoster.setAttribute("onclick","clicktestfunction("+movieID+")");
-
-                document.getElementById("scrollWrapper1").appendChild(moveWrapper);
-
-                title.innerHTML = movieTitle;
                 moviePoster.src = backdropURL;
 
+                // Append elements to DOM
+                document.getElementById("scrollWrapper1").appendChild(moveWrapper);
                 moveWrapper.appendChild(moviePoster);
                 moveWrapper.appendChild(title);
-
             });
-        }
+        } // END: addTrendingToDOM
 
         function clicktestfunction(movieID) {
             alert("The movie ID for this movie is: " + movieID + ". This information can be used to open a pop up window displaying movie description/cast information, etc. Requires additional API call.");
 
             //New API call for individual movie info when clicked on poster using lightbox system if we have time
             // https://api.themoviedb.org/3/movie/{{MOVIEID}}?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US
-
-
-        }
+        } // END: clicktestfunction
     </script>
 </head>
 
 <body>
 <div class="gridWrapper">
     <div class="uk-child-width-1-2@s uk-child-width-1-3@m" uk-grid="masonry: true">
+    <!--  Trending Movies Card  -->
         <div>
-            <div class="uk-card " id="item1">
+            <div class="uk-card" id="item1">
                 <p class="card-title">Currently trending</p>
+                <!--  Holder for top 10 trending  -->
                 <div id="scrollWrapper1"></div>
             </div>
         </div>
+
+        <!--  Test Masonry elements  -->
         <div>
             <div class="uk-card">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae faucibus odio. Praesent sit amet finibus lorem, ultricies dignissim turpis. Phasellus a consectetur orci, et egestas mi. Sed vitae viverra dui. Cras mi lorem, elementum eget velit id, consectetur sus</div>
         </div>
