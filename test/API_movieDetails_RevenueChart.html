@@ -108,9 +108,6 @@
         // Sort based on revenue
         data_items.sort(function(first, second) { return second[1] - first[1] });
 
-        // Add Position to Dict
-        data_items.forEach(function(key, i) { return movieData[key[0]]['position'] = i });
-
         if (verbose === 2) { printResults(); }
 
         // Update placeholder on DOM
