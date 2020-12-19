@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Crew</title>
+
+    <!-- JQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+    <script>
+        // ***********
+        // Using TMDb API, retrieves credits of a movie
+        // Collects the stats of male/female/not-specified per cast, crew, and both.
+        // ***********
+        verbose = 1;    // 0: Nothing, 1: Full arrays, 2: Everything
+
+        // Global vars for cast, crew, both, and stats
+        var cast = {};
+        var crew = {};
+        var cast_crew = {};
+        var cast_crew_stats = {"cast": {}, "crew": {}, "overall": {}};
+
+
+        // Call TMDb API for credits of a movie
+        function creditsAPI() {
+            var movie_id = 597; // TEST: Titanic
+            $.getJSON("https://api.themoviedb.org/3/movie/" + movie_id + "/credits?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US", getCredits);
+        } // END: creditsAPI
+
+
+        // Get data from API call
+        function getCredits(data) {
+            if (verbose !== 0) { console.log("Credits data:", data) }
+
+            cast = data.cast;                           // Store cast & crew into global var
+            crew = data.crew;
+            cast_crew = combineLists([cast, crew]);     // Combine cast & crew for overall statistics
+
+            if (verbose === 2) { printList() }
+
+            getCreditsStats();                          // Create M/F divide b/w cast, crew, and all
+        } // END: getCredits
+
+
+        // Get stats from credits data
+        function getCreditsStats() {
+            getGenderCount(cast, 'cast');
+            getGenderCount(crew, 'crew');
+            // getGenderCount(cast_crew, 'overall'); // DEBUG - currently, this runs with a cast_crew list of only the cast detalis, following call adds both of these together
+            getOverallCount();
+
+            console.log("Cast_crew_stats:", cast_crew_stats);
+        } //END getCreditsStats
+
+
+        // ****************
+        // HELPER FUNCTIONS
+        // ****************
+
+        // Combine an array of lists together
+        function combineLists(arrayLists) {
+            if (arrayLists.length === 0) { return null}         // If array is empty, return null
+            if (arrayLists.length < 2) { return arrayLists[0] } // If only 1 list in array, return list
+
+            var newList = arrayLists[0];                        // Initiate newList w/ 1st list
+            var offset = arrayLists[0].length-1;                // Create offset to be length of 1st list
+
+            // Loop through all lists (after 1st)
+            for (var i=1; i<arrayLists.length; i++) {
+                // Loop through values in lists
+                for (var j=0; j<arrayLists[i].length-1; j++) {
+                    newList[j+offset] = arrayLists[i];
+                }
+                offset += arrayLists[i].length-1;               // Update offset
+            }
+            return newList  // Return new List
+        } // END: combineLists
+
+        // Get gender count from a list
+        function getGenderCount(list, position) {
+// DEBUG - overall only counting from cast list
+            if (position === 'overall') {
+                console.log("Overall-list:", list);
+            }
+            cast_crew_stats[position]['male'] = getCount(list, 2);
+            cast_crew_stats[position]['female'] = getCount(list, 1);
+            cast_crew_stats[position]['not_specified'] = getCount(list, 0);
+        } // END: getGenderCount
+
+        function getOverallCount() {
+            cast_crew_stats['overall']['male'] = cast_crew_stats['cast']['male'] + cast_crew_stats['crew']['male']
+            cast_crew_stats['overall']['female'] = cast_crew_stats['cast']['female'] + cast_crew_stats['crew']['female']
+            cast_crew_stats['overall']['not_specified'] = cast_crew_stats['cast']['not_specified'] + cast_crew_stats['crew']['not_specified']
+        } // END: getOVerallCount
+
+        // Get count of gender in a dict
+        function getCount(list, gender) {
+            var count = 0;                              // Var to store gender count
+            if (list) {                                 // If list exists, loop through entries
+                for (var i=0; i<list.length-1; i++) {
+                    if (list[i].gender === gender) {
+                        count++;                        // Increase count if list gender is gender passed in arg
+                    }
+                }
+            }
+            return count
+        } //END getCount
+
+        // Print global lists to console
+        function printList() {
+            console.log("Crew:", crew);
+            console.log("Cast:", cast);
+            console.log("Cast_crew:", cast_crew);
+        }
+
+
+        // ******************
+        // CALL MAIN FUNCTION
+        // ******************
+        creditsAPI();
+
+
+
+        // OTHER API CALLS
+        // $.getJSON("https://api.themoviedb.org/3/movie/597?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US", function(data) {
+        //     console.log("TMDb - Titanic data", data)
+        // });
+        // $.getJSON("https://api.themoviedb.org/3/movie/299534/external_ids?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US", function(data) {
+        //     console.log("TMDb - external ids", data)
+        // });
+    </script>
+</body>
+</html>
