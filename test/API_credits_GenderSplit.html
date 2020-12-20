@@ -6,8 +6,30 @@
 
     <!-- JQuery Library -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <!-- Load c3.css -->
+    <link href="js/c3.min.css" rel="stylesheet" type="text/css">
+    <!-- Load d3.js and c3.js -->
+    <script type="text/javascript" src="js/d3.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/c3.min.js"></script>
+
+    <!--  D3 JS  -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <!--  Chart.js  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+
+    <!--  Google styles  -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
 </head>
 <body>
+    <div id="genderChart">
+        <!--  For d3  -->
+<!--        <svg id="genderSvg" width="960" height="500"></svg>-->
+        <!--  For Chart.js  -->
+        <canvas id="genderDonut"></canvas>
+    </div>
+
     <script>
         // ***********
         // Using TMDb API, retrieves credits of a movie
@@ -21,6 +43,11 @@
         var cast_crew = {};
         var cast_crew_stats = {"cast": {}, "crew": {}, "overall": {}};
 
+
+        // ******************
+        // CALL MAIN FUNCTION
+        // ******************
+        creditsAPI();
 
         // Call TMDb API for credits of a movie
         function creditsAPI() {
@@ -40,6 +67,7 @@
             if (verbose === 2) { printList() }
 
             getCreditsStats();                          // Create M/F divide b/w cast, crew, and all
+            buildGenderChart('chart.js');
         } // END: getCredits
 
 
@@ -54,6 +82,131 @@
         } //END getCreditsStats
 
 
+        // Build c3 gender split chart
+        function buildGenderChart(type) {
+            if (type === 'c3') {
+                buildc3()
+            } else if (type === 'd3') {
+                buildd3()
+            } else if (type === 'chart.js') {
+                buildChartJS()
+            }
+        } // END: buildGenderChart
+
+        // ********
+        // Chart.js
+        // ********
+        // Build chart.js gender split chart
+        function buildChartJS() {
+            // When DOM ready
+            $(document).ready(function() {
+                // Define data options
+                var gender_data_options = {
+                    backgroundColor: ['rgba(153,207,255,1)', 'rgba(51,160,255,1)', 'rgba(209,233,255,1)'],
+                };
+                // Define chart options
+                var gender_chart_options = basicChartOptions('Cast & Crew Gender Divide', true);
+                // Build chart
+                buildChart('#genderDonut', cast_crew_stats['overall'], 'doughnut', gender_data_options, gender_chart_options);
+            });
+        } // END: buildChartJS
+
+
+        // Build Chart based on supplied elements
+        // canvasID: string starting with '#' of id in DOM, data: array of int/float values, chartType: str of viable chrat type,
+        // dataOptions: list of viable data options, chartOptions: list of viable chart options
+        function buildChart(canvasID, data, chartType, dataOptions, chartOptions) {
+            let chartCanvas = $(canvasID);                          // Get element from DOM based on supplied ID
+            let chartData = populateChartData(data, dataOptions);   // Get list of data w/ labels and options
+            // Build chart
+            chartBuild(chartCanvas, chartType, chartData, chartOptions)
+        } // END: buildChart
+
+
+        // Build chart onto DOM
+        // chartCanvas: tag to DOM element, chartType: str of viable chart type, chartData: list of data,labels,dataOptions,
+        // chartOptions: list of chart options
+        function chartBuild(chartCanvas, chartType, chartData, chartOptions) {
+            let newChart = new Chart(chartCanvas, {
+                type: chartType,
+                data: chartData,
+                options: chartOptions
+            });
+        } //END: chartBuild
+
+
+        // ***************
+        // Chart.js Helper
+        // ***************
+
+        // Return list of labels & datasets(w/ data & data options)
+        // chartLabels: Array of strings, data: array of int/float values, dataOptions: list of viable data options
+        function populateChartData(data, dataOptions) {
+            return {
+                labels: Object.keys(data),                                              // Retrieve keys of data as labels
+                datasets: [Object.assign({data: Object.values(data)}, dataOptions)]     // Combine data and data options
+            }
+        } // END: populateChartData
+
+        // Return list of chart options w/ custom title and boolean legend
+        function basicChartOptions(Title, isLegend) {
+            return {
+                responsive: true,
+                title: {
+                    display: true,
+                    position: 'top',
+                    text: Title
+                },
+                legend: {
+                    display: isLegend,
+                    position: 'bottom'
+                }
+            }
+        } // END: basicCHartOptions
+
+
+        // *********************
+        // D3.js - Not Completed
+        // *********************
+        // Build donut chart in d3
+        function buildd3() {
+            var svg = d3.select("#genderSvg"),
+                width = +svg.attr("width"),
+                height = +svg.attr("height"),
+                radius = Math.min(width, height) / 2,
+                g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+            var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+            var pie = d3.pie()
+                .sort(null)
+                .value(function(d) { return d.percentage });
+
+
+        } // END: buildd3
+
+
+        // ***************************
+        // C3.js - Completed & Working
+        // ***************************
+
+        // Build donut chart in c3
+        function buildc3() {
+            // Get overall statistics
+            var chart_data = Object.entries(cast_crew_stats['overall']);
+
+            // Build c3 chart
+            var genderChart = c3.generate({
+                bindto: '#genderChart',
+                data: {
+                    columns: chart_data,
+                    type: 'donut'
+                },
+
+            });
+        } // END: buildc3
+
+
         // ****************
         // HELPER FUNCTIONS
         // ****************
@@ -66,32 +219,31 @@
             var newList = arrayLists[0];                        // Initiate newList w/ 1st list
             var offset = arrayLists[0].length-1;                // Create offset to be length of 1st list
 
-            // Loop through all lists (after 1st)
-            for (var i=1; i<arrayLists.length; i++) {
-                // Loop through values in lists
-                for (var j=0; j<arrayLists[i].length-1; j++) {
-                    newList[j+offset] = arrayLists[i];
+            for (var i=1; i<arrayLists.length; i++) {           // Loop through all lists (after 1st)
+                for (var j=0; j<arrayLists[i].length-1; j++) {      // Loop through values in lists
+                    newList[j+offset] = arrayLists[i];              // Append list w/ offset
                 }
                 offset += arrayLists[i].length-1;               // Update offset
             }
-            return newList  // Return new List
+            return newList                                      // Return new List
         } // END: combineLists
 
         // Get gender count from a list
         function getGenderCount(list, position) {
-// DEBUG - overall only counting from cast list
+// DEBUG - overall only counting from cast list [Partial fix by using new function]
             if (position === 'overall') {
                 console.log("Overall-list:", list);
             }
-            cast_crew_stats[position]['male'] = getCount(list, 2);
-            cast_crew_stats[position]['female'] = getCount(list, 1);
-            cast_crew_stats[position]['not_specified'] = getCount(list, 0);
+            cast_crew_stats[position]['Male'] = getCount(list, 2);
+            cast_crew_stats[position]['Female'] = getCount(list, 1);
+            cast_crew_stats[position]['Not Specified'] = getCount(list, 0);
         } // END: getGenderCount
 
+        // Get Overall Gender Count
         function getOverallCount() {
-            cast_crew_stats['overall']['male'] = cast_crew_stats['cast']['male'] + cast_crew_stats['crew']['male']
-            cast_crew_stats['overall']['female'] = cast_crew_stats['cast']['female'] + cast_crew_stats['crew']['female']
-            cast_crew_stats['overall']['not_specified'] = cast_crew_stats['cast']['not_specified'] + cast_crew_stats['crew']['not_specified']
+            cast_crew_stats['overall']['Male'] = cast_crew_stats['cast']['Male'] + cast_crew_stats['crew']['Male'];
+            cast_crew_stats['overall']['Female'] = cast_crew_stats['cast']['Female'] + cast_crew_stats['crew']['Female'];
+            cast_crew_stats['overall']['Not Specified'] = cast_crew_stats['cast']['Not Specified'] + cast_crew_stats['crew']['Not Specified'];
         } // END: getOVerallCount
 
         // Get count of gender in a dict
@@ -99,9 +251,7 @@
             var count = 0;                              // Var to store gender count
             if (list) {                                 // If list exists, loop through entries
                 for (var i=0; i<list.length-1; i++) {
-                    if (list[i].gender === gender) {
-                        count++;                        // Increase count if list gender is gender passed in arg
-                    }
+                    if (list[i].gender === gender) { count++; }     // Increase count if list gender is gender passed in arg
                 }
             }
             return count
@@ -112,23 +262,8 @@
             console.log("Crew:", crew);
             console.log("Cast:", cast);
             console.log("Cast_crew:", cast_crew);
-        }
+        } // END: printList
 
-
-        // ******************
-        // CALL MAIN FUNCTION
-        // ******************
-        creditsAPI();
-
-
-
-        // OTHER API CALLS
-        // $.getJSON("https://api.themoviedb.org/3/movie/597?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US", function(data) {
-        //     console.log("TMDb - Titanic data", data)
-        // });
-        // $.getJSON("https://api.themoviedb.org/3/movie/299534/external_ids?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US", function(data) {
-        //     console.log("TMDb - external ids", data)
-        // });
     </script>
 </body>
 </html>
