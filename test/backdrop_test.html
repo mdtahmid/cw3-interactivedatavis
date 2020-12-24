@@ -1,0 +1,168 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Backdrop Test</title>
+
+    <!--  JQuery Library  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <!--  Google Fonts  -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,700,700i,900" rel="stylesheet">
+
+    <style>
+        /* Background styling */
+        html, body {
+            background-color: #121212;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+        }
+
+        /* Grid container*/
+        div.gridWrapper {
+            /*padding: 50px;*/
+        }
+
+        /* Grid Cards*/
+        div.uk-card {
+            background: #fff;
+            color: #888;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        /* Movie image */
+        img.movieImage {
+            width:122px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        img.movieImage:hover {
+            opacity: 0.7;
+        }
+        p.movieTitle {
+            width: 125px;
+            word-break: break-all;
+            white-space: normal;
+        }
+        div.moveWrapper {
+            display: inline-block;
+            padding: 20px;
+            vertical-align: top;
+        }
+        div#scrollWrapper1 {
+            overflow-x: auto;
+            white-space: nowrap;
+            margin: -20px;
+        }
+        p.card-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #000000;
+            padding: 14px 0 0 14px;
+        }
+        #bgImage {
+        	background-repeat: no-repeat;
+    		background-position: center;
+			-webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+			mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+        }
+    </style>
+
+    <script>
+        verbose = 1; // 0: nothing, 1: important info, 2: all details
+        currentTrendingURL = "https://api.themoviedb.org/3/discover/movie?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1";
+
+        // Current trending API request
+        $.getJSON(currentTrendingURL, getCurrentlyTrending);
+
+        // Response from trending API request
+        function getCurrentlyTrending(data) {
+            if (verbose !== 0) {console.log("Trending API Respons:", data); }
+
+            // Loop over top 10 trending movies
+            for (var i=0; i<10; i++) {
+                // Get movie details
+                poster_path = data['results'][i].poster_path;
+                backdrop_path = data['results'][i].backdrop_path;
+                original_title = data['results'][i].original_title;
+                movie_id = data['results'][i].id;
+
+                // Get full path to poster
+                full_poster_path = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/" + poster_path;
+                full_backdrop_path = "https://image.tmdb.org/t/p/original" + backdrop_path;
+
+                if (verbose === 2) { console.log("Title + poster path", original_title + " " + full_poster_path); }
+
+                // Add trending elements to DOM
+                addTrendingToDOM(full_poster_path, original_title, movie_id, full_backdrop_path);
+            } // END: for loop
+        } // END: getCurrentlyTrending
+
+
+        // Add Trending elements to DOM
+        function addTrendingToDOM(posterURL, movieTitle, movieID, backdropURL) {
+            $(document).ready(function() { //do i need this??
+
+                // Create wrapper div
+                var moveWrapper = document.createElement("div");
+                moveWrapper.className = "moveWrapper";
+
+                // Create movie title
+                var title = document.createElement("p");
+                title.className = "movieTitle";
+                title.innerHTML = movieTitle;
+
+                // Create poster img element
+                var moviePoster = document.createElement("img");
+                moviePoster.className = "movieImage";
+                moviePoster.id = movieID;
+                moviePoster.setAttribute("onclick","clicktestfunction("+movieID+")");
+                moviePoster.src = posterURL;
+
+                // Append elements to DOM
+                document.getElementById("scrollWrapper1").appendChild(moveWrapper);
+                moveWrapper.appendChild(moviePoster);
+                // moveWrapper.appendChild(title);
+
+
+                document.getElementById("bgImage").style.backgroundImage = "url('"+backdropURL+"')";
+            });
+        } // END: addTrendingToDOM
+
+        function clicktestfunction(movieID) {
+            // alert("The movie ID for this movie is: " + movieID + ". This information can be used to open a pop up window displaying movie description/cast information, etc. Requires additional API call.");
+
+            $.getJSON("https://api.themoviedb.org/3/movie/"+movieID+"?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US", function(data) {
+            	console.log(data);
+            	  backdrop_path = data.backdrop_path;
+            	  full_backdrop_path = "https://image.tmdb.org/t/p/original" + backdrop_path;
+            	  // alert(full_backdrop_path);
+
+            	  document.getElementById("bgImage").style.backgroundImage = "url('"+full_backdrop_path+"')";
+            });
+
+            //New API call for individual movie info when clicked on poster using lightbox system if we have time
+            // https://api.themoviedb.org/3/movie/{{MOVIEID}}?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US
+        } // END: clicktestfunction
+    </script>
+</head>
+
+<body>
+<div class="gridWrapper">
+	<!--  Trending Movies Card  -->
+	<div class="bgImage" id="bgImage" style="height: 500px;"></div>
+	<div class="" id="item1" style="text-align: center;">
+	    <!-- <p class="card-title">Currently trending</p> -->
+	    <!--  Holder for top 10 trending  -->
+	    <div id="scrollWrapper1"></div>
+	</div>
+  
+</div>
+</body>
+
+</html>
