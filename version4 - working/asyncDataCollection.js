@@ -165,6 +165,7 @@ function getGenderCount(movieData, list, position, item) {
 } // END: getGenderCount
 
 
+
 // ************
 // BUILD CHARTS
 // ************
