@@ -124,7 +124,7 @@ async function creditsData(movieData) {
     var movie_id = Object.keys(movieData);
 
     // Loop through all movie ids
-    for (var i=0; i<movie_id.length-1; i++) {
+    for (var i=0; i<movie_id.length; i++) {
         // TMDb Movie Credits API URL
         var moive_credits_url = "https://api.themoviedb.org/3/movie/" + movie_id[i] + "/credits?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
 
@@ -174,8 +174,10 @@ function addDomElements(formattedData) {
     // Add trending posters to top of Dom
     addTrending(formattedData);
 
-    // Add movie details
-    addMovieDetails(formattedData, '597');
+    // Add movie details (Default: #1-Avengers:Endgame)
+    addMovieDetails(formattedData, '299534');
+
+
 
     // Add charts to corresponding sections
     //addCharts(formattedData);
@@ -220,12 +222,15 @@ function updateContents(movieId) {
     // Update BgImage
     document.getElementById('bgImage').style.backgroundImage = "url('" + finalData[movieId].backdrop_path + "')";
 
+    // Update Movie Details
+    addMovieDetails(finalData, movieId);
 
 } // END: updateBgImg
 
 function addMovieDetails(formattedData, movie_id) {
     // Get movie details container
     var details_container = document.getElementById('movieDetails');
+    details_container.textContent = '';
 
 
     // Header for movie main details
