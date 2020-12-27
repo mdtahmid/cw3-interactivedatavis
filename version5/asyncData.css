@@ -1,6 +1,7 @@
 /* Background styling */
 html, body {
     background-color: #121212;
+    color: white;
 }
 body {
     font-family: 'Roboto', sans-serif;
@@ -35,7 +36,7 @@ p.movieTitle {
     word-break: break-all;
     white-space: normal;
 }
-div.moveWrapper {
+div.movieWrapper {
     display: inline-block;
     padding: 20px;
     vertical-align: top;
@@ -61,30 +62,53 @@ p.card-title {
     mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
 }
 
-/* Reset.css file contents */
-* {
-    padding:0;
-    margin:0;
-    border:0;
-    font-size:14px;
+
+/************
+Movie Details
+*************/
+
+div.movieDetails {
+
 }
-ol,ul {
-    list-style:none;
+
+/* Movie Title */
+p.movieTitle-Expanded {
+    font-size: 30px;
+    margin-left: 20px;
+    max-width: 300px;
+
+    position: relative; /* needed for adjustable border (technically)  */
+}
+/* Add border bottom that goes past margin */
+p.movieTitle-Expanded:after {
+    content: "";
+    background: white;
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+    height: 1px;
+    width: 100%;
+}
+/* Movie Year (within title) */
+span.movieYear {
+    font-size: 16px;
+    font-weight: 100;
+    margin-left: 10px;
+}
+
+/* Movie Rating */
+div.movieRating-container {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 2px 3px;
+    text-align: center;
+    width: 40px;
+}
+p.movieRating-text {
+    font-size: 20px;
+    font-weight: 200;
+
     margin: 0;
-    padding: 0;
-}
-a {
-    outline:0;
-    margin:0;
-    padding:0;
-    border:0;
-    font-size:100%;
-    font:inherit;
-    vertical-align:baseline;
-    text-decoration:none!important;
-}
-textarea:focus, input:focus, button:focus{
-    outline: none;
 }
 
 /* Revenue chart dimensions*/
