@@ -9,7 +9,7 @@ var movie_ranking_url = "https://api.themoviedb.org/3/discover/movie?api_key=54f
 
 // Make TMDb API Call, then populate details, then credits, then build charts
 apiCall(movie_ranking_url)
-    .then(value => movieData(value))
+    .then(value => movieData(value));
     // .then(value => creditsData(value));
     // .then(value => buildCharts(value));
 
@@ -19,27 +19,15 @@ apiCall(movie_ranking_url)
 // MOVIE DATA FUNCTIONS
 
 // Retrieve and process movieData from api
-function movieData(data) {
+async function movieData(data) {
     if (verbose !== 0) { console.log("Revenue API Data:", data) }
 
-    // Store Movie Data Details
-    // var movieData = {};
-
-    // Get Movie Details
-    getMovieDetails_Basic(data)
-        .then(value => getMovieDetails_Requested(value))
-        .then(value => sortMoviesByRevenue(value));
-
-        // .then(value => getMovieDetails_Requested(value))
-// DEBUG - requested Items incorectly added to main dict
-//         .then(value => sortMoviesByRevenue(value));     // Data for identification
-    // getMovieDetails_Requested(movieData);       // Data for charts
-        // .then(value => sortMoviesByRevenue(value));
-    // sortMoviesByRevenue(movieData);              // Sort Movies by revenue
+    // Get Basic & requested Movie Details Data
+    var updatedMovieData = await getMovieDetails_Basic(data)
+        .then(value => getMovieDetails_Requested(value));
 
 
-
-    return movieData;
+    return updatedMovieData;
 } // END: movieData
 
 
@@ -54,8 +42,6 @@ async function getMovieDetails_Basic(data) {
         movieData[movieID] = {};											// Initiate Dict w/ movie ID
         movieData[movieID]['name'] = data['results'][i].original_title;	    // Populate w/ movie Name
     } // END: for loop
-// DEBUG - promise issues
-    console.log("basic-movieData", movieData);
     return movieData
 } // END: getMovieDetails
 
@@ -67,11 +53,14 @@ async function getMovieDetails_Requested(movieData) {
 
     // Loop through movie_ids and retrieve requested data
     for (var i=0; i<movie_id.length; i++) {
-        if (i === 0) { console.log("movieData-Requested-top:", movieData); }
 
-        getMovieDetails(movieData, movie_id[i]);
+        // Ensure this runs before proceeding
+        await getMovieDetails(movieData, movie_id[i]);
+
+        // On last loop, sort all data by revenue
         if (i === movie_id.length-1) {
-            console.log("LastLoop-MovieData:", movieData)
+            if (verbose === 2) { console.log("LastLoop-MovieData:", movieData); }
+            sortMoviesByRevenue(movieData);
         }
     }
     return movieData
@@ -79,60 +68,45 @@ async function getMovieDetails_Requested(movieData) {
 
 
 // Make API call for each movie, then process data
-function getMovieDetails(movieData, current_movie_id) {
-
+async function getMovieDetails(movieData, current_movie_id) {
     // TMDb Movie Details API URL
     var movie_detail_url = "https://api.themoviedb.org/3/movie/" + current_movie_id + "?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
 
     // Make TMBd API call, then collect details
 
-    $.getJSON(movie_detail_url, movieDetails);
-    console.log("movieData-getMovie-string:", movieData);
+    await $.getJSON(movie_detail_url, function (data) {
+        if (verbose === 2) { console.log("movieDetails-data", movieData); }
 
-    if (current_movie_id === '597') {
-        console.log("getMovieDetails-stringify-movieData:", JSON.stringify(movieData[597]));
-    }
+        // Movie Details we are interested in
+        var requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'backdrop_path', 'poster_path', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries'];
+
+        // Loop through requested Data
+        for (var i = 0; i<requestedMovieDetails.length-1; i++) {
+            movieData[current_movie_id][requestedMovieDetails[i]] = data[requestedMovieDetails[i]];
+        }
+        // Add full poster and backdrop path
+        movieData[current_movie_id]['poster_path'] = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/" + movieData[current_movie_id]['poster_path'];
+        movieData[current_movie_id]['backdrop_path'] = "https://image.tmdb.org/t/p/original" + movieData[current_movie_id]['backdrop_path'];
+    });
+
     return movieData
 } // END: getMovieDetails
 
 
-// Process individual movie API call results
-function movieDetails(data, movieData, current_movie_id) {
-    if (verbose === 2) { console.log("movieDetails-data", data); }
-
-    // Movie Details we are interested in
-    var requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'poster_path', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries'];
-
-    // Loop through requested Data
-    for (var i = 0; i<requestedMovieDetails.length-1; i++) {
-        movieData[current_movie_id][requestedMovieDetails[i]] = data[requestedMovieDetails[i]];
-    }
-    // Add full poster path to dict
-    movieData[current_movie_id]['poster_path'] = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/" + movieData[current_movie_id]['poster_path'];
-
-} // END: movieDetails
-
-
 // Sort movies by revenue
 function sortMoviesByRevenue(movieData) {
-    console.log("movieData-sortMovies-top:", movieData);
-    console.log("movieData-sortMovies-top-597:", movieData[597]);
-    console.log("Full object (?)", JSON.stringify(movieData[597]));
+    if (verbose === 2) { console.log("Stringified movieData-Titanic:", JSON.stringify(movieData[597])); }
 
     // Get items Array
     var data_items = Object.keys(movieData).map(function(key) {
         return [key, movieData[key]['revenue'], movieData[key]['name']]
     });
 
-    console.log("data_items:", data_items);
-
     // Sort based on revenue
     data_items.sort(function(first, second) { return second[1] - first[1] });
-
-// DEBUG: Incorretly assigned keys to dict
-    console.log("MovieData-posterPath", movieData[597]['poster_path']);
-
 } // END: sortArray
+
+
 
 // *****************
 // CREDITS FUNCTIONS
@@ -198,7 +172,7 @@ function getGenderCount(movieData, list, position, item) {
 
 // Make API call, return result
 async function apiCall(apiURL) {
-    return $.getJSON(apiURL);
+    return await $.getJSON(apiURL);
 }
 
 
