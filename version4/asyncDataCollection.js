@@ -9,9 +9,9 @@ var movie_ranking_url = "https://api.themoviedb.org/3/discover/movie?api_key=54f
 
 // Make TMDb API Call, then populate details, then credits, then build charts
 apiCall(movie_ranking_url)
-    .then(value => movieData(value));
-    // .then(value => creditsData(value));
-    // .then(value => buildCharts(value));
+    .then(value => movieData(value))
+    .then(value => creditsData(value))
+    .then(value => buildCharts(value));
 
 
 
@@ -23,11 +23,8 @@ async function movieData(data) {
     if (verbose !== 0) { console.log("Revenue API Data:", data) }
 
     // Get Basic & requested Movie Details Data
-    var updatedMovieData = await getMovieDetails_Basic(data)
+    return await getMovieDetails_Basic(data)
         .then(value => getMovieDetails_Requested(value));
-
-
-    return updatedMovieData;
 } // END: movieData
 
 
@@ -58,10 +55,10 @@ async function getMovieDetails_Requested(movieData) {
         await getMovieDetails(movieData, movie_id[i]);
 
         // On last loop, sort all data by revenue
-        if (i === movie_id.length-1) {
-            if (verbose === 2) { console.log("LastLoop-MovieData:", movieData); }
-            sortMoviesByRevenue(movieData);
-        }
+        // if (i === movie_id.length-1) {
+        //     if (verbose === 2) { console.log("LastLoop-MovieData:", movieData); }
+        //     sortMoviesByRevenue(movieData);
+        // }
     }
     return movieData
 } // END: getMovieDetails_Requested
@@ -104,6 +101,14 @@ function sortMoviesByRevenue(movieData) {
 
     // Sort based on revenue
     data_items.sort(function(first, second) { return second[1] - first[1] });
+
+
+    // Add rank to movie entry
+    for (var i=0; i<data_items.length-1; i++) {
+        movieData[data_items[i][0]]['rank'] = i+1;
+    }
+
+    return data_items
 } // END: sortArray
 
 
@@ -112,20 +117,24 @@ function sortMoviesByRevenue(movieData) {
 // CREDITS FUNCTIONS
 
 // Retrieve Cast & Crew details from credits API call
-function creditsData(movieData) {
+async function creditsData(movieData) {
     // Store all movie IDs
     var movie_id = Object.keys(movieData);
 
-    // Loop through all ids
-    movie_id.forEach(function (item) {
+    // Loop through all movie ids
+    for (var i=0; i<movie_id.length-1; i++) {
         // TMDb Movie Credits API URL
-        var moive_credits_url = "https://api.themoviedb.org/3/movie/" + item + "/credits?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
+        var moive_credits_url = "https://api.themoviedb.org/3/movie/" + movie_id[i] + "/credits?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
 
         // Make TMDb API call, then store general cast/crew details, then store cast/crew statistics
-        apiCall(moive_credits_url)
-            .then(value => creditsDetails(value, movieData, item))
-            .then(value => castStats(value, item));
-    });
+        await apiCall(moive_credits_url)
+            .then(value => creditsDetails(value, movieData, movie_id[i]))
+            .then(value => castStats(value, movie_id[i]));
+    }
+
+    if (verbose !== 0) { console.log("Post Credits Data:", movieData); }
+
+    return movieData
 } // END: creditsData
 
 
@@ -135,7 +144,6 @@ function creditsDetails(data, movieData, item) {
     movieData[item]['crew'] = data.crew;
     movieData[item]['cast_crew'] = combineLists([data.cast, data.crew]);
     movieData[item]['cast_crew_stats'] = {'cast': {}, 'crew': {}, 'overall': {}};
-
 
     return movieData
 } // END: creditsDetails
@@ -161,6 +169,112 @@ function getGenderCount(movieData, list, position, item) {
 // BUILD CHARTS
 // ************
 
+// Build Charts from data
+function buildCharts(formatedData) {
+    buildRevenueChart(formatedData);
+    buildGenderChart(formatedData);
+} // END: bulidCharts
+
+// Build Revenu chart using Fusion Charts
+function buildRevenueChart(formatedData) {
+    var sortedArray = sortMoviesByRevenue(formatedData);
+
+    // Pull name & revenue from movieData
+    var data = sortedArray.map(function(key) {
+        return {
+            "label": formatedData[key[0]]['name'],
+            "value": formatedData[key[0]]['revenue']
+        }
+    });
+
+    var highestGrossingChart = new FusionCharts({
+        type: 'bar2d',
+        renderAt: 'revenue-chart-container',
+        width: '100%',
+        height: '100%',
+        dataFormat: 'json',
+        dataSource: {
+                "chart": {
+                    caption: "Highest grossing movies of all time",
+                    yaxisname: "Box office gross ($)",
+                    aligncaptionwithcanvas: "0",
+                    plottooltext: "<b>$dataValue</b> revenue",
+                    theme: "fusion"
+                },
+                "data": data
+            }
+    }).render();
+} // END: buildRevenueChart
+
+
+// Build Gender chart using Chart.js
+function buildGenderChart(formatedData) {
+    // When DOM loaded
+    $(document).ready(function() {
+        // Define data options
+        var gender_data_options = {
+            backgroundColor: ['rgba(153,207,255,1)', 'rgba(51,160,255,1)', 'rgba(209,233,255,1)'],
+        };
+        // Define chart options
+        var gender_chart_options = basicChartOptions('Cast & Crew Gender Divide', true);
+        // Build chart
+// NOTE: change movie id here!!
+        buildChart('#gender-split-chart', formatedData[19995].cast_crew_stats.overall, 'doughnut', gender_data_options, gender_chart_options);
+    });
+} // END: buildChartJS
+
+
+// Build Chart based on supplied elements
+// canvasID: string starting with '#' of id in DOM, data: array of int/float values, chartType: str of viable chrat type,
+// dataOptions: list of viable data options, chartOptions: list of viable chart options
+function buildChart(canvasID, data, chartType, dataOptions, chartOptions) {
+    let chartCanvas = $(canvasID);                          // Get element from DOM based on supplied ID
+    let chartData = populateChartData(data, dataOptions);   // Get list of data w/ labels and options
+    // Build chart
+    chartBuild(chartCanvas, chartType, chartData, chartOptions)
+} // END: buildChart
+
+
+// Build chart onto DOM
+// chartCanvas: tag to DOM element, chartType: str of viable chart type, chartData: list of data,labels,dataOptions,
+// chartOptions: list of chart options
+function chartBuild(chartCanvas, chartType, chartData, chartOptions) {
+    let newChart = new Chart(chartCanvas, {
+        type: chartType,
+        data: chartData,
+        options: chartOptions
+    });
+} //END: chartBuild
+
+
+// ***************
+// Chart.js Helper
+// ***************
+
+// Return list of labels & datasets(w/ data & data options)
+// chartLabels: Array of strings, data: array of int/float values, dataOptions: list of viable data options
+function populateChartData(data, dataOptions) {
+    return {
+        labels: Object.keys(data),                                              // Retrieve keys of data as labels
+        datasets: [Object.assign({data: Object.values(data)}, dataOptions)]     // Combine data and data options
+    }
+} // END: populateChartData
+
+// Return list of chart options w/ custom title and boolean legend
+function basicChartOptions(Title, isLegend) {
+    return {
+        responsive: true,
+        title: {
+            display: true,
+            position: 'top',
+            text: Title
+        },
+        legend: {
+            display: isLegend,
+            position: 'bottom'
+        }
+    }
+} // END: basicCHartOptions
 
 
 
