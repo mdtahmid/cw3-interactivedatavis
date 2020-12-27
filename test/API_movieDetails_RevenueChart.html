@@ -114,12 +114,12 @@
         addDom();
 
         // Build Fusion Chart w/ data
-        buildRevenueChart(data_items);
+        buildRevenueChart_old(data_items);
     } // END: sortArray
 
 
     // Build fusion chart w/ revenue
-    function buildRevenueChart(sortedArray) {
+    function buildRevenueChart_old(sortedArray) {
 
         // Pull name & revenue from movieData
         var data = sortedArray.map(function(key) {
@@ -128,6 +128,8 @@
                 "value": movieData[key[0]]['revenue']
             }
         });
+
+
 
         var highestGrossingChart = new FusionCharts({
             type: 'bar2d',
