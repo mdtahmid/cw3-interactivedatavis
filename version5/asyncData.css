@@ -75,7 +75,7 @@ div.movieDetails {
 p.movieTitle-Expanded {
     font-size: 30px;
     margin-left: 20px;
-    max-width: 300px;
+    max-width: 500px;
 
     position: relative; /* needed for adjustable border (technically)  */
 }
