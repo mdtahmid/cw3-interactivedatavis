@@ -110,7 +110,7 @@
 
         // Add Trending elements to DOM
         function addTrendingToDOM(posterURL, movieTitle, movieID, backdropURL) {
-            $(document).ready(function() { //do i need this??
+            $(document).ready(function() { //do i need this?? -> If it works without it then no, but I think it ensures things are loaded first? ALTHOUGH it would be nice to have like static images as the APIs are called
 
                 // Create wrapper div
                 var moveWrapper = document.createElement("div");
