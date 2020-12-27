@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Async Data</title>
+    <!-- JQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <!-- FusionChart JS -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <!-- FusionCharts Themes -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+
+    <!--  Chart.js  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+
+    <!--  Custom Script  -->
+    <script src="asyncDataCollection.js"></script>
+
+    <!--  Google Fonts Stylesheet  -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,700,700i,900" rel="stylesheet">
+    <!--  Custom Stylesheet  -->
+    <link rel="stylesheet" href="asyncData.css">
+
+
+</head>
+<body>
+    <div class="gridWrapper">
+        <!--  Trending Movies Card  -->
+        <div class="bgImage" id="bgImage"></div>
+        <div class="" id="item1" style="text-align: center;">
+            <!--  Holder for top 10 trending  -->
+            <div id="scrollWrapper1"></div>
+        </div>
+    </div>
+
+    <!--  CHARTS: Revenue & Gender  -->
+    <div id="revenue-chart-container"></div>
+    <div id="gender-chart-container">
+        <canvas id="gender-split-chart"></canvas>
+    </div>
+</body>
+</html>
