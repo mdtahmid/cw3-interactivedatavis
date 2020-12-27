@@ -69,6 +69,9 @@
         #bgImage {
         	background-repeat: no-repeat;
     		background-position: center;
+            height: 500px;
+            width: auto;
+
 			-webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 			mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
         }
@@ -83,7 +86,7 @@
 
         // Response from trending API request
         function getCurrentlyTrending(data) {
-            if (verbose !== 0) {console.log("Trending API Respons:", data); }
+            if (verbose !== 0) {console.log("Trending API Response:", data); }
 
             // Loop over top 10 trending movies
             for (var i=0; i<10; i++) {
@@ -122,7 +125,7 @@
                 var moviePoster = document.createElement("img");
                 moviePoster.className = "movieImage";
                 moviePoster.id = movieID;
-                moviePoster.setAttribute("onclick","clicktestfunction("+movieID+")");
+                moviePoster.setAttribute("onclick", "clicktestfunction("+movieID+")");
                 moviePoster.src = posterURL;
 
                 // Append elements to DOM
@@ -131,7 +134,11 @@
                 // moveWrapper.appendChild(title);
 
 
-                document.getElementById("bgImage").style.backgroundImage = "url('"+backdropURL+"')";
+                // Add style to bgImg
+                var bgImg = document.getElementById("bgImage");
+                bgImg.style.backgroundImage = "url('"+backdropURL+"')";
+                bgImg.style.backgroundPosition = "Top"; // Makes poster start from the top at the top of the page
+                bgImg.style.backgroundSize = "80%"; // Set to 80% to see more of poster, or to 90/100% and have bgImg height increased (moves poster slide lower)
             });
         } // END: addTrendingToDOM
 
@@ -156,7 +163,7 @@
 <body>
 <div class="gridWrapper">
 	<!--  Trending Movies Card  -->
-	<div class="bgImage" id="bgImage" style="height: 500px;"></div>
+	<div class="bgImage" id="bgImage"></div>
 	<div class="" id="item1" style="text-align: center;">
 	    <!-- <p class="card-title">Currently trending</p> -->
 	    <!--  Holder for top 10 trending  -->
