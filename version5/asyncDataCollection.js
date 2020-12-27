@@ -78,10 +78,10 @@ async function getMovieDetails(movieData, current_movie_id) {
         if (verbose === 2) { console.log("movieDetails-data", movieData); }
 
         // Movie Details we are interested in
-        var requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'backdrop_path', 'poster_path', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries'];
+        var requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'backdrop_path', 'poster_path', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries', 'production_companies', 'spoken_languages'];
 
         // Loop through requested Data
-        for (var i = 0; i<requestedMovieDetails.length-1; i++) {
+        for (var i = 0; i<requestedMovieDetails.length; i++) {
             movieData[current_movie_id][requestedMovieDetails[i]] = data[requestedMovieDetails[i]];
         }
         // Add full poster and backdrop path
@@ -174,8 +174,11 @@ function addDomElements(formattedData) {
     // Add trending posters to top of Dom
     addTrending(formattedData);
 
+    // Add movie details
+    addMovieDetails(formattedData, '597');
+
     // Add charts to corresponding sections
-    addCharts(formattedData);
+    //addCharts(formattedData);
 } // END: addDomElements
 
 
@@ -197,7 +200,7 @@ function addTrending(formattedData) {
         var moviePoster = document.createElement('img');
         moviePoster.className = 'movieImage';
         moviePoster.id = movieData[0];
-        moviePoster.setAttribute('onclick', 'updateBgImg(' + movieData[0] + ')');
+        moviePoster.setAttribute('onclick', 'updateContents(' + movieData[0] + ')');
         moviePoster.src = formattedData[movieData[0]].poster_path;
 
         // Append elements to Dom
@@ -213,9 +216,96 @@ function addTrending(formattedData) {
 
 } // END: addTrending
 
-function updateBgImg(movieId) {
+function updateContents(movieId) {
+    // Update BgImage
     document.getElementById('bgImage').style.backgroundImage = "url('" + finalData[movieId].backdrop_path + "')";
+
+
 } // END: updateBgImg
+
+function addMovieDetails(formattedData, movie_id) {
+    // Get movie details container
+    var details_container = document.getElementById('movieDetails');
+
+    // Movie Title & Year Elements
+    var movieTitle = customElement('p', 'movieTitle-Expanded', formattedData[movie_id].name);
+    var movieYear = customElement('span', 'movieYear', formattedData[movie_id]['release_date'].split('-')[0]);
+    // Add Movie Year span within Movie Title
+    movieTitle.appendChild(movieYear);
+
+    // Rating container
+    var movieRating = document.createElement('div');
+    movieRating.className = "movieRating-container";
+    // Rating text
+    var rating = customElement('p',"movieRating-text", formattedData[movie_id]['vote_average']);
+    // Append rating text to div
+    movieRating.appendChild(rating);
+
+    // Details Container
+    var movieDetails = document.createElement('div');
+    movieDetails.className = "movieDetails-container";
+    // Details Title, Directors, Writers, Release Date, Country and Language
+    var detailsTitle = customElement('p', "details-title", "Details");
+    var detailsDirectors = customElement('p', "details-directors", "Directors: " + getMembers('Directing', formattedData, movie_id));
+    var detailsWriters = customElement('p', "details-writers", "Writers: " + getMembers('Writing', formattedData, movie_id));
+    var detailsReleaseDate = customElement('p', "details-release-date", "ReleaseDate: " + formatDate(formattedData[movie_id].release_date));
+    var detailsCountry = customElement('p', "details-country", "Country: " + formattedData[movie_id]['production_companies'][0].origin_country);
+    var detailsLanguage = customElement('p', "details-country", "Language: " + formattedData[movie_id]['spoken_languages'][0].english_name);
+    var detailsOverview = customElement('p', "details-overview", "Overview: " + formattedData[movie_id].overview);
+
+    movieDetails.appendChild(detailsTitle);
+    movieDetails.appendChild(detailsDirectors);
+    movieDetails.appendChild(detailsWriters);
+    movieDetails.appendChild(detailsReleaseDate);
+    movieDetails.appendChild(detailsCountry);
+    movieDetails.appendChild(detailsLanguage);
+    movieDetails.appendChild(detailsOverview);
+
+
+
+    // Append contents to container
+    details_container.appendChild(movieTitle);
+    details_container.appendChild(movieRating);
+    details_container.appendChild(movieDetails);
+
+} // END: addMovieDetails
+
+// ***************
+// HELPER FUNCTION
+// ***************
+
+// Get all members of a given cast/crew department and return as a string
+function getMembers(role, formattedData, movie_id) {
+    var directors = "";
+    // Loop through all directors
+    for (var i=0; i<formattedData[movie_id]['cast_crew'].length-1;i++) {
+        if (formattedData[movie_id]['cast_crew'][i].known_for_department === role) {
+            directors += formattedData[movie_id]['cast_crew'][i].name + ", ";
+        }
+    }
+    return directors.slice(0, directors.length-2);
+} // END: getDirectors
+
+// Create elements with a given class name and inner text
+function customElement(type, className, text) {
+    var newElement = document.createElement(type);
+    newElement.className = className;
+    newElement.innerHTML = text;
+    return newElement;
+}
+
+// Format TMDb date format to: 25th December 2020
+function formatDate(date) {
+    var splitDate = date.split('-');                                    // Split date at char
+    var getOrdinal = n => [,'st','nd','rd'][n/10%10^1&&n%10]||'th';     // returns st,nd,rd or th based on last value
+    var ordinal = getOrdinal(date);                                     // Get ordinal
+    const dateType = new Date(splitDate[2], splitDate[1], splitDate[0]);// Create datatype
+    const month = dateType.toLocaleString('default', { month: 'long' });// retrieve mounth string
+    // Return concact of date
+    return splitDate[2] + ordinal + " " + month + " " + splitDate[0];
+} // END: formatDate
+
+
 
 
 // ************
