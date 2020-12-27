@@ -227,45 +227,57 @@ function addMovieDetails(formattedData, movie_id) {
     // Get movie details container
     var details_container = document.getElementById('movieDetails');
 
+
+    // Header for movie main details
+    var movieHeader = document.createElement('div');
+    movieHeader.className = "movieHeader";
+
     // Movie Title & Year Elements
     var movieTitle = customElement('p', 'movieTitle-Expanded', formattedData[movie_id].name);
     var movieYear = customElement('span', 'movieYear', formattedData[movie_id]['release_date'].split('-')[0]);
     // Add Movie Year span within Movie Title
     movieTitle.appendChild(movieYear);
 
-    // Rating container
+    // Movie Genres
+    var movieGenres = customElement('p', 'movieGenres', formattedData[movie_id].genres.map((key) => key.name ).join(', '));
+
+    // Rating container & Text element
     var movieRating = document.createElement('div');
     movieRating.className = "movieRating-container";
-    // Rating text
     var rating = customElement('p',"movieRating-text", formattedData[movie_id]['vote_average']);
-    // Append rating text to div
-    movieRating.appendChild(rating);
+    movieRating.appendChild(rating);        // Append rating text to rating div
+
+    // Movie length
+    var movieLength = customElement('p', 'movieGenres', formatRunTime(formattedData[movie_id].runtime));
+
+    // Append elements to Movie Header
+    movieHeader.appendChild(movieTitle);
+    movieHeader.appendChild(movieGenres);
+    movieHeader.appendChild(movieRating);
+    movieHeader.appendChild(movieLength);
 
     // Details Container
     var movieDetails = document.createElement('div');
     movieDetails.className = "movieDetails-container";
-    // Details Title, Directors, Writers, Release Date, Country and Language
-    var detailsTitle = customElement('p', "details-title", "Details");
-    var detailsDirectors = customElement('p', "details-directors", "Directors: " + getMembers('Directing', formattedData, movie_id));
-    var detailsWriters = customElement('p', "details-writers", "Writers: " + getMembers('Writing', formattedData, movie_id));
-    var detailsReleaseDate = customElement('p', "details-release-date", "ReleaseDate: " + formatDate(formattedData[movie_id].release_date));
-    var detailsCountry = customElement('p', "details-country", "Country: " + formattedData[movie_id]['production_companies'][0].origin_country);
-    var detailsLanguage = customElement('p', "details-country", "Language: " + formattedData[movie_id]['spoken_languages'][0].english_name);
-    var detailsOverview = customElement('p', "details-overview", "Overview: " + formattedData[movie_id].overview);
 
-    movieDetails.appendChild(detailsTitle);
-    movieDetails.appendChild(detailsDirectors);
-    movieDetails.appendChild(detailsWriters);
-    movieDetails.appendChild(detailsReleaseDate);
-    movieDetails.appendChild(detailsCountry);
-    movieDetails.appendChild(detailsLanguage);
-    movieDetails.appendChild(detailsOverview);
+    // Dict of all elements and values for Details section
+    var detailsElements = {
+        "Directors": getMembers('Directing', formattedData, movie_id),
+        "Writers": getMembers('Writing', formattedData, movie_id),
+        "Release Date": formatDate(formattedData[movie_id].release_date),
+        "Country": formattedData[movie_id]['production_companies'][0].origin_country,
+        "Language": formattedData[movie_id]['spoken_languages'][0].english_name,
+        "Overview": formattedData[movie_id].overview
+    };
 
+    // Add all Elements to Div as paragraphs
+    for (const elements in detailsElements) {
+        movieDetails.appendChild(customElement('p', elements, elements + ": " + detailsElements[elements]));
+    }
 
 
     // Append contents to container
-    details_container.appendChild(movieTitle);
-    details_container.appendChild(movieRating);
+    details_container.appendChild(movieHeader);
     details_container.appendChild(movieDetails);
 
 } // END: addMovieDetails
@@ -305,7 +317,14 @@ function formatDate(date) {
     return splitDate[2] + ordinal + " " + month + " " + splitDate[0];
 } // END: formatDate
 
-
+// Change minutes to h and min string
+function formatRunTime(time) {
+    var hours = (time / 60);                // Get hours (in float)
+    var rhours = Math.floor(hours);         // Only keep int
+    var minutes = (hours - rhours) * 60;    // Get minutes left over
+    var rminutes = Math.round(minutes);     // Round up to int
+    return rhours + "h " + rminutes + "min";
+}
 
 
 // ************
