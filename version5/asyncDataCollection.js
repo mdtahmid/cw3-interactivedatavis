@@ -1,5 +1,23 @@
-// Global var for printing text
-var verbose = 1;    // 0: Nothing, 1: Main lists, 2: Every loop
+// *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+// MAIN FILE for making API calls, Storing relevant data, and populating the DOM
+// with elements and data
+// Created by Damien Pilat and Mohammed Tahmid.
+// Project started in December 2020
+//
+// Credits:
+// Code written entirely by the authors mentioned above, unless otherwise specified
+//
+// Libraries:
+// For Building Charts:
+//      FusionCharts, Chart.js
+// *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+
+// Global variables
+var verbose = 1;                        // Levels of printing to console. 0: Nothing, 1: Main lists, 2: Every loop
+var finalData = {};                     // Store final data retrived from all API calls
+
+
 
 // *******************
 // MAIN ASYNC FUNCTION
@@ -7,15 +25,13 @@ var verbose = 1;    // 0: Nothing, 1: Main lists, 2: Every loop
 // TMDb Top Movies by Revenue API URL
 var movie_ranking_url = "https://api.themoviedb.org/3/discover/movie?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US&sort_by=revenue.desc&include_video=false&page=1";
 
-var finalData = {};
-
-// Make TMDb API Call, then populate details, then credits, then build charts
+// Make 1st TMDb API call to retrieve Trending movies
 apiCall(movie_ranking_url)
-    .then(value => movieData(value))
-    .then(value => creditsData(value))
-    .then(value => addDomElements(value));
-    // .then(value => buildCharts(value));
-
+    .then(value => movieData(value))        // Collect individual movie details
+    .then(value => creditsData(value))      // Collect individual credits details
+    .then(value => getAwards(value))        // Collect awards from OMDb
+    .then(value => addDomElements(value));  // Add elements to Dom
+    // .then(value => buildCharts(value));  // Build charts using Fusion & Chart.js
 
 
 // ********************
@@ -126,10 +142,6 @@ async function creditsData(movieData) {
             .then(value => castStats(value, movie_id[i]));
     }
 
-    if (verbose !== 0) { console.log("Post Credits Data:", movieData); }
-
-    finalData = movieData;
-
     return movieData
 } // END: creditsData
 
@@ -159,6 +171,50 @@ function getGenderCount(movieData, list, position, item) {
     movieData[item]['cast_crew_stats'][position]['Female'] = getCount(list, 1);
     movieData[item]['cast_crew_stats'][position]['Not Specified'] = getCount(list, 0);
 } // END: getGenderCount
+
+
+// Get awards from each movie by running a API call to OMDb on each movie in the movieData dict
+async function getAwards(movieData) {
+    var movieID = Object.keys(movieData);   // Get movie Ids of all movies in dict
+
+    // Loop through all movies by ID
+    for (var i=0; i<movieID.length; i++) {
+        // OMDb API URL for each movie
+        var awards_omdb_url = 'https://www.omdbapi.com/?apikey=874a2978&i=' + movieData[movieID[i]].imdb_id;
+
+        // Make API call, then and retrieve results
+        await apiCall(awards_omdb_url)
+            .then(value => awardsDetails(value, movieData, movieID[i]))
+    }
+    if (verbose !== 0) { console.log("Post Awards Data:", movieData); }
+
+    // Store final movie data globally
+    finalData = movieData;
+
+    return movieData
+} // END: getAwards
+
+
+// Clean OMDb API response and populate main dict
+function awardsDetails(data, movieData, item) {
+    // Remove words from OMDb response, keep only numbres as an array
+    var awardNumbers = data.Awards.match(/\d+/g).map(Number);
+
+    // Create a new entry in the main movieData dict for awards
+    movieData[item]['awards'] = {};
+
+    // If OMDb returned only two numbers, then movie had no oscars
+    // Fill entries of dict accordingly
+    if (awardNumbers.length === 2) {
+        movieData[item]['awards'].oscars = 0;
+        movieData[item]['awards'].wins = awardNumbers[0];
+        movieData[item]['awards'].nominations = awardNumbers[1];
+    } else {
+        movieData[item]['awards'].oscars = awardNumbers[0];
+        movieData[item]['awards'].wins = awardNumbers[1];
+        movieData[item]['awards'].nominations = awardNumbers[2];
+    }
+} // END: awardsDetails
 
 
 // Add all elements to dom
@@ -215,6 +271,8 @@ function updateContents(movieId) {
 
     // Update Movie Details
     addMovieDetails(finalData, movieId);
+    // Update Awards
+    addMovieAwards(finalData, movieId);
 } // END: updateBgImg
 
 
@@ -268,7 +326,7 @@ function addMovieDetails(formattedData, movie_id) {
 
     // Add all Elements to Div as paragraphs
     for (const elements in detailsElements) {
-        movieDetails.appendChild(customElement('p', elements, elements + ": " + detailsElements[elements]));
+        movieDetails.appendChild(customElement('p', "details-"+elements, elements + ": " + detailsElements[elements]));
     }
 
     // Append contents to container
@@ -276,65 +334,25 @@ function addMovieDetails(formattedData, movie_id) {
     details_container.appendChild(movieDetails);
 } // END: addMovieDetails
 
+
+// Add Movie AwardsDetails to DOM
 function addMovieAwards(formattedData, movie_id) {
     // Get movie Awards container
     var awards_container = document.getElementById('movieAwards');
     awards_container.textContent = '';
 
-    var awards_omdb_url = 'http://www.omdbapi.com/?apikey=d7ffd79f&i=' + formattedData[movie_id].imdb_id;
+    var awards = formattedData[movie_id].awards;
 
-    $.getJSON(awards_omdb_url, function (data) {
-        console.log("OMDB:", data);
-    })
-
-
-
+    for (const elements in awards) {
+        awards_container.appendChild(customElement('p', "award-"+elements, elements + ": " + awards[elements]));
+    }
 } // END: addMovieAwards
 
-// ***************
-// HELPER FUNCTION
-// ***************
 
-// Get all members of a given cast/crew department and return as a string
-function getMembers(role, formattedData, movie_id) {
-    var directors = "";
-    // Loop through all directors
-    for (var i=0; i<formattedData[movie_id]['cast_crew'].length-1;i++) {
-        if (formattedData[movie_id]['cast_crew'][i].known_for_department === role) {
-            directors += formattedData[movie_id]['cast_crew'][i].name + ", ";
-        }
-    }
-    return directors.slice(0, directors.length-2);
-} // END: getDirectors
+// Add Budget vs Revenue to DOM
+function addBudgetChart(formattedData, movie_id) {
 
-// Create elements with a given class name and inner text
-function customElement(type, className, text) {
-    var newElement = document.createElement(type);
-    newElement.className = className;
-    newElement.innerHTML = text;
-    return newElement;
-}
-
-// Format TMDb date format to: 25th December 2020
-function formatDate(date) {
-    var splitDate = date.split('-');                                    // Split date at char
-    var getOrdinal = n => [,'st','nd','rd'][n/10%10^1&&n%10]||'th';     // returns st,nd,rd or th based on last value
-    var ordinal = getOrdinal(date);                                     // Get ordinal
-    const dateType = new Date(splitDate[2], splitDate[1], splitDate[0]);// Create datatype
-    const month = dateType.toLocaleString('default', { month: 'long' });// retrieve mounth string
-    // Return concact of date
-    return splitDate[2] + ordinal + " " + month + " " + splitDate[0];
-} // END: formatDate
-
-// Change minutes to h and min string
-function formatRunTime(time) {
-    var hours = (time / 60);                // Get hours (in float)
-    var rhours = Math.floor(hours);         // Only keep int
-    var minutes = (hours - rhours) * 60;    // Get minutes left over
-    var rminutes = Math.round(minutes);     // Round up to int
-    return rhours + "h " + rminutes + "min";
-}
-
+} // END: addBudgetChart
 
 // ************
 // BUILD CHARTS
@@ -417,9 +435,87 @@ function chartBuild(chartCanvas, chartType, chartData, chartOptions) {
 } //END: chartBuild
 
 
+// **************** //
+// HELPER FUNCTIONS
+// **************** //
+
+// **********
+// API HELPER
+
+// Make API call, return result
+async function apiCall(apiURL) {
+    return await $.getJSON(apiURL);
+}
+
+// Combine an array of lists together
+function combineLists(arrayLists) {
+    if (arrayLists.length === 0) { return null}         // If array is empty, return null
+    if (arrayLists.length < 2) { return arrayLists[0] } // If only 1 list in array, return list
+
+    var newList = arrayLists[0];                        // Initiate newList w/ 1st list
+    var offset = arrayLists[0].length-1;                // Create offset to be length of 1st list
+
+    for (var i=1; i<arrayLists.length; i++) {           // Loop through all lists (after 1st)
+        for (var j=0; j<arrayLists[i].length-1; j++) {      // Loop through values in lists
+            newList[j+offset] = arrayLists[i];              // Append list w/ offset
+        }
+        offset += arrayLists[i].length-1;               // Update offset
+    }
+    return newList                                      // Return new List
+} // END: combineLists
+
+// Get count of gender in a dict
+function getCount(list, gender) {
+    var count = 0;                                          // Var to store gender count
+    if (list) {                                             // If list exists, loop through entries
+        for (var i=0; i<list.length-1; i++) {
+            if (list[i]['gender'] === gender) { count++; }     // Increase count if list gender is gender passed in arg
+        }
+    }
+    return count
+} //END getCount
+
+// Get all members of a given cast/crew department and return as a string
+function getMembers(role, formattedData, movie_id) {
+    var directors = "";
+    // Loop through all directors
+    for (var i=0; i<formattedData[movie_id]['cast_crew'].length-1;i++) {
+        if (formattedData[movie_id]['cast_crew'][i].known_for_department === role) {
+            directors += formattedData[movie_id]['cast_crew'][i].name + ", ";
+        }
+    }
+    return directors.slice(0, directors.length-2);
+} // END: getDirectors
+
+// Create elements with a given class name and inner text
+function customElement(type, className, text) {
+    var newElement = document.createElement(type);
+    newElement.className = className;
+    newElement.innerHTML = text;
+    return newElement;
+}
+
+// Format TMDb date format to: 25th December 2020
+function formatDate(date) {
+    var splitDate = date.split('-');                                    // Split date at char
+    var getOrdinal = n => [,'st','nd','rd'][n/10%10^1&&n%10]||'th';     // returns st,nd,rd or th based on last value
+    var ordinal = getOrdinal(date);                                     // Get ordinal
+    const dateType = new Date(splitDate[2], splitDate[1], splitDate[0]);// Create datatype
+    const month = dateType.toLocaleString('default', { month: 'long' });// retrieve mounth string
+    // Return concact of date
+    return splitDate[2] + ordinal + " " + month + " " + splitDate[0];
+} // END: formatDate
+
+// Change minutes to h and min string
+function formatRunTime(time) {
+    var hours = (time / 60);                // Get hours (in float)
+    var rhours = Math.floor(hours);         // Only keep int
+    var minutes = (hours - rhours) * 60;    // Get minutes left over
+    var rminutes = Math.round(minutes);     // Round up to int
+    return rhours + "h " + rminutes + "min";
+}
 // ***************
 // Chart.js Helper
-// ***************
 
 // Return list of labels & datasets(w/ data & data options)
 // chartLabels: Array of strings, data: array of int/float values, dataOptions: list of viable data options
@@ -445,46 +541,3 @@ function basicChartOptions(Title, isLegend) {
         }
     }
 } // END: basicCHartOptions
-
-
-
-
-
-// ****************
-// HELPER FUNCTIONS
-// ****************
-
-// Make API call, return result
-async function apiCall(apiURL) {
-    return await $.getJSON(apiURL);
-}
-
-
-// Combine an array of lists together
-function combineLists(arrayLists) {
-    if (arrayLists.length === 0) { return null}         // If array is empty, return null
-    if (arrayLists.length < 2) { return arrayLists[0] } // If only 1 list in array, return list
-
-    var newList = arrayLists[0];                        // Initiate newList w/ 1st list
-    var offset = arrayLists[0].length-1;                // Create offset to be length of 1st list
-
-    for (var i=1; i<arrayLists.length; i++) {           // Loop through all lists (after 1st)
-        for (var j=0; j<arrayLists[i].length-1; j++) {      // Loop through values in lists
-            newList[j+offset] = arrayLists[i];              // Append list w/ offset
-        }
-        offset += arrayLists[i].length-1;               // Update offset
-    }
-    return newList                                      // Return new List
-} // END: combineLists
-
-
-// Get count of gender in a dict
-function getCount(list, gender) {
-    var count = 0;                                          // Var to store gender count
-    if (list) {                                             // If list exists, loop through entries
-        for (var i=0; i<list.length-1; i++) {
-            if (list[i]['gender'] === gender) { count++; }     // Increase count if list gender is gender passed in arg
-        }
-    }
-    return count
-} //END getCount
