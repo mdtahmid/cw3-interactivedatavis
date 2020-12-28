@@ -224,6 +224,7 @@ function addDomElements(formattedData) {
     addTrending(formattedData);                     // Add trending posters to top of Dom
     addMovieDetails(formattedData, default_id);     // Add movie details
     addMovieAwards(formattedData, default_id);      // Add Movie Awards
+    addBudgetChart(formattedData, default_id);      // Add movie budget vs revenue
 
     //addCharts(formattedData);                     // Add charts to corresponding sections
 } // END: addDomElements
@@ -273,6 +274,8 @@ function updateContents(movieId) {
     addMovieDetails(finalData, movieId);
     // Update Awards
     addMovieAwards(finalData, movieId);
+    // Update revenue/budget
+    addBudgetChart(finalData, movieId);
 } // END: updateBgImg
 
 
@@ -351,7 +354,11 @@ function addMovieAwards(formattedData, movie_id) {
 
 // Add Budget vs Revenue to DOM
 function addBudgetChart(formattedData, movie_id) {
+    var budget_container = document.getElementById('budgetRevenue');
+    budget_container.textContent = '';
 
+    budget_container.appendChild(customElement('p', 'budget-text', "Budget: "+formattedData[movie_id].budget));
+    budget_container.appendChild(customElement('p', 'revenue-text', "Revenue: "+formattedData[movie_id].revenue));
 } // END: addBudgetChart
 
 // ************
