@@ -53,15 +53,8 @@ async function getMovieDetails_Requested(movieData) {
 
     // Loop through movie_ids and retrieve requested data
     for (var i=0; i<movie_id.length; i++) {
-
         // Ensure this runs before proceeding
         await getMovieDetails(movieData, movie_id[i]);
-
-        // On last loop, sort all data by revenue
-        // if (i === movie_id.length-1) {
-        //     if (verbose === 2) { console.log("LastLoop-MovieData:", movieData); }
-        //     sortMoviesByRevenue(movieData);
-        // }
     }
     return movieData
 } // END: getMovieDetails_Requested
@@ -73,12 +66,11 @@ async function getMovieDetails(movieData, current_movie_id) {
     var movie_detail_url = "https://api.themoviedb.org/3/movie/" + current_movie_id + "?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
 
     // Make TMBd API call, then collect details
-
     await $.getJSON(movie_detail_url, function (data) {
         if (verbose === 2) { console.log("movieDetails-data", movieData); }
 
         // Movie Details we are interested in
-        var requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'backdrop_path', 'poster_path', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries', 'production_companies', 'spoken_languages'];
+        var requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'backdrop_path', 'poster_path', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries', 'production_companies', 'spoken_languages', 'imdb_id'];
 
         // Loop through requested Data
         for (var i = 0; i<requestedMovieDetails.length; i++) {
@@ -171,16 +163,13 @@ function getGenderCount(movieData, list, position, item) {
 
 // Add all elements to dom
 function addDomElements(formattedData) {
-    // Add trending posters to top of Dom
-    addTrending(formattedData);
+    var default_id = '299534';                       // Default is currently #1 movie Avengers:Endgame
 
-    // Add movie details (Default: #1-Avengers:Endgame)
-    addMovieDetails(formattedData, '299534');
+    addTrending(formattedData);                     // Add trending posters to top of Dom
+    addMovieDetails(formattedData, default_id);     // Add movie details
+    addMovieAwards(formattedData, default_id);      // Add Movie Awards
 
-
-
-    // Add charts to corresponding sections
-    //addCharts(formattedData);
+    //addCharts(formattedData);                     // Add charts to corresponding sections
 } // END: addDomElements
 
 
@@ -218,20 +207,22 @@ function addTrending(formattedData) {
 
 } // END: addTrending
 
+
+// Update page contents on poster click
 function updateContents(movieId) {
     // Update BgImage
     document.getElementById('bgImage').style.backgroundImage = "url('" + finalData[movieId].backdrop_path + "')";
 
     // Update Movie Details
     addMovieDetails(finalData, movieId);
-
 } // END: updateBgImg
 
+
+// Add Movie Details to DOM
 function addMovieDetails(formattedData, movie_id) {
     // Get movie details container
     var details_container = document.getElementById('movieDetails');
     details_container.textContent = '';
-
 
     // Header for movie main details
     var movieHeader = document.createElement('div');
@@ -280,12 +271,25 @@ function addMovieDetails(formattedData, movie_id) {
         movieDetails.appendChild(customElement('p', elements, elements + ": " + detailsElements[elements]));
     }
 
-
     // Append contents to container
     details_container.appendChild(movieHeader);
     details_container.appendChild(movieDetails);
-
 } // END: addMovieDetails
+
+function addMovieAwards(formattedData, movie_id) {
+    // Get movie Awards container
+    var awards_container = document.getElementById('movieAwards');
+    awards_container.textContent = '';
+
+    var awards_omdb_url = 'http://www.omdbapi.com/?apikey=d7ffd79f&i=' + formattedData[movie_id].imdb_id;
+
+    $.getJSON(awards_omdb_url, function (data) {
+        console.log("OMDB:", data);
+    })
+
+
+
+} // END: addMovieAwards
 
 // ***************
 // HELPER FUNCTION
