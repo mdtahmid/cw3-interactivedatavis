@@ -291,6 +291,10 @@ function addMovieDetails(formattedData, movie_id) {
     var movieHeader = document.createElement('div');
     movieHeader.className = "movieHeader";
 
+    //Wrapper for title, release data and genre types
+    var movieTitleWrapper = document.createElement('div');
+    movieTitleWrapper.className = "movieTitleWrapper";
+
     // Movie Title & Year Elements
     var movieTitle = customElement('p', 'movieTitle-Expanded', formattedData[movie_id].name);
     var movieYear = customElement('span', 'movieYear', formattedData[movie_id]['release_date'].split('-')[0]);
@@ -310,10 +314,11 @@ function addMovieDetails(formattedData, movie_id) {
     var movieLength = customElement('p', 'movieLength', formatRunTime(formattedData[movie_id].runtime));
 
     // Append elements to Movie Header
-    movieHeader.appendChild(movieTitle);
-    movieHeader.appendChild(movieGenres);
+    movieTitleWrapper.appendChild(movieTitle);
+    movieTitleWrapper.appendChild(movieGenres);
+    movieHeader.appendChild(movieTitleWrapper);
     movieHeader.appendChild(movieRating);
-    movieHeader.appendChild(movieLength);
+    movieRating.appendChild(movieLength);
 
     // Details Container
     var movieDetails = document.createElement('div');
