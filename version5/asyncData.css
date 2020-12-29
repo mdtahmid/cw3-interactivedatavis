@@ -98,7 +98,7 @@ p.movieTitle-Expanded {
     margin-left: 20px;
 
     max-width: 500px;
-
+    font-weight: 500;
     position: relative; /* needed for adjustable border (technically)  */
 }
 /* Add border bottom that goes past margin */
@@ -114,27 +114,48 @@ p.movieTitle-Expanded:after {
 /* Movie Year (within title) */
 span.movieYear {
     font-size: 16px;
-    font-weight: 100;
+    font-weight: 300;
     margin-left: 10px;
 }
 
 /* Movie Rating */
 div.movieRating-container {
-    border: 1px solid white;
-    border-radius: 5px;
-    padding: 2px 3px;
-    text-align: center;
-    width: 40px;
+  display: inline-block;
+    vertical-align: top;
+    padding-left: 50px;
 }
+
+div.movieTitleWrapper {
+  display: inline-block;
+}
+
+div.movieDetails-container{
+  padding-top: 50px;
+}
+
+p.movieLength {
+  padding-top: 6px;
+  text-align: center;
+}
+
 p.movieRating-text {
     font-size: 20px;
-    font-weight: 200;
+    font-weight: 300;
 
-    margin: 0;
+    /* margin: 0; */
+    margin-top: 6px;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 4px 4px;
+    text-align: center;
+    width: 60px;
 }
 
 p.movieGenres {
   margin-left: 20px;
+  padding-top: 5px;
+  font-size: 16px;
+  font-weight: 300;
 }
 
 /* Revenue chart dimensions*/
