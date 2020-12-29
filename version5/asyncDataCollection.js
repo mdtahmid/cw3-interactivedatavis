@@ -262,6 +262,8 @@ function addTrending(formattedData) {
     bgImg.style.backgroundPosition = "Top";     // Forces poster to start from top of screen
     bgImg.style.backgroundSize = "80%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
 
+    new SimpleBar(document.getElementById('scrollWrapper1')); //initalise the custom scrollbar
+
 } // END: addTrending
 
 
@@ -305,7 +307,7 @@ function addMovieDetails(formattedData, movie_id) {
     movieRating.appendChild(rating);        // Append rating text to rating div
 
     // Movie length
-    var movieLength = customElement('p', 'movieGenres', formatRunTime(formattedData[movie_id].runtime));
+    var movieLength = customElement('p', 'movieLength', formatRunTime(formattedData[movie_id].runtime));
 
     // Append elements to Movie Header
     movieHeader.appendChild(movieTitle);
