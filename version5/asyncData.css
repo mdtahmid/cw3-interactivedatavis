@@ -159,3 +159,7 @@ div#revenue-chart-container {
     opacity: 1;             /* Render visible on click */
     transition: 1s;         /* Animation delay */
 }
+
+p.details-Overview {
+    white-space: pre-wrap;
+}
