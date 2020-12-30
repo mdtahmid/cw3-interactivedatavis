@@ -269,7 +269,7 @@ function addTrending(formattedData) {
     bgImg.style.backgroundPosition = "Top";     // Forces poster to start from top of screen
     bgImg.style.backgroundSize = "80%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
 
-    new SimpleBar(document.getElementById('scrollWrapper1')); //initalise the custom scrollbar
+    // new SimpleBar(document.getElementById('scrollWrapper1')); //initalise the custom scrollbar
 
 } // END: addTrending
 
