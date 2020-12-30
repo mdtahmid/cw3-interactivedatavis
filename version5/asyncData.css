@@ -47,9 +47,10 @@ div.movieWrapper {
     vertical-align: top;
 }
 div#scrollWrapper1 {
-    overflow-x: auto;
+    overflow-x: auto;   /* auto define horz scroll  */
+    overflow-y: hidden; /* stop vertical scroll */
     white-space: nowrap;
-    margin: -20px 0px;
+    margin: -20px 0;
 }
 p.card-title {
     font-size: 20px;
@@ -92,6 +93,8 @@ p.movieTitle-Expanded:after {
     /* Style */
     background: white;
 }
+
+
 /* Movie Year (within title) */
 span.movieYear {
     /* Layout */
@@ -119,6 +122,12 @@ p.movieRating-text {
     font-weight: 200;
 }
 
+/* Movie overview*/
+p.details-Overview {
+    white-space: pre-wrap;
+}
+
+
 /* Revenue chart dimensions*/
 div#revenue-chart-container {
     /* Layout */
@@ -126,6 +135,7 @@ div#revenue-chart-container {
     width: 800px;
 }
 
+/* Movie Slide Bar Divs*/
 .movieWrapper {
     /* Layout*/
     width: 122px;
@@ -142,7 +152,7 @@ div#revenue-chart-container {
 .inline-movie-details {
     /* Layout */
     height: 0;
-    max-height: 250px;
+    max-height: 220px;  /* Limit div height on animation */
     width: 0;
     margin-left: 10px;
     /* Style */
@@ -154,13 +164,24 @@ div#revenue-chart-container {
 /* Expanding movie details div */
 .detailsExpanded {
     /* Layout */
-    height: 100%;           /* Fit all content, or change to fixed value and cut overflow */
+    height: 950px;           /* Fit all content, or change to fixed value and cut overflow */
     width: 55vw;
     /* Effects */
     opacity: 1;             /* Render visible on click */
     transition: 1s;         /* Animation delay */
 }
 
-p.details-Overview {
-    white-space: pre-wrap;
+.simplebar-scrollbar {
+    background-color: #444;
+    border-radius: 100px;
+    margin-left: 2px;
+
+}
+.simplebar-track{
+    background-color: #bbb;
+    border-radius: 100px 100px 100px 100px;
+    margin: 0 20px 0 19px;
+}
+.simplebar-offset {
+    top: -10px !important;
 }
