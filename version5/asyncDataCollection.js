@@ -310,7 +310,7 @@ function toggleClassName(targetElementClassName, toggledClassName, elementIndex)
 function addMovieDetails(formattedData, movie_id, index) {
     // Get movie details container
     var details_container = document.getElementById('movieDetail_'+index);
-    // details_container.textContent = '';
+    details_container.textContent = '';         // Remove content before adding new elements
 
     // Header for movie main details
     var movieHeader = document.createElement('div');
