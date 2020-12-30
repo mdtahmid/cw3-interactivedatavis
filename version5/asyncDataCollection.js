@@ -219,12 +219,14 @@ function awardsDetails(data, movieData, item) {
 
 // Add all elements to dom
 function addDomElements(formattedData) {
-    var default_id = '299534';                       // Default is currently #1 movie Avengers:Endgame
+    var default_id = '299534';                          // Default is currently #1 movie Avengers:Endgame
+    var default_index = 0;
 
-    addTrending(formattedData);                     // Add trending posters to top of Dom
-    addMovieDetails(formattedData, default_id);     // Add movie details
-    addMovieAwards(formattedData, default_id);      // Add Movie Awards
-    addBudgetChart(formattedData, default_id);      // Add movie budget vs revenue
+    addTrending(formattedData);                         // Add trending posters to top of Dom
+    expandMovieDetails(formattedData, default_id, default_index);   // Expand 1st Movie Details
+    addMovieDetails(formattedData, default_id, default_index);         // Add movie details
+    addMovieAwards(formattedData, default_id);          // Add Movie Awards
+    addBudgetChart(formattedData, default_id);          // Add movie budget vs revenue
 
     //addCharts(formattedData);                     // Add charts to corresponding sections
 } // END: addDomElements
@@ -234,7 +236,7 @@ function addDomElements(formattedData) {
 function addTrending(formattedData) {
     var moviesSorted = sortMoviesByRevenue(formattedData);
     // Loop through all movies
-    moviesSorted.forEach(function(movieData) {
+    moviesSorted.forEach((movieData, index) => {
         // Create wrapper div container
         var movieWrapper = document.createElement('div');
         movieWrapper.className = 'movieWrapper';
@@ -248,12 +250,17 @@ function addTrending(formattedData) {
         var moviePoster = document.createElement('img');
         moviePoster.className = 'movieImage';
         moviePoster.id = movieData[0];
-        moviePoster.setAttribute('onclick', 'updateContents(' + movieData[0] + ')');
+        moviePoster.setAttribute('onclick', 'updateContents(' + movieData[0] + ',' + index + ')');
         moviePoster.src = formattedData[movieData[0]].poster_path;
+
+        var detailElement = document.createElement('div');
+        detailElement.className = 'inline-movie-details';
+        detailElement.id = 'movieDetail_' + index;
 
         // Append elements to Dom
         document.getElementById('scrollWrapper1').appendChild(movieWrapper);
         movieWrapper.appendChild(moviePoster);
+        movieWrapper.appendChild(detailElement);
     });
 
     // Set BgImg to be first Trending
@@ -268,12 +275,13 @@ function addTrending(formattedData) {
 
 
 // Update page contents on poster click
-function updateContents(movieId) {
+function updateContents(movieId, index) {
     // Update BgImage
     document.getElementById('bgImage').style.backgroundImage = "url('" + finalData[movieId].backdrop_path + "')";
 
+    expandMovieDetails(finalData, movieId, index);
     // Update Movie Details
-    addMovieDetails(finalData, movieId);
+    addMovieDetails(finalData, movieId, index);
     // Update Awards
     addMovieAwards(finalData, movieId);
     // Update revenue/budget
@@ -281,11 +289,28 @@ function updateContents(movieId) {
 } // END: updateBgImg
 
 
+// Expand Movie Details
+function expandMovieDetails(formattedData, movieId, index) {
+    // Movie Wrapper, toggle Expanded
+    toggleClassName('movieWrapper', 'wrapperExpanded', index);
+    // Movie Details, toggle Expanded
+    toggleClassName('inline-movie-details', 'detailsExpanded', index);
+} // END: expandMovieDetails
+
+
+// Toggle a class name for a given set of elements retrieved by class name (Currently: define target Index for class)
+function toggleClassName(targetElementClassName, toggledClassName, elementIndex) {
+    var domElements = document.getElementsByClassName(targetElementClassName);
+    Array.from(domElements).forEach(element => element.classList.remove(toggledClassName));
+    domElements[elementIndex].className += " "+toggledClassName;
+} // END removeOthersAddClass
+
+
 // Add Movie Details to DOM
-function addMovieDetails(formattedData, movie_id) {
+function addMovieDetails(formattedData, movie_id, index) {
     // Get movie details container
-    var details_container = document.getElementById('movieDetails');
-    details_container.textContent = '';
+    var details_container = document.getElementById('movieDetail_'+index);
+    // details_container.textContent = '';
 
     // Header for movie main details
     var movieHeader = document.createElement('div');
@@ -364,6 +389,10 @@ function addBudgetChart(formattedData, movie_id) {
     var budget_container = document.getElementById('budgetRevenue');
     budget_container.textContent = '';
 
+    var percentageFilled = formattedData[movie_id].budget / formattedData[movie_id].revenue * 100;
+
+    console.log("percentage:", percentageFilled);
+    
     budget_container.appendChild(customElement('p', 'budget-text', "Budget: "+formattedData[movie_id].budget));
     budget_container.appendChild(customElement('p', 'revenue-text', "Revenue: "+formattedData[movie_id].revenue));
 } // END: addBudgetChart
