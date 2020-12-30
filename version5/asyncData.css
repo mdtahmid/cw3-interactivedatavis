@@ -142,6 +142,7 @@ div#revenue-chart-container {
 .inline-movie-details {
     /* Layout */
     height: 0;
+    max-height: 250px;
     width: 0;
     margin-left: 10px;
     /* Style */
