@@ -266,8 +266,8 @@ function addTrending(formattedData) {
     // Set BgImg to be first Trending
     var bgImg = document.getElementById('bgImage');
     bgImg.style.backgroundImage = "url('" + formattedData[moviesSorted[0][0]].backdrop_path + "')";
-    bgImg.style.backgroundPosition = "Top";     // Forces poster to start from top of screen
-    bgImg.style.backgroundSize = "80%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
+    bgImg.style.backgroundPosition = "center 8%";     // Forces poster to start from top of screen
+    bgImg.style.backgroundSize = "100%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
 
     new SimpleBar(document.getElementById('scrollWrapper1')); //initalise the custom scrollbar
 
