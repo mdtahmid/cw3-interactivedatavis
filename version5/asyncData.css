@@ -79,6 +79,7 @@ p.movieTitle-Expanded {
     margin-left: 20px;
     /* Style */
     font-size: 30px;
+    white-space: pre-wrap;
 }
 /* Add border bottom that goes past margin */
 p.movieTitle-Expanded:after {
