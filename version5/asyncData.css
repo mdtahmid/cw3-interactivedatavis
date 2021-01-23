@@ -4,7 +4,7 @@ html, body {
     color: white;
 }
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Lato', sans-serif;
     font-weight: 400;
 }
 
@@ -98,7 +98,7 @@ span.movieYear {
     margin-left: 10px;
     /* Style */
     font-size: 16px;
-    font-weight: 100;
+    font-weight: 300;
 }
 
 /* Movie Rating */
@@ -106,19 +106,23 @@ div.movieRating-container {
     /* Layout */
     width: 60px;
     padding: 2px 3px;
-    display: inline-block;
+    /* display: inline-block; */
+    position: absolute;
+    right: 38px;
+    top: 30px;
     /* Style */
     text-align: center;
     border: 1px solid white;
     border-radius: 5px;
-    margin-left: 100px;
+    /* margin-left: 100px; */
+
 }
 p.movieRating-text {
     /* Layout */
     margin: 0;
     /* Style*/
     font-size: 20px;
-    font-weight: 200;
+    font-weight: 300;
 }
 
 /* Revenue chart dimensions*/
@@ -137,7 +141,7 @@ div#revenue-chart-container {
 
 .wrapperExpanded {
     /* Layout */
-    width: 62vw;
+    width: 54vw;
 }
 
 /* Movie Details in scroll */
@@ -160,7 +164,7 @@ div#revenue-chart-container {
     /* Layout */
     height: 100%;
     overflow-y: hidden;
-    width: 55vw;
+    width: 47vw;
     /* Effects */
     opacity: 1;             /* Render visible on click */
     /* transition: 1s;         /* Animation delay */
@@ -172,15 +176,29 @@ p.details-Overview {
     overflow-x: hidden;
 }
 
+
+
 /*NEW*/
 div.movieTitleWrapper {
   padding-top: 30px;
-      display: inline-block;
+      /* display: inline-block; */
 }
 div.movieHeader {
   padding-bottom: 30px;
   padding-left: 32px;
+  position: relative;
 }
+.movieDetails-container {
+  padding: 5px 30px;
+}
+p.movieGenres {
+
+  padding-top: 4px;
+font-weight: 300;
+font-size: 18px;
+letter-spacing: 1px;
+}
+
 .simplebar-scrollbar {
      background-color: #444;
      border-radius: 100px;
@@ -195,3 +213,16 @@ div.movieHeader {
  .simplebar-offset {
      top: -15px !important;
  }
+
+ @media only screen and (max-width: 600px) {
+   #bgImage {
+    background-size: 146% !important;
+    background-position: center center !important;
+    height: 350px;
+    background-repeat: repeat-y;
+   }
+   .wrapperExpanded {
+    width: 88vw;
+  }
+ }
+/*Mobile*/
