@@ -392,7 +392,7 @@ function addBudgetChart(formattedData, movie_id) {
     var percentageFilled = formattedData[movie_id].budget / formattedData[movie_id].revenue * 100;
 
     console.log("percentage:", percentageFilled);
-    
+
     budget_container.appendChild(customElement('p', 'budget-text', "Budget: "+formattedData[movie_id].budget));
     budget_container.appendChild(customElement('p', 'revenue-text', "Revenue: "+formattedData[movie_id].revenue));
 } // END: addBudgetChart

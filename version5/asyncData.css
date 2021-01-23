@@ -49,7 +49,7 @@ div.movieWrapper {
 div#scrollWrapper1 {
     overflow-x: auto;
     white-space: nowrap;
-    margin: -20px 0px;
+    /* margin: -20px 0px; */
 }
 p.card-title {
     font-size: 20px;
@@ -104,12 +104,14 @@ span.movieYear {
 /* Movie Rating */
 div.movieRating-container {
     /* Layout */
-    width: 40px;
+    width: 60px;
     padding: 2px 3px;
+    display: inline-block;
     /* Style */
     text-align: center;
     border: 1px solid white;
     border-radius: 5px;
+    margin-left: 100px;
 }
 p.movieRating-text {
     /* Layout */
@@ -146,20 +148,50 @@ div#revenue-chart-container {
     margin-left: 10px;
     /* Style */
     background-color: rgba(66,66,66,.3);
+    border-radius: 6px;
     /* Effects */
     opacity: 0;         /* Hid div until clicked on poster */
-    transition: 1s;
+    /* transition: 1s; */
+    overflow-y: hidden;
+    /* padding: 10px; */
 }
 /* Expanding movie details div */
 .detailsExpanded {
     /* Layout */
-    height: 100%;           /* Fit all content, or change to fixed value and cut overflow */
+    height: 100%;
+    overflow-y: hidden;
     width: 55vw;
     /* Effects */
     opacity: 1;             /* Render visible on click */
-    transition: 1s;         /* Animation delay */
+    /* transition: 1s;         /* Animation delay */
+
 }
 
 p.details-Overview {
     white-space: pre-wrap;
+    overflow-x: hidden;
 }
+
+/*NEW*/
+div.movieTitleWrapper {
+  padding-top: 30px;
+      display: inline-block;
+}
+div.movieHeader {
+  padding-bottom: 30px;
+  padding-left: 32px;
+}
+.simplebar-scrollbar {
+     background-color: #444;
+     border-radius: 100px;
+     margin-left: 2px;
+
+ }
+ .simplebar-track{
+     background-color: #bbb;
+     border-radius: 100px 100px 100px 100px;
+     margin: 0px 20px 0px 19px;
+ }
+ .simplebar-offset {
+     top: -15px !important;
+ }
