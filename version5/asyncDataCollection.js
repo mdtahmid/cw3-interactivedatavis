@@ -355,8 +355,7 @@ function addMovieDetails(formattedData, movie_id, index) {
         "Writers": getMembers('Writing', formattedData, movie_id),
         "Release Date": formatDate(formattedData[movie_id].release_date),
         "Country": formattedData[movie_id]['production_companies'][0].origin_country,
-        "Language": formattedData[movie_id]['spoken_languages'][0].english_name,
-        "Overview": formattedData[movie_id].overview
+        "Language": formattedData[movie_id]['spoken_languages'][0].english_name
     };
 
     // Add all Elements to Div as paragraphs
@@ -364,9 +363,15 @@ function addMovieDetails(formattedData, movie_id, index) {
         movieDetails.appendChild(customElement('p', "details-"+elements, elements + ": " + detailsElements[elements]));
     }
 
+    // Create div and content for Details Overview
+    let overview_container = customElement('div', 'overview-container', '');
+    let overview_text = customElement('p', 'details-Overview', formattedData[movie_id].overview);
+    overview_container.appendChild(overview_text);
+
     // Append contents to container
     details_container.appendChild(movieHeader);
     details_container.appendChild(movieDetails);
+    details_container.appendChild((overview_container))
 } // END: addMovieDetails
 
 
