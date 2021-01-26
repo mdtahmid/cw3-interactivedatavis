@@ -333,8 +333,11 @@ function addMovieDetails(formattedData, movie_id, index) {
     // Rating container & Text element
     var movieRating = document.createElement('div');
     movieRating.className = "movieRating-container";
+    var movieTextWrapper = document.createElement('div');
+    movieTextWrapper.className = "movieTextWrapper";
     var rating = customElement('p',"movieRating-text", formattedData[movie_id]['vote_average']);
-    movieRating.appendChild(rating);        // Append rating text to rating div
+    movieTextWrapper.appendChild(rating);
+    movieRating.appendChild(movieTextWrapper);        // Append rating text to rating div
 
     // Movie length
     var movieLength = customElement('p', 'movieLength', formatRunTime(formattedData[movie_id].runtime));
@@ -368,7 +371,7 @@ function addMovieDetails(formattedData, movie_id, index) {
 
     // Add all Elements to Div as paragraphs
     for (const elements in detailsElements) {
-        movieDetails.appendChild(customElement('p', "details-"+elements, elements + ": " + detailsElements[elements]));
+        movieDetails.appendChild(customElement('p', "movieDetails details-"+elements, "<span>" + elements + "</span><span>: " + detailsElements[elements] + "</span>"));
     }
 
     // Create div and content for Details Overview

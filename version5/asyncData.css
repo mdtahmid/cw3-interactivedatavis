@@ -90,7 +90,8 @@ p.movieTitle-Expanded:after {
     left: -10px;
     bottom: 0;
     /* Style */
-    background: white;
+    background: #ffffff;
+    opacity: 0.4;
 }
 /* Movie Year (within title) */
 span.movieYear {
@@ -99,30 +100,35 @@ span.movieYear {
     /* Style */
     font-size: 16px;
     font-weight: 300;
+    color: #ffffffa3;
 }
 
 /* Movie Rating */
 div.movieRating-container {
     /* Layout */
-    width: 60px;
-    padding: 2px 3px;
+    width: 68px;
+
     /* display: inline-block; */
     position: absolute;
     right: 38px;
     top: 30px;
     /* Style */
     text-align: center;
-    border: 1px solid white;
-    border-radius: 5px;
-    /* margin-left: 100px; */
 
+    /* margin-left: 100px; */
+}
+div.movieTextWrapper {
+      padding: 6px 3px;
+      border: 1px solid #ffffff5c;
+      border-radius: 5px;
+      margin-bottom: 6px;
 }
 p.movieRating-text {
     /* Layout */
     margin: 0;
     /* Style*/
-    font-size: 20px;
-    font-weight: 300;
+    font-size: 22px;
+    font-weight: 400;
 }
 
 /* Revenue chart dimensions*/
@@ -176,6 +182,8 @@ p.details-Overview {
     overflow-x: hidden;
     padding: 0px 22px;
     font-weight: 300;
+    color: #ccc;
+    font-size: 16px;
 }
 
 
@@ -220,7 +228,13 @@ p.movieGenres {
   font-size: 18px;
   letter-spacing: 1px;
 }
-
+p.movieDetails > span:nth-child(1) {
+  font-weight: 600;
+  font-size: 16px;
+}
+p.movieDetails > span:nth-child(2) {
+  color: #ccc;
+}
 .simplebar-scrollbar {
      background-color: #444;
      border-radius: 100px;
