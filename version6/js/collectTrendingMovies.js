@@ -50,6 +50,8 @@ async function getSpecificMovieDetails(movieData, current_movie_id) {
         // Add full poster and backdrop path
         movieData[current_movie_id]['poster_path'] = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/" + movieData[current_movie_id]['poster_path'];
         movieData[current_movie_id]['backdrop_path'] = "https://image.tmdb.org/t/p/original" + movieData[current_movie_id]['backdrop_path'];
+
+        addPosters(movieData);
     });
 
     return movieData

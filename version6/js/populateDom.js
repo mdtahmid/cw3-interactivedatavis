@@ -51,14 +51,8 @@ function addTrending(formattedData) {
         movieWrapper.appendChild(detailElement);
     });
 
-    // Set BgImg to be first Trending
-    let bgImg = document.getElementById('bgImage');
-    bgImg.style.backgroundImage = "url('" + formattedData[moviesSorted[0][0]].backdrop_path + "')";
-    bgImg.style.backgroundPosition = "center 8%";     // Forces poster to start from top of screen
-    bgImg.style.backgroundSize = "100%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
-    // bgImg.style.backgroundRepeat = "repeat-x"; // repeats background horizontally
-
-    new SimpleBar(document.getElementById('scrollWrapper1')); //initalise the custom scrollbar
+    // Initialise custom scrollbar
+    new SimpleBar(document.getElementById('scrollWrapper1'));
 
 } // END: addTrending
 
@@ -202,4 +196,13 @@ function addFilmLocations(formattedData, movie_id) {
         console.log("Country:", country);
         location_container.appendChild(customElement('p', 'location', "Location: " + country));
     }
+}
+
+
+function addPosters(formattedData) {
+    // Set BgImg to be first Trending Movie
+    let bgImg = document.getElementById('bgImage');
+    bgImg.style.backgroundImage = "url('" + formattedData[299534].backdrop_path + "')";
+    bgImg.style.backgroundPosition = "center 8%";     // Forces poster to start from top of screen
+    bgImg.style.backgroundSize = "100%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
 }
