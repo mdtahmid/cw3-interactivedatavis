@@ -105,9 +105,10 @@ function getMembers(role, formattedData, movie_id) {
 // DOM ELEMENTS
 
 // Create elements with a given class name and inner text
-function customElement(type, className, text) {
+function customElement(type, className, text, id=null) {
     let newElement = document.createElement(type);
     newElement.className = className;
+    if (id) { newElement.id = id}
     newElement.innerHTML = text;
     return newElement;
 }
