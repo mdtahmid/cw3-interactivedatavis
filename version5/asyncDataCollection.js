@@ -273,8 +273,6 @@ function addTrending(formattedData) {
 
     new SimpleBar(document.getElementById('scrollWrapper1')); //initalise the custom scrollbar
 
-
-
 } // END: addTrending
 
 
