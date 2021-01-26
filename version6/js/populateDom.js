@@ -12,13 +12,7 @@ function addAllDomElements(formattedData) {
     addTrending(formattedData);                         // Add trending posters to top of Dom
     expandMovieDetails(formattedData, default_id, default_index);   // Expand 1st Movie Details
     addMovieDetails(formattedData, default_id, default_index);         // Add movie details
-
-    // Add Movie Awards
-    let domMovieDetails = {};
-    for (const value in formattedData[default_id].awards) {
-        domMovieDetails['award-'+value] = value + ': ' + formattedData[default_id]['awards'][value];
-    }
-    addDomElements('movieAwards', domMovieDetails, 'Awards & Nominations');
+    addAwardsDetails(formattedData, default_id);
 
     // Add Movie Budget/Revenue
     let domBudgetDetails = { "budget-text": "Budget: " + formattedData[default_id].budget, "revenue-text": "Revenue: " + formattedData[default_id].revenue };
@@ -83,11 +77,7 @@ function updateContents(movieId, index) {
     addMovieDetails(finalData, movieId, index);
 
     // Update Awards
-    let domMovieDetails = {};
-    for (const value in finalData[movieId].awards) {
-        domMovieDetails['award-'+value] = value + ': ' + finalData[movieId]['awards'][value];
-    }
-    addDomElements('movieAwards', domMovieDetails, 'Awards & Nominations');
+    addAwardsDetails(finalData, movieId);
 
     // Add Movie Budget/Revenue
     let domBudgetDetails = { "budget-text": "Budget: " + finalData[movieId].budget, "revenue-text": "Revenue: " + finalData[movieId].revenue };
@@ -184,6 +174,42 @@ function addMovieDetails(formattedData, movie_id, index) {
     readMoreText(); //run read more function
 } // END: addMovieDetails
 
+function addAwardsDetails(formattedData, movieId) {
+    let awards_container = getContainerWithTitle('movieAwards', 'Awards & Nominations');
+    let award_content_container = customElement('div', '', '', 'award-content');
+
+    for (const element in formattedData[movieId].awards) {
+        let el_container = document.createElement('div');
+        el_container.className = 'award-container';
+
+        let value_icon_container = document.createElement('div');
+        value_icon_container.className = 'icon-value-container';
+
+        let value = customElement('p', 'award-value', formattedData[movieId]['awards'][element].value);
+        let icon = customElement('img', 'award-img', '');
+        icon.src = formattedData[movieId]['awards'][element].src;
+
+        value_icon_container.appendChild(value);
+        value_icon_container.appendChild(icon);
+
+        let name = customElement('p', 'award-name', element);
+
+        el_container.appendChild(value_icon_container);
+        el_container.appendChild(name);
+
+        award_content_container.appendChild(el_container);
+    }
+    awards_container.appendChild(award_content_container);
+
+}
+
+// Get & clear DOM container, add title
+function getContainerWithTitle(containerId, containerTitle) {
+    let element_container = document.getElementById(containerId);
+    element_container.textContent = '';
+    element_container.appendChild(customElement('h2', 'viz-title', containerTitle));
+    return element_container
+}
 
 // Abstract function to add an object of data into a given container, specifying a title
 function addDomElements(container_id, elements, element_title) {
