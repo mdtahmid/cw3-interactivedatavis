@@ -1,6 +1,6 @@
 /* DOM main styling */
 html, body {
-    background-color: #121212;
+    background-color: rgb(37,37,37);
     color: white;
 }
 body {
@@ -298,4 +298,15 @@ p.movieDetails > span:nth-child(2) {
   div.detailsExpanded {
     width: 47vw;
   }
+}
+
+/* Visualisations */
+h2.viz-title {
+    /* style */
+    font-size: 20px;
+    font-weight: 300;
+
+    /* Layout */
+    border-bottom: 1px solid #ffffff;
+    margin: 10px;
 }

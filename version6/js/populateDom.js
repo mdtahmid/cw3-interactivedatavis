@@ -163,6 +163,8 @@ function addMovieAwards(formattedData, movie_id) {
     let awards_container = document.getElementById('movieAwards');
     awards_container.textContent = '';
 
+    awards_container.appendChild(customElement('h2', 'viz-title', 'Awards & Nominations'));
+
     let awards = formattedData[movie_id].awards;
 
     for (const elements in awards) {
@@ -176,6 +178,8 @@ function addBudgetChart(formattedData, movie_id) {
     let budget_container = document.getElementById('budgetRevenue');
     budget_container.textContent = '';
 
+    budget_container.appendChild(customElement('h2', 'viz-title', 'Budget vs Box Office'));
+
     let percentageFilled = formattedData[movie_id].budget / formattedData[movie_id].revenue * 100;
 
     console.log("percentage:", percentageFilled);
@@ -188,6 +192,8 @@ function addBudgetChart(formattedData, movie_id) {
 function addFilmLocations(formattedData, movie_id) {
     let location_container = document.getElementById('filmLocations');
     location_container.textContent = '';
+
+    location_container.appendChild(customElement('h2', 'viz-title', 'Film Shoot Locations'));
 
     let film_location = formattedData[movie_id].production_countries;
 
@@ -205,4 +211,6 @@ function addPosters(formattedData) {
     bgImg.style.backgroundImage = "url('" + formattedData[299534].backdrop_path + "')";
     bgImg.style.backgroundPosition = "center 8%";     // Forces poster to start from top of screen
     bgImg.style.backgroundSize = "100%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
+
+    // addTrending(formattedData);
 }
