@@ -217,6 +217,9 @@ function awardsDetails(data, movieData, item) {
     }
 } // END: awardsDetails
 
+// *******************
+// ADD ELEMENTS TO DOM
+// *******************
 
 // Add all elements to dom
 function addDomElements(formattedData) {
