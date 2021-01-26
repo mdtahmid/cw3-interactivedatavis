@@ -60,9 +60,8 @@ p.card-title {
 #bgImage {
     background-repeat: no-repeat;
     background-position: center;
-    height: 500px;
+    height: 450px;
     width: auto;
-
     -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
     mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
 }
@@ -175,6 +174,8 @@ div#revenue-chart-container {
 p.details-Overview {
     white-space: pre-wrap;
     overflow-x: hidden;
+    padding: 0px 22px;
+    font-weight: 300;
 }
 
 
@@ -189,15 +190,35 @@ div.movieHeader {
   padding-left: 32px;
   position: relative;
 }
-.movieDetails-container {
-  padding: 5px 30px;
+div.overview-container {
+  display: inline-block;
+      width: 60%;
+}
+div.movieDetails-container {
+  /* padding: 0px 30px; */
+    display: inline-block;
+    vertical-align: top;
+        width: 40%;
+        white-space: pre-wrap;
+}
+div.movieInfo-wrapper {
+  padding: 20px 40px 34px 40px;
+}
+p.overview-heading, p.movie_details_heading {
+    font-size: 22px;
+    font-weight: 600;
+}
+p.overview-heading {
+    padding: 0px 22px 22px 22px;
+}
+p.movie_details_heading {
+  padding: 0px 0px 22px 0px;
 }
 p.movieGenres {
-
   padding-top: 4px;
-font-weight: 300;
-font-size: 18px;
-letter-spacing: 1px;
+  font-weight: 300;
+  font-size: 18px;
+  letter-spacing: 1px;
 }
 
 .simplebar-scrollbar {

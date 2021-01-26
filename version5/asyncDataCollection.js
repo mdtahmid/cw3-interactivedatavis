@@ -268,6 +268,7 @@ function addTrending(formattedData) {
     bgImg.style.backgroundImage = "url('" + formattedData[moviesSorted[0][0]].backdrop_path + "')";
     bgImg.style.backgroundPosition = "center 8%";     // Forces poster to start from top of screen
     bgImg.style.backgroundSize = "100%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
+    // bgImg.style.backgroundRepeat = "repeat-x"; // repeats background horizontally
 
     new SimpleBar(document.getElementById('scrollWrapper1')); //initalise the custom scrollbar
 
@@ -349,6 +350,10 @@ function addMovieDetails(formattedData, movie_id, index) {
     var movieDetails = document.createElement('div');
     movieDetails.className = "movieDetails-container";
 
+    // Details Container
+    var movieInfoWrapper = document.createElement('div');
+    movieInfoWrapper.className = "movieInfo-wrapper";
+
     // Dict of all elements and values for Details section
     var detailsElements = {
         "Directors": getMembers('Directing', formattedData, movie_id),
@@ -358,6 +363,9 @@ function addMovieDetails(formattedData, movie_id, index) {
         "Language": formattedData[movie_id]['spoken_languages'][0].english_name
     };
 
+    let movie_details_heading = customElement('p', 'movie_details_heading', 'Details');
+    movieDetails.appendChild(movie_details_heading);
+
     // Add all Elements to Div as paragraphs
     for (const elements in detailsElements) {
         movieDetails.appendChild(customElement('p', "details-"+elements, elements + ": " + detailsElements[elements]));
@@ -365,13 +373,16 @@ function addMovieDetails(formattedData, movie_id, index) {
 
     // Create div and content for Details Overview
     let overview_container = customElement('div', 'overview-container', '');
+    let overview_heading = customElement('p', 'overview-heading', 'Overview');
     let overview_text = customElement('p', 'details-Overview', formattedData[movie_id].overview);
+    overview_container.appendChild(overview_heading);
     overview_container.appendChild(overview_text);
 
     // Append contents to container
     details_container.appendChild(movieHeader);
-    details_container.appendChild(movieDetails);
-    details_container.appendChild((overview_container))
+    details_container.appendChild(movieInfoWrapper);
+    movieInfoWrapper.appendChild(movieDetails);
+    movieInfoWrapper.appendChild((overview_container))
 } // END: addMovieDetails
 
 
