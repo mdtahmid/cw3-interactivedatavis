@@ -147,7 +147,7 @@ function addMovieDetails(formattedData, movie_id, index) {
     let movieDetails = document.createElement('div');
     movieDetails.className = "movieDetails-container";
 
-    // Details Container
+    // Info Container
     let movieInfoWrapper = document.createElement('div');
     movieInfoWrapper.className = "movieInfo-wrapper";
 
@@ -179,18 +179,13 @@ function addMovieDetails(formattedData, movie_id, index) {
     details_container.appendChild(movieHeader);
     details_container.appendChild(movieInfoWrapper);
     movieInfoWrapper.appendChild(movieDetails);
-    movieInfoWrapper.appendChild((overview_container))
+    movieInfoWrapper.appendChild(overview_container);
 
     readMoreText(); //run read more function
 } // END: addMovieDetails
 
 
-let testElements = {
-    'budget-text': 'Budget: 356000',
-    'revenue-text': 'Revenue: 279880000'
-};
-
-
+// Abstract function to add an object of data into a given container, specifying a title
 function addDomElements(container_id, elements, element_title) {
     // Get and clear container
     let element_container = document.getElementById(container_id);
