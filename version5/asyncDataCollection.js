@@ -14,8 +14,8 @@
 
 
 // Global variables
-var verbose = 1;                        // Levels of printing to console. 0: Nothing, 1: Main lists, 2: Every loop
-var finalData = {};                     // Store final data retrived from all API calls
+let verbose = 1;                        // Levels of printing to console. 0: Nothing, 1: Main lists, 2: Every loop
+let finalData = {};                     // Store final data retrived from all API calls
 
 
 
@@ -23,7 +23,7 @@ var finalData = {};                     // Store final data retrived from all AP
 // MAIN ASYNC FUNCTION
 // *******************
 // TMDb Top Movies by Revenue API URL
-var movie_ranking_url = "https://api.themoviedb.org/3/discover/movie?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US&sort_by=revenue.desc&include_video=false&page=1";
+let movie_ranking_url = "https://api.themoviedb.org/3/discover/movie?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US&sort_by=revenue.desc&include_video=false&page=1";
 
 // Make 1st TMDb API call to retrieve Trending movies
 apiCall(movie_ranking_url)
@@ -51,11 +51,11 @@ async function movieData(data) {
 // Get Movie id & name to populate movieData
 async function getMovieDetails_Basic(data) {
     // Store movieData details
-    var movieData = {};
+    let movieData = {};
 
     // Loop through results, populate to main dict
-    for (var i = 0; i < data['results'].length - 1; i++) {
-        var movieID = data['results'][i].id;								// Get Movie ID
+    for (let i = 0; i < data['results'].length - 1; i++) {
+        let movieID = data['results'][i].id;								// Get Movie ID
         movieData[movieID] = {};											// Initiate Dict w/ movie ID
         movieData[movieID]['name'] = data['results'][i].original_title;	    // Populate w/ movie Name
     } // END: for loop
@@ -66,10 +66,10 @@ async function getMovieDetails_Basic(data) {
 // Get Requested Data for each movie
 async function getMovieDetails_Requested(movieData) {
     // Get ids of all movies
-    var movie_id = Object.keys(movieData);
+    let movie_id = Object.keys(movieData);
 
     // Loop through movie_ids and retrieve requested data
-    for (var i=0; i<movie_id.length; i++) {
+    for (let i=0; i<movie_id.length; i++) {
         // Ensure this runs before proceeding
         await getMovieDetails(movieData, movie_id[i]);
     }
@@ -80,17 +80,17 @@ async function getMovieDetails_Requested(movieData) {
 // Make API call for each movie, then process data
 async function getMovieDetails(movieData, current_movie_id) {
     // TMDb Movie Details API URL
-    var movie_detail_url = "https://api.themoviedb.org/3/movie/" + current_movie_id + "?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
+    let movie_detail_url = "https://api.themoviedb.org/3/movie/" + current_movie_id + "?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
 
     // Make TMBd API call, then collect details
     await $.getJSON(movie_detail_url, function (data) {
         if (verbose === 2) { console.log("movieDetails-data", movieData); }
 
         // Movie Details we are interested in
-        var requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'backdrop_path', 'poster_path', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries', 'production_companies', 'spoken_languages', 'imdb_id'];
+        let requestedMovieDetails = ['revenue', 'budget', 'overview', 'genres', 'belongs_to_collection', 'backdrop_path', 'poster_path', 'popularity','release_date', 'runtime', 'status', 'vote_average', 'vote_count', 'production_countries', 'production_companies', 'spoken_languages', 'imdb_id'];
 
         // Loop through requested Data
-        for (var i = 0; i<requestedMovieDetails.length; i++) {
+        for (let i = 0; i<requestedMovieDetails.length; i++) {
             movieData[current_movie_id][requestedMovieDetails[i]] = data[requestedMovieDetails[i]];
         }
         // Add full poster and backdrop path
@@ -107,7 +107,7 @@ function sortMoviesByRevenue(movieData) {
     if (verbose === 2) { console.log("Stringified movieData-Titanic:", JSON.stringify(movieData[597])); }
 
     // Get items Array
-    var data_items = Object.keys(movieData).map(function(key) {
+    let data_items = Object.keys(movieData).map(function(key) {
         return [key, movieData[key]['revenue'], movieData[key]['name']]
     });
 
@@ -116,7 +116,7 @@ function sortMoviesByRevenue(movieData) {
 
 
     // Add rank to movie entry
-    for (var i=0; i<data_items.length-1; i++) {
+    for (let i=0; i<data_items.length-1; i++) {
         movieData[data_items[i][0]]['rank'] = i+1;
     }
 
@@ -130,12 +130,12 @@ function sortMoviesByRevenue(movieData) {
 // Retrieve Cast & Crew details from credits API call
 async function creditsData(movieData) {
     // Store all movie IDs
-    var movie_id = Object.keys(movieData);
+    let movie_id = Object.keys(movieData);
 
     // Loop through all movie ids
-    for (var i=0; i<movie_id.length; i++) {
+    for (let i=0; i<movie_id.length; i++) {
         // TMDb Movie Credits API URL
-        var moive_credits_url = "https://api.themoviedb.org/3/movie/" + movie_id[i] + "/credits?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
+        let moive_credits_url = "https://api.themoviedb.org/3/movie/" + movie_id[i] + "/credits?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
 
         // Make TMDb API call, then store general cast/crew details, then store cast/crew statistics
         await apiCall(moive_credits_url)
@@ -176,12 +176,12 @@ function getGenderCount(movieData, list, position, item) {
 
 // Get awards from each movie by running a API call to OMDb on each movie in the movieData dict
 async function getAwards(movieData) {
-    var movieID = Object.keys(movieData);   // Get movie Ids of all movies in dict
+    let movieID = Object.keys(movieData);   // Get movie Ids of all movies in dict
 
     // Loop through all movies by ID
-    for (var i=0; i<movieID.length; i++) {
+    for (let i=0; i<movieID.length; i++) {
         // OMDb API URL for each movie
-        var awards_omdb_url = 'https://www.omdbapi.com/?apikey=874a2978&i=' + movieData[movieID[i]].imdb_id;
+        let awards_omdb_url = 'https://www.omdbapi.com/?apikey=874a2978&i=' + movieData[movieID[i]].imdb_id;
 
         // Make API call, then and retrieve results
         await apiCall(awards_omdb_url)
@@ -199,7 +199,7 @@ async function getAwards(movieData) {
 // Clean OMDb API response and populate main dict
 function awardsDetails(data, movieData, item) {
     // Remove words from OMDb response, keep only numbres as an array
-    var awardNumbers = data.Awards.match(/\d+/g).map(Number);
+    let awardNumbers = data.Awards.match(/\d+/g).map(Number);
 
     // Create a new entry in the main movieData dict for awards
     movieData[item]['awards'] = {};
@@ -220,14 +220,15 @@ function awardsDetails(data, movieData, item) {
 
 // Add all elements to dom
 function addDomElements(formattedData) {
-    var default_id = '299534';                          // Default is currently #1 movie Avengers:Endgame
-    var default_index = 0;
+    let default_id = '299534';                          // Default is currently #1 movie Avengers:Endgame
+    let default_index = 0;
 
     addTrending(formattedData);                         // Add trending posters to top of Dom
     expandMovieDetails(formattedData, default_id, default_index);   // Expand 1st Movie Details
     addMovieDetails(formattedData, default_id, default_index);         // Add movie details
     addMovieAwards(formattedData, default_id);          // Add Movie Awards
     addBudgetChart(formattedData, default_id);          // Add movie budget vs revenue
+    addFilmLocations(formattedData, default_id);
 
     //addCharts(formattedData);                     // Add charts to corresponding sections
 } // END: addDomElements
@@ -235,26 +236,26 @@ function addDomElements(formattedData) {
 
 // Add trending posters to Dom
 function addTrending(formattedData) {
-    var moviesSorted = sortMoviesByRevenue(formattedData);
+    let moviesSorted = sortMoviesByRevenue(formattedData);
     // Loop through all movies
     moviesSorted.forEach((movieData, index) => {
         // Create wrapper div container
-        var movieWrapper = document.createElement('div');
+        let movieWrapper = document.createElement('div');
         movieWrapper.className = 'movieWrapper';
 
         // Create movie title [currently not used. Add as child to movieWrapper if needed]
-        var title = document.createElement('p');
+        let title = document.createElement('p');
         title.className = 'movieTitle';
         title.innerHTML = formattedData[movieData[0]].name;
 
         // Create poster img element
-        var moviePoster = document.createElement('img');
+        let moviePoster = document.createElement('img');
         moviePoster.className = 'movieImage';
         moviePoster.id = movieData[0];
         moviePoster.setAttribute('onclick', 'updateContents(' + movieData[0] + ',' + index + ')');
         moviePoster.src = formattedData[movieData[0]].poster_path;
 
-        var detailElement = document.createElement('div');
+        let detailElement = document.createElement('div');
         detailElement.className = 'inline-movie-details';
         detailElement.id = 'movieDetail_' + index;
 
@@ -265,7 +266,7 @@ function addTrending(formattedData) {
     });
 
     // Set BgImg to be first Trending
-    var bgImg = document.getElementById('bgImage');
+    let bgImg = document.getElementById('bgImage');
     bgImg.style.backgroundImage = "url('" + formattedData[moviesSorted[0][0]].backdrop_path + "')";
     bgImg.style.backgroundPosition = "center 8%";     // Forces poster to start from top of screen
     bgImg.style.backgroundSize = "100%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
@@ -288,6 +289,8 @@ function updateContents(movieId, index) {
     addMovieAwards(finalData, movieId);
     // Update revenue/budget
     addBudgetChart(finalData, movieId);
+    // Update film locations
+    addFilmLocations(finalData, movieId);
 } // END: updateBgImg
 
 
@@ -302,7 +305,7 @@ function expandMovieDetails(formattedData, movieId, index) {
 
 // Toggle a class name for a given set of elements retrieved by class name (Currently: define target Index for class)
 function toggleClassName(targetElementClassName, toggledClassName, elementIndex) {
-    var domElements = document.getElementsByClassName(targetElementClassName);
+    let domElements = document.getElementsByClassName(targetElementClassName);
     Array.from(domElements).forEach(element => element.classList.remove(toggledClassName));
     domElements[elementIndex].className += " "+toggledClassName;
 } // END removeOthersAddClass
@@ -311,37 +314,37 @@ function toggleClassName(targetElementClassName, toggledClassName, elementIndex)
 // Add Movie Details to DOM
 function addMovieDetails(formattedData, movie_id, index) {
     // Get movie details container
-    var details_container = document.getElementById('movieDetail_'+index);
+    let details_container = document.getElementById('movieDetail_'+index);
     details_container.textContent = '';         // Remove content before adding new elements
 
     // Header for movie main details
-    var movieHeader = document.createElement('div');
+    let movieHeader = document.createElement('div');
     movieHeader.className = "movieHeader";
 
     //Wrapper for title, release data and genre types
-    var movieTitleWrapper = document.createElement('div');
+    let movieTitleWrapper = document.createElement('div');
     movieTitleWrapper.className = "movieTitleWrapper";
 
     // Movie Title & Year Elements
-    var movieTitle = customElement('p', 'movieTitle-Expanded', formattedData[movie_id].name);
-    var movieYear = customElement('span', 'movieYear', formattedData[movie_id]['release_date'].split('-')[0]);
+    let movieTitle = customElement('p', 'movieTitle-Expanded', formattedData[movie_id].name);
+    let movieYear = customElement('span', 'movieYear', formattedData[movie_id]['release_date'].split('-')[0]);
     // Add Movie Year span within Movie Title
     movieTitle.appendChild(movieYear);
 
     // Movie Genres
-    var movieGenres = customElement('p', 'movieGenres', formattedData[movie_id].genres.map((key) => key.name ).join(', '));
+    let movieGenres = customElement('p', 'movieGenres', formattedData[movie_id].genres.map((key) => key.name ).join(', '));
 
     // Rating container & Text element
-    var movieRating = document.createElement('div');
+    let movieRating = document.createElement('div');
     movieRating.className = "movieRating-container";
-    var movieTextWrapper = document.createElement('div');
+    let movieTextWrapper = document.createElement('div');
     movieTextWrapper.className = "movieTextWrapper";
-    var rating = customElement('p',"movieRating-text", formattedData[movie_id]['vote_average']);
+    let rating = customElement('p',"movieRating-text", formattedData[movie_id]['vote_average']);
     movieTextWrapper.appendChild(rating);
     movieRating.appendChild(movieTextWrapper);        // Append rating text to rating div
 
     // Movie length
-    var movieLength = customElement('p', 'movieLength', formatRunTime(formattedData[movie_id].runtime));
+    let movieLength = customElement('p', 'movieLength', formatRunTime(formattedData[movie_id].runtime));
 
     // Append elements to Movie Header
     movieTitleWrapper.appendChild(movieTitle);
@@ -351,15 +354,15 @@ function addMovieDetails(formattedData, movie_id, index) {
     movieRating.appendChild(movieLength);
 
     // Details Container
-    var movieDetails = document.createElement('div');
+    let movieDetails = document.createElement('div');
     movieDetails.className = "movieDetails-container";
 
     // Details Container
-    var movieInfoWrapper = document.createElement('div');
+    let movieInfoWrapper = document.createElement('div');
     movieInfoWrapper.className = "movieInfo-wrapper";
 
     // Dict of all elements and values for Details section
-    var detailsElements = {
+    let detailsElements = {
         "Directors": getMembers('Directing', formattedData, movie_id),
         "Writers": getMembers('Writing', formattedData, movie_id),
         "Release Date": formatDate(formattedData[movie_id].release_date),
@@ -395,10 +398,10 @@ function addMovieDetails(formattedData, movie_id, index) {
 // Add Movie AwardsDetails to DOM
 function addMovieAwards(formattedData, movie_id) {
     // Get movie Awards container
-    var awards_container = document.getElementById('movieAwards');
+    let awards_container = document.getElementById('movieAwards');
     awards_container.textContent = '';
 
-    var awards = formattedData[movie_id].awards;
+    let awards = formattedData[movie_id].awards;
 
     for (const elements in awards) {
         awards_container.appendChild(customElement('p', "award-"+elements, elements + ": " + awards[elements]));
@@ -408,16 +411,30 @@ function addMovieAwards(formattedData, movie_id) {
 
 // Add Budget vs Revenue to DOM
 function addBudgetChart(formattedData, movie_id) {
-    var budget_container = document.getElementById('budgetRevenue');
+    let budget_container = document.getElementById('budgetRevenue');
     budget_container.textContent = '';
 
-    var percentageFilled = formattedData[movie_id].budget / formattedData[movie_id].revenue * 100;
+    let percentageFilled = formattedData[movie_id].budget / formattedData[movie_id].revenue * 100;
 
     console.log("percentage:", percentageFilled);
 
     budget_container.appendChild(customElement('p', 'budget-text', "Budget: "+formattedData[movie_id].budget));
     budget_container.appendChild(customElement('p', 'revenue-text', "Revenue: "+formattedData[movie_id].revenue));
 } // END: addBudgetChart
+
+
+function addFilmLocations(formattedData, movie_id) {
+    let location_container = document.getElementById('filmLocations');
+    location_container.textContent = '';
+
+    let film_location = formattedData[movie_id].production_countries;
+
+    for (let i=0; i<Object.keys(film_location).length; i++) {
+        let country = film_location[Object.keys(film_location)[i]].name;
+        console.log("Country:", country);
+        location_container.appendChild(customElement('p', 'location', "Location: " + country));
+    }
+}
 
 // ************
 // BUILD CHARTS
@@ -430,17 +447,17 @@ function addCharts(formatedData) {
 
 // Build Revenu chart using Fusion Charts
 function buildRevenueChart(formatedData) {
-    var sortedArray = sortMoviesByRevenue(formatedData);
+    let sortedArray = sortMoviesByRevenue(formatedData);
 
     // Pull name & revenue from movieData
-    var data = sortedArray.map(function(key) {
+    let data = sortedArray.map(function(key) {
         return {
             "label": formatedData[key[0]]['name'],
             "value": formatedData[key[0]]['revenue']
         }
     });
 
-    var highestGrossingChart = new FusionCharts({
+    let highestGrossingChart = new FusionCharts({
         type: 'bar2d',
         renderAt: 'revenue-chart-container',
         width: '100%',
@@ -465,11 +482,11 @@ function buildGenderChart(formatedData) {
     // When DOM loaded
     $(document).ready(function() {
         // Define data options
-        var gender_data_options = {
+        let gender_data_options = {
             backgroundColor: ['rgba(153,207,255,1)', 'rgba(51,160,255,1)', 'rgba(209,233,255,1)'],
         };
         // Define chart options
-        var gender_chart_options = basicChartOptions('Cast & Crew Gender Divide', true);
+        let gender_chart_options = basicChartOptions('Cast & Crew Gender Divide', true);
         // Build chart
 // NOTE: change movie id here!!
         buildChart('#gender-split-chart', formatedData[19995].cast_crew_stats.overall, 'doughnut', gender_data_options, gender_chart_options);
@@ -517,11 +534,11 @@ function combineLists(arrayLists) {
     if (arrayLists.length === 0) { return null}         // If array is empty, return null
     if (arrayLists.length < 2) { return arrayLists[0] } // If only 1 list in array, return list
 
-    var newList = arrayLists[0];                        // Initiate newList w/ 1st list
-    var offset = arrayLists[0].length-1;                // Create offset to be length of 1st list
+    let newList = arrayLists[0];                        // Initiate newList w/ 1st list
+    let offset = arrayLists[0].length-1;                // Create offset to be length of 1st list
 
-    for (var i=1; i<arrayLists.length; i++) {           // Loop through all lists (after 1st)
-        for (var j=0; j<arrayLists[i].length-1; j++) {      // Loop through values in lists
+    for (let i=1; i<arrayLists.length; i++) {           // Loop through all lists (after 1st)
+        for (let j=0; j<arrayLists[i].length-1; j++) {      // Loop through values in lists
             newList[j+offset] = arrayLists[i];              // Append list w/ offset
         }
         offset += arrayLists[i].length-1;               // Update offset
@@ -531,9 +548,9 @@ function combineLists(arrayLists) {
 
 // Get count of gender in a dict
 function getCount(list, gender) {
-    var count = 0;                                          // Var to store gender count
+    let count = 0;                                          // let to store gender count
     if (list) {                                             // If list exists, loop through entries
-        for (var i=0; i<list.length-1; i++) {
+        for (let i=0; i<list.length-1; i++) {
             if (list[i]['gender'] === gender) { count++; }     // Increase count if list gender is gender passed in arg
         }
     }
@@ -542,9 +559,9 @@ function getCount(list, gender) {
 
 // Get all members of a given cast/crew department and return as a string
 function getMembers(role, formattedData, movie_id) {
-    var directors = "";
+    let directors = "";
     // Loop through all directors
-    for (var i=0; i<formattedData[movie_id]['cast_crew'].length-1;i++) {
+    for (let i=0; i<formattedData[movie_id]['cast_crew'].length-1;i++) {
         if (formattedData[movie_id]['cast_crew'][i].known_for_department === role) {
             directors += formattedData[movie_id]['cast_crew'][i].name + ", ";
         }
@@ -554,7 +571,7 @@ function getMembers(role, formattedData, movie_id) {
 
 // Create elements with a given class name and inner text
 function customElement(type, className, text) {
-    var newElement = document.createElement(type);
+    let newElement = document.createElement(type);
     newElement.className = className;
     newElement.innerHTML = text;
     return newElement;
@@ -562,9 +579,9 @@ function customElement(type, className, text) {
 
 // Format TMDb date format to: 25th December 2020
 function formatDate(date) {
-    var splitDate = date.split('-');                                    // Split date at char
-    var getOrdinal = n => [,'st','nd','rd'][n/10%10^1&&n%10]||'th';     // returns st,nd,rd or th based on last value
-    var ordinal = getOrdinal(date);                                     // Get ordinal
+    let splitDate = date.split('-');                                    // Split date at char
+    let getOrdinal = n => [,'st','nd','rd'][n/10%10^1&&n%10]||'th';     // returns st,nd,rd or th based on last value
+    let ordinal = getOrdinal(date);                                     // Get ordinal
     const dateType = new Date(splitDate[2], splitDate[1], splitDate[0]);// Create datatype
     const month = dateType.toLocaleString('default', { month: 'long' });// retrieve mounth string
     // Return concact of date
@@ -573,10 +590,10 @@ function formatDate(date) {
 
 // Change minutes to h and min string
 function formatRunTime(time) {
-    var hours = (time / 60);                // Get hours (in float)
-    var rhours = Math.floor(hours);         // Only keep int
-    var minutes = (hours - rhours) * 60;    // Get minutes left over
-    var rminutes = Math.round(minutes);     // Round up to int
+    let hours = (time / 60);                // Get hours (in float)
+    let rhours = Math.floor(hours);         // Only keep int
+    let minutes = (hours - rhours) * 60;    // Get minutes left over
+    let rminutes = Math.round(minutes);     // Round up to int
     return rhours + "h " + rminutes + "min";
 }
 // ***************
