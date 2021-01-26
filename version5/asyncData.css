@@ -263,7 +263,7 @@ p.movieDetails > span:nth-child(2) {
    background-repeat: repeat-y;
   }
   .wrapperExpanded {
-   width: 88vw;
+   width: 78vw;
  }
  div.movieDetails-container, div.overview-container {
    display: block;
@@ -294,5 +294,8 @@ p.movieDetails > span:nth-child(2) {
   }
   div.movieInfo-wrapper{
     padding: 20px 18px 34px 18px;
+  }
+  div.detailsExpanded {
+    width: 47vw;
   }
 }
