@@ -1,0 +1,25 @@
+/* RESET all CSS across all browsers */
+* {
+	padding:0;
+	margin:0;
+	border:0;
+	font-size:14px;
+}
+ol,ul {
+	list-style:none;
+	margin: 0;
+	padding: 0;
+}
+a {
+	outline:0;
+	margin:0;
+	padding:0;
+	border:0;
+	font-size: 100%;		/* Property overwritten in '*' class */
+	font: inherit;			/* Property overwritten in '*' class */
+	vertical-align:baseline;
+	text-decoration:none!important;
+}
+textarea:focus, input:focus, button:focus{
+	outline: none;
+}

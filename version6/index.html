@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async Data</title>
+    <!-- Reset all styles across all different browsers -->
+    <link rel="stylesheet" href="css/reset.css">
+
+    <!-- Test font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+
+    <!-- JQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
+
+    <!-- Readmore Library -->
+    <script src="js/readMoreJS.min.js"></script>
+
+    <!--  Simplebar CDN  -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/5.3.0/simplebar.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/5.3.0/simplebar.css">
+
+    <!-- FusionChart JS -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+    <!-- FusionCharts Themes -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+
+    <!--  Chart.js  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+
+    <!--  Custom Script  -->
+    <script src="js/collectTrendingMovies.js"></script>
+    <script src="js/collectCreditsData.js"></script>
+    <script src="js/collectAwardsData.js"></script>
+    <script src="js/populateDom.js"></script>
+    <script src="js/helperFunctions.js"></script>
+
+    <!--  Main Script file  -->
+    <script src="js/main.js"></script>
+
+
+    <!--  Google Fonts Stylesheet  -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,700,700i,900" rel="stylesheet">
+    <!--  Custom Stylesheet  -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="gridWrapper">
+        <!--  Trending Movies Card  -->
+        <div class="bgImage" id="bgImage"></div>
+        <div class="" id="item1" style="">
+            <!--  Holder for top 10 trending  -->
+            <div id="scrollWrapper1"></div>
+        </div>
+    </div>
+
+<!--  Potentially create these with JS?  -->
+
+    <!--  Movie Data section  -->
+    <div id="movieDetails"></div>
+    <!--  Movie Awards section  -->
+    <div id="movieAwards"></div>
+    <!--  Movie Budget vs Revenue section  -->
+    <div id="budgetRevenue"></div>
+    <!--  Movie Film Location section  -->
+    <div id="filmLocations"></div>
+
+
+    <!--  CHARTS: Revenue & Gender  -->
+    <!-- <div id="revenue-chart-container"></div>  -->
+    <div id="gender-chart-container">
+        <canvas id="gender-split-chart"></canvas>
+    </div>
+
+</body>
+
+</html>
