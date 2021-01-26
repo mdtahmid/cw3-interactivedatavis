@@ -34,6 +34,7 @@ apiCall(movie_ranking_url)
     // .then(value => buildCharts(value));  // Build charts using Fusion & Chart.js
 
 
+
 // ********************
 // MOVIE DATA FUNCTIONS
 
@@ -272,6 +273,8 @@ function addTrending(formattedData) {
 
     new SimpleBar(document.getElementById('scrollWrapper1')); //initalise the custom scrollbar
 
+
+
 } // END: addTrending
 
 
@@ -386,6 +389,8 @@ function addMovieDetails(formattedData, movie_id, index) {
     details_container.appendChild(movieInfoWrapper);
     movieInfoWrapper.appendChild(movieDetails);
     movieInfoWrapper.appendChild((overview_container))
+
+    readMoreText(); //run read more function
 } // END: addMovieDetails
 
 
@@ -603,3 +608,13 @@ function basicChartOptions(Title, isLegend) {
         }
     }
 } // END: basicCHartOptions
+
+function readMoreText() {
+  $readMoreJS.init({
+     target: '.details-Overview',           // Selector of the element the plugin applies to (any CSS selector, eg: '#', '.'). Default: ''
+     numOfWords: 40,               // Number of words to initially display (any number). Default: 50
+     toggle: true,                 // If true, user can toggle between 'read more' and 'read less'. Default: true
+     moreLink: 'Read more...',    // The text of 'Read more' link. Default: 'read more ...'
+     lessLink: 'Read less'         // The text of 'Read less' link. Default: 'read less'
+  });
+}

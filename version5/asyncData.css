@@ -147,7 +147,7 @@ div#revenue-chart-container {
 
 .wrapperExpanded {
     /* Layout */
-    width: 54vw;
+      width: 860px;
 }
 
 /* Movie Details in scroll */
@@ -170,7 +170,7 @@ div#revenue-chart-container {
     /* Layout */
     height: 100%;
     overflow-y: hidden;
-    width: 47vw;
+    width: 740px;
     /* Effects */
     opacity: 1;             /* Render visible on click */
     /* transition: 1s;         /* Animation delay */
@@ -179,7 +179,7 @@ div#revenue-chart-container {
 
 p.details-Overview {
     white-space: pre-wrap;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     padding: 0px 22px;
     font-weight: 300;
     color: #ccc;
@@ -211,6 +211,10 @@ div.movieDetails-container {
 }
 div.movieInfo-wrapper {
   padding: 20px 40px 34px 40px;
+}
+div.readMore {
+  text-align: right;
+  padding-top: 15px;
 }
 p.overview-heading, p.movie_details_heading {
     font-size: 22px;
