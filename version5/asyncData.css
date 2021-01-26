@@ -236,15 +236,45 @@ p.movieGenres {
      top: -15px !important;
  }
 
- @media only screen and (max-width: 600px) {
-   #bgImage {
-    background-size: 146% !important;
-    background-position: center center !important;
-    height: 350px;
-    background-repeat: repeat-y;
-   }
-   .wrapperExpanded {
-    width: 88vw;
-  }
- }
 /*Mobile*/
+@media only screen and (max-width: 600px) {
+  #bgImage {
+   background-size: 146% !important;
+   background-position: center center !important;
+   height: 350px;
+   background-repeat: repeat-y;
+  }
+  .wrapperExpanded {
+   width: 88vw;
+ }
+ div.movieDetails-container, div.overview-container {
+   display: block;
+   width: 100%;
+ }
+  div.movieDetails-container {
+    padding-bottom: 26px;
+  }
+ p.overview-heading, p.details-Overview {
+    padding: 0px;
+  }
+  p.overview-heading {
+    padding-bottom: 20px;
+  }
+  p.movieTitle-Expanded {
+    font-size: 22px;
+  }
+  div.movieRating-container {
+    display: none;
+  }
+  div.movieHeader {
+    padding-left: 0px;
+  }
+  p.movieGenres {
+    font-size: 16px;
+    white-space: pre-wrap;
+    margin-left: 20px;
+  }
+  div.movieInfo-wrapper{
+    padding: 20px 18px 34px 18px;
+  }
+}
