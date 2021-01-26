@@ -5,19 +5,35 @@
 // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 
 // Add all elements to dom
-function addDomElements(formattedData) {
+function addAllDomElements(formattedData) {
     let default_id = '299534';                          // Default is currently #1 movie Avengers:Endgame
     let default_index = 0;
 
     addTrending(formattedData);                         // Add trending posters to top of Dom
     expandMovieDetails(formattedData, default_id, default_index);   // Expand 1st Movie Details
     addMovieDetails(formattedData, default_id, default_index);         // Add movie details
-    addMovieAwards(formattedData, default_id);          // Add Movie Awards
-    addBudgetChart(formattedData, default_id);          // Add movie budget vs revenue
-    addFilmLocations(formattedData, default_id);
+
+    // Add Movie Awards
+    let domMovieDetails = {};
+    for (const value in formattedData[default_id].awards) {
+        domMovieDetails['award-'+value] = value + ': ' + formattedData[default_id]['awards'][value];
+    }
+    addDomElements('movieAwards', domMovieDetails, 'Awards & Nominations');
+
+    // Add Movie Budget/Revenue
+    let domBudgetDetails = { "budget-text": "Budget: " + formattedData[default_id].budget, "revenue-text": "Revenue: " + formattedData[default_id].revenue };
+    addDomElements('budgetRevenue', domBudgetDetails, 'Budget vs. Box Office');
+
+    // Add Film Locations
+    let domLocationDetails = {};
+    for (let i=0; i< Object.keys(formattedData[default_id]['production_countries']).length; i++) {
+        domLocationDetails['location_'+i] = "Location: " + formattedData[default_id]['production_countries'][i].name;
+    }
+    addDomElements('filmLocations', domLocationDetails, 'Film Shoot Locations');
+
 
     //addCharts(formattedData);                     // Add charts to corresponding sections
-} // END: addDomElements
+} // END: addAllDomElements
 
 
 // Add trending posters to Dom
@@ -65,12 +81,24 @@ function updateContents(movieId, index) {
     expandMovieDetails(finalData, movieId, index);
     // Update Movie Details
     addMovieDetails(finalData, movieId, index);
+
     // Update Awards
-    addMovieAwards(finalData, movieId);
-    // Update revenue/budget
-    addBudgetChart(finalData, movieId);
-    // Update film locations
-    addFilmLocations(finalData, movieId);
+    let domMovieDetails = {};
+    for (const value in finalData[movieId].awards) {
+        domMovieDetails['award-'+value] = value + ': ' + finalData[movieId]['awards'][value];
+    }
+    addDomElements('movieAwards', domMovieDetails, 'Awards & Nominations');
+
+    // Add Movie Budget/Revenue
+    let domBudgetDetails = { "budget-text": "Budget: " + finalData[movieId].budget, "revenue-text": "Revenue: " + finalData[movieId].revenue };
+    addDomElements('budgetRevenue', domBudgetDetails, 'Budget vs. Box Office');
+
+    // Add Film Locations
+    let domLocationDetails = {};
+    for (let i=0; i< Object.keys(finalData[movieId]['production_countries']).length; i++) {
+        domLocationDetails['location_'+i] = "Location: " + finalData[movieId]['production_countries'][i].name;
+    }
+    addDomElements('filmLocations', domLocationDetails, 'Film Shoot Locations');
 } // END: updateBgImg
 
 // Add Movie Details to DOM
@@ -157,54 +185,29 @@ function addMovieDetails(formattedData, movie_id, index) {
 } // END: addMovieDetails
 
 
-// Add Movie AwardsDetails to DOM
-function addMovieAwards(formattedData, movie_id) {
-    // Get movie Awards container
-    let awards_container = document.getElementById('movieAwards');
-    awards_container.textContent = '';
-
-    awards_container.appendChild(customElement('h2', 'viz-title', 'Awards & Nominations'));
-
-    let awards = formattedData[movie_id].awards;
-
-    for (const elements in awards) {
-        awards_container.appendChild(customElement('p', "award-"+elements, elements + ": " + awards[elements]));
-    }
-} // END: addMovieAwards
+let testElements = {
+    'budget-text': 'Budget: 356000',
+    'revenue-text': 'Revenue: 279880000'
+};
 
 
-// Add Budget vs Revenue to DOM
-function addBudgetChart(formattedData, movie_id) {
-    let budget_container = document.getElementById('budgetRevenue');
-    budget_container.textContent = '';
+function addDomElements(container_id, elements, element_title) {
+    // Get and clear container
+    let element_container = document.getElementById(container_id);
+    element_container.textContent = '';
 
-    budget_container.appendChild(customElement('h2', 'viz-title', 'Budget vs Box Office'));
+    // Add title
+    element_container.appendChild(customElement('h2', 'viz-title', element_title));
 
-    let percentageFilled = formattedData[movie_id].budget / formattedData[movie_id].revenue * 100;
-
-    console.log("percentage:", percentageFilled);
-
-    budget_container.appendChild(customElement('p', 'budget-text', "Budget: "+formattedData[movie_id].budget));
-    budget_container.appendChild(customElement('p', 'revenue-text', "Revenue: "+formattedData[movie_id].revenue));
-} // END: addBudgetChart
-
-
-function addFilmLocations(formattedData, movie_id) {
-    let location_container = document.getElementById('filmLocations');
-    location_container.textContent = '';
-
-    location_container.appendChild(customElement('h2', 'viz-title', 'Film Shoot Locations'));
-
-    let film_location = formattedData[movie_id].production_countries;
-
-    for (let i=0; i<Object.keys(film_location).length; i++) {
-        let country = film_location[Object.keys(film_location)[i]].name;
-        console.log("Country:", country);
-        location_container.appendChild(customElement('p', 'location', "Location: " + country));
+    // Add all elements to dom
+    for (const el in elements) {
+        element_container.appendChild(customElement('p', el, elements[el]));
     }
 }
 
 
+
+// Add Posters once api call made
 function addPosters(formattedData) {
     // Set BgImg to be first Trending Movie
     let bgImg = document.getElementById('bgImage');
