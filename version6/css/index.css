@@ -131,6 +131,31 @@ p.movieRating-text {
     font-weight: 400;
 }
 
+/* AWARDS SECTION */
+div#award-content {
+    display: flex;
+}
+div.award-container {
+    margin: 0 10%;
+}
+div.icon-value-container {
+    display: flex;
+}
+p.award-value {
+    font-size: 45px;
+    font-weight: 100;
+    margin: 0;
+}
+img.award-img {
+    height: 40px;
+    padding-top: 4px;
+    margin-left: 5px;
+}
+p.award-name {
+    margin: 0;
+    text-align: center;
+}
+
 /* Revenue chart dimensions*/
 div#revenue-chart-container {
     /* Layout */
