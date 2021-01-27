@@ -54,6 +54,12 @@ function combineLists(arrayLists) {
 } // END: combineLists
 
 
+// Add thousands comma to a number as appropriate, returns a string
+function addThousandsComma(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
 // Format TMDb date format to: 25th December 2020
 function formatDate(date) {
     let splitDate = date.split('-');                                    // Split date at char
