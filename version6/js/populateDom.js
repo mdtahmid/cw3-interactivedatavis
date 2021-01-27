@@ -219,8 +219,12 @@ function addFilmLocation(formattedData, movieId) {
     let film_map = customElement('div', '', '', 'film-map');
     film_container.appendChild(film_map);
 
-    let filmMapData = getMapData(formattedData, movieId);
+    getMapData(formattedData, movieId)
+        .then(mapData => buildMap(mapData));
+}
 
+// Build a map (used for Film location
+function buildMap(mapData) {
     let filmMap = new Datamap({
         element: document.getElementById("film-map"),
         scope: 'world',
@@ -237,12 +241,11 @@ function addFilmLocation(formattedData, movieId) {
             popupOnHover: false,
             borderWidth: .4
         },
-        data: filmMapData
+        data: mapData
     });
-
-
 }
 
+// Get data for a given set of countries into the correct iso6331 alpha3 format
 async function getMapData(formattedData, movieId) {
     let film_countries = formattedData[movieId].production_countries;
     let country_codes = [];
@@ -257,19 +260,15 @@ async function getMapData(formattedData, movieId) {
         dataType: 'text',
         success: function(response) {
             country_conversion = Papa.parse(response)['data'];
-
             for (let i=0; i<country_conversion.length; i++) {
                 for (let j=0; j<country_codes.length; j++) {
                     if (country_codes[j] === country_conversion[i][1]) {
                         mapData[country_conversion[i][2]] = {fillKey: 'active'};
-                        console.log("Active");
                     }
                 }
             }
         }
     });
-
-    console.log("MapData:", mapData);
     return mapData
 }
 
