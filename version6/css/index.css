@@ -133,29 +133,49 @@ p.movieRating-text {
 
 /* AWARDS SECTION */
 div#award-content {
-    display: flex;
+
 }
 div.award-container {
     margin: 0 10%;
 }
 div.icon-value-container {
+    /* Layout */
     display: flex;
+    margin-bottom: -3.5vh;
 }
 p.award-value {
-    font-size: 45px;
+    /* Style */
+    font-size: 13vh;
     font-weight: 100;
+
+    /* Layout */
     margin: 0;
+
+    /* Position */
+    position: relative;
+    top: -2.5vh;
 }
 img.award-img {
-    height: 40px;
+    /* Size */
+    height: 10vh;
+    width: auto;
+
+    /* Layout */
     padding-top: 4px;
-    margin-left: 5px;
+    margin-left: 10px;
 }
 p.award-name {
     margin: 0;
     text-align: center;
+
+    /* Style */
+    font-size: 19px;
+    font-weight: 200;
+    /*letter-spacing: 2px;*/
+    letter-spacing: 0.4em;
 }
 
+/* BUDGET/REVENUE */
 /* Revenue chart dimensions*/
 div#revenue-chart-container {
     /* Layout */
@@ -334,4 +354,17 @@ h2.viz-title {
     /* Layout */
     border-bottom: 1px solid #ffffff;
     margin: 10px;
+}
+
+/* Footer */
+p#footer-text {
+    font-size: 14px;
+    font-weight: 100;
+    text-align: center;
+}
+
+/* Helper classes */
+.center {
+    display: flex;
+    justify-content: center;
 }
