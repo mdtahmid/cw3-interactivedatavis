@@ -54,6 +54,12 @@ function combineLists(arrayLists) {
 } // END: combineLists
 
 
+// Add thousands comma to a number as appropriate, returns a string
+function addThousandsComma(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
 // Format TMDb date format to: 25th December 2020
 function formatDate(date) {
     let splitDate = date.split('-');                                    // Split date at char
@@ -129,6 +135,15 @@ function toggleClassName(targetElementClassName, toggledClassName, elementIndex)
     Array.from(domElements).forEach(element => element.classList.remove(toggledClassName));
     domElements[elementIndex].className += " "+toggledClassName;
 } // END removeOthersAddClass
+
+// Get & clear DOM container, add title
+function getContainerWithTitle(containerId, containerTitle) {
+    let element_container = document.getElementById(containerId);
+    element_container.textContent = '';
+    element_container.appendChild(customElement('h2', 'viz-title', containerTitle));
+    return element_container
+}
+
 
 
 // Library to set the number of visible words in a div, toggleable

@@ -13,10 +13,7 @@ function addAllDomElements(formattedData) {
     expandMovieDetails(formattedData, default_id, default_index);   // Expand 1st Movie Details
     addMovieDetails(formattedData, default_id, default_index);         // Add movie details
     addAwardsDetails(formattedData, default_id);
-
-    // Add Movie Budget/Revenue
-    let domBudgetDetails = { "budget-text": "Budget: " + formattedData[default_id].budget, "revenue-text": "Revenue: " + formattedData[default_id].revenue };
-    addDomElements('budgetRevenue', domBudgetDetails, 'Budget vs. Box Office');
+    addBudgetRevenue(formattedData, default_id);
 
     // Add Film Locations
     let domLocationDetails = {};
@@ -28,6 +25,27 @@ function addAllDomElements(formattedData) {
 
     //addCharts(formattedData);                     // Add charts to corresponding sections
 } // END: addAllDomElements
+
+
+// Update page contents on poster click
+function updateContents(movieId, index) {
+    // Update BgImage
+    document.getElementById('bgImage').style.backgroundImage = "url('" + finalData[movieId].backdrop_path + "')";
+
+    expandMovieDetails(finalData, movieId, index);
+
+    addMovieDetails(finalData, movieId, index);     // Update Movie Details
+    addAwardsDetails(finalData, movieId);           // Update Awards
+    addBudgetRevenue(finalData, movieId);           // Update Budget Revenue
+
+
+    // Add Film Locations
+    let domLocationDetails = {};
+    for (let i=0; i< Object.keys(finalData[movieId]['production_countries']).length; i++) {
+        domLocationDetails['location_'+i] = "Location: " + finalData[movieId]['production_countries'][i].name;
+    }
+    addDomElements('filmLocations', domLocationDetails, 'Film Shoot Locations');
+} // END: updateBgImg
 
 
 // Add trending posters to Dom
@@ -66,30 +84,6 @@ function addTrending(formattedData) {
 
 } // END: addTrending
 
-
-// Update page contents on poster click
-function updateContents(movieId, index) {
-    // Update BgImage
-    document.getElementById('bgImage').style.backgroundImage = "url('" + finalData[movieId].backdrop_path + "')";
-
-    expandMovieDetails(finalData, movieId, index);
-    // Update Movie Details
-    addMovieDetails(finalData, movieId, index);
-
-    // Update Awards
-    addAwardsDetails(finalData, movieId);
-
-    // Add Movie Budget/Revenue
-    let domBudgetDetails = { "budget-text": "Budget: " + finalData[movieId].budget, "revenue-text": "Revenue: " + finalData[movieId].revenue };
-    addDomElements('budgetRevenue', domBudgetDetails, 'Budget vs. Box Office');
-
-    // Add Film Locations
-    let domLocationDetails = {};
-    for (let i=0; i< Object.keys(finalData[movieId]['production_countries']).length; i++) {
-        domLocationDetails['location_'+i] = "Location: " + finalData[movieId]['production_countries'][i].name;
-    }
-    addDomElements('filmLocations', domLocationDetails, 'Film Shoot Locations');
-} // END: updateBgImg
 
 // Add Movie Details to DOM
 function addMovieDetails(formattedData, movie_id, index) {
@@ -174,6 +168,8 @@ function addMovieDetails(formattedData, movie_id, index) {
     readMoreText(); //run read more function
 } // END: addMovieDetails
 
+
+// Awards Section of Dom
 function addAwardsDetails(formattedData, movieId) {
     let awards_container = getContainerWithTitle('movieAwards', 'Awards & Nominations');
     let award_content_container = customElement('div', 'center', '', 'award-content');
@@ -203,13 +199,35 @@ function addAwardsDetails(formattedData, movieId) {
 
 }
 
-// Get & clear DOM container, add title
-function getContainerWithTitle(containerId, containerTitle) {
-    let element_container = document.getElementById(containerId);
-    element_container.textContent = '';
-    element_container.appendChild(customElement('h2', 'viz-title', containerTitle));
-    return element_container
+
+function addBudgetRevenue(formattedData, movieId) {
+    let budget_container = getContainerWithTitle('budgetRevenue', 'Budget vs. Box Office');
+
+    let percentage_filled = formattedData[movieId].budget / formattedData[movieId].revenue * 100;
+
+    // Percentage container
+    let percentage_container = customElement('div', '', '', 'percentage-container');
+
+    // Percentage One
+    let percentage_one = customElement('div', 'percentage-section', '', 'percentage-one');
+    percentage_one.innerText = '$' + addThousandsComma(formattedData[movieId].budget);
+    percentage_one.style.minWidth = percentage_filled+'%';			// Min width as we want content to be always within div if section is smaller
+
+    // Percentage Two
+    let percentage_two = customElement('div', 'percentage-section', '', 'percentage-two');
+    percentage_two.innerText = '$' + addThousandsComma(formattedData[movieId].revenue);
+    percentage_two.style.width = (100-percentage_filled)+'%';
+
+    // Append to percentage container
+    percentage_container.appendChild(percentage_one);
+    percentage_container.appendChild(percentage_two);
+
+    // Append to awards container
+    budget_container.appendChild(percentage_container);
+
+
 }
+
 
 // Abstract function to add an object of data into a given container, specifying a title
 function addDomElements(container_id, elements, element_title) {
