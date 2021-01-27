@@ -1,9 +1,12 @@
 /* DOM main styling */
+/* Entire document*/
 html, body {
+    /* Style*/
     background-color: rgb(37,37,37);
     color: white;
 }
-body {
+/* Body & footer content (WHY cant this go in the class above?*/
+body, footer {
     font-family: 'Lato', sans-serif;
     font-weight: 400;
 }
@@ -133,7 +136,7 @@ p.movieRating-text {
 
 /* AWARDS SECTION */
 div#award-content {
-
+    margin: 0 5vw;
 }
 div.award-container {
     margin: 0 10%;
@@ -176,7 +179,29 @@ p.award-name {
 }
 
 /* BUDGET/REVENUE */
-/* Revenue chart dimensions*/
+div#percentage-container {
+    /* Style */
+    border: 1px solid white;
+    /* Layout */
+    display: flex;
+    margin: 2vh 5vw;
+}
+div#percentage-one {
+    /* Style*/
+    background-color: white;
+    color: black;
+    text-align: center;
+}
+div.percentage-section {
+    /* Style */
+    font-weight: 100;
+    text-align: center;
+    font-size: 4vh;
+    /* Layout */
+    padding: 10px 0;
+}
+
+/* Revenue chart dimensions - Might be obselete*/
 div#revenue-chart-container {
     /* Layout */
     height: 500px;
