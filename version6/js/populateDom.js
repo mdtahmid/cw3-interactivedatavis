@@ -14,14 +14,7 @@ function addAllDomElements(formattedData) {
     addMovieDetails(formattedData, default_id, default_index);         // Add movie details
     addAwardsDetails(formattedData, default_id);
     addBudgetRevenue(formattedData, default_id);
-
-    // Add Film Locations
-    let domLocationDetails = {};
-    for (let i=0; i< Object.keys(formattedData[default_id]['production_countries']).length; i++) {
-        domLocationDetails['location_'+i] = "Location: " + formattedData[default_id]['production_countries'][i].name;
-    }
-    addDomElements('filmLocations', domLocationDetails, 'Film Shoot Locations');
-
+    addFilmLocation(formattedData, default_id);
 
     //addCharts(formattedData);                     // Add charts to corresponding sections
 } // END: addAllDomElements
@@ -37,14 +30,7 @@ function updateContents(movieId, index) {
     addMovieDetails(finalData, movieId, index);     // Update Movie Details
     addAwardsDetails(finalData, movieId);           // Update Awards
     addBudgetRevenue(finalData, movieId);           // Update Budget Revenue
-
-
-    // Add Film Locations
-    let domLocationDetails = {};
-    for (let i=0; i< Object.keys(finalData[movieId]['production_countries']).length; i++) {
-        domLocationDetails['location_'+i] = "Location: " + finalData[movieId]['production_countries'][i].name;
-    }
-    addDomElements('filmLocations', domLocationDetails, 'Film Shoot Locations');
+    addFilmLocation(finalData, movieId);
 } // END: updateBgImg
 
 
@@ -199,7 +185,7 @@ function addAwardsDetails(formattedData, movieId) {
 
 }
 
-
+// Add Budget vs Box Office Section
 function addBudgetRevenue(formattedData, movieId) {
     let budget_container = getContainerWithTitle('budgetRevenue', 'Budget vs. Box Office');
 
@@ -224,8 +210,67 @@ function addBudgetRevenue(formattedData, movieId) {
 
     // Append to awards container
     budget_container.appendChild(percentage_container);
+}
 
 
+// Add Film Location Map
+function addFilmLocation(formattedData, movieId) {
+    let film_container = getContainerWithTitle('filmLocations', 'Film Shoot Locations');
+    let film_map = customElement('div', '', '', 'film-map');
+    film_container.appendChild(film_map);
+
+    let filmMapData = getMapData(formattedData, movieId);
+
+    let filmMap = new Datamap({
+        element: document.getElementById("film-map"),
+        scope: 'world',
+        projection: 'equirectangular',
+        responsive: false,
+        fills: {
+            active: "#ffffff",
+            defaultFill: 'rgba(0,0,0,0)'
+        },
+        height: null,
+        width: null,
+        geographyConfig: {
+            highlightOnHover: false,
+            popupOnHover: false,
+            borderWidth: .4
+        },
+        data: filmMapData
+    });
+
+
+}
+
+async function getMapData(formattedData, movieId) {
+    let film_countries = formattedData[movieId].production_countries;
+    let country_codes = [];
+    film_countries.forEach(element => country_codes.push(element.iso_3166_1));
+
+    let country_conversion = {};
+    let mapData = {};
+
+    await $.ajax({
+        type: 'GET',
+        url: 'iso_3166_a2_a3.csv',
+        dataType: 'text',
+        success: function(response) {
+            country_conversion = Papa.parse(response)['data'];
+
+            for (let i=0; i<country_conversion.length; i++) {
+                for (let j=0; j<country_codes.length; j++) {
+                    if (country_codes[j] === country_conversion[i][1]) {
+                        mapData[country_conversion[i][2]] = {fillKey: 'active'};
+                        console.log("Active");
+                    }
+                }
+            }
+        }
+    });
+
+    console.log("MapData:", mapData);
+    return mapData
 }
 
 

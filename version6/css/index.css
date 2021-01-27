@@ -305,6 +305,14 @@ div.percentage-section {
     padding: 10px 0;
 }
 
+/*************
+FILM LOCATIONS
+*************/
+div#film-map {
+    width: 45vw;
+    min-height: 40vh;
+    overflow: hidden;
+}
 
 
 
