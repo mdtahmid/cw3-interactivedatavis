@@ -1,28 +1,17 @@
 /* DOM main styling */
 /* Entire document*/
-html, body {
+html, body, footer {
     /* Style*/
     background-color: rgb(37,37,37);
     color: white;
-}
-/* Body & footer content (WHY cant this go in the class above?*/
-body, footer {
     font-family: 'Lato', sans-serif;
     font-weight: 400;
 }
 
-/* Grid Cards */
-/* ARE WE STILL USING THIS? */
-div.uk-card {
-    /* Layout */
-    border-radius: 14px;
-    padding: 20px;
-    /* Style */
-    background: #fff;
-    color: #888;
-}
 
-/* MOVIE CAROUSEL */
+/*************
+MOVIE CAROUSEL
+*************/
 /* Movie image */
 img.movieImage {
     /* Style */
@@ -51,7 +40,7 @@ div.movieWrapper {
     /* Layout */
     display: -webkit-inline-box;
 }
-div#scrollWrapper1 {
+div#trending-movies-container {
     /* Style */
     white-space: nowrap;
     /* Layout */
@@ -77,6 +66,50 @@ p.card-title {
 /************
 Movie Details
 *************/
+/* All individual movie details container*/
+.movieWrapper {
+    /* Layout*/
+    width: 122px;
+    /* Effects*/
+    transition: 1s;
+}
+/* Toggle for currently selecetd movie */
+.wrapperExpanded {
+    /* Layout */
+    width: 872px;
+}
+
+/* Movie Details in scroll */
+.inline-movie-details {
+    /* Layout */
+    height: 0;
+    width: 0;
+    margin-left: 10px;
+    /* Style */
+    background-color: rgba(66,66,66,.3);
+    border-radius: 6px;
+    /* Effects */
+    opacity: 0;         /* Hid div until clicked on poster */
+    /* transition: 1s; */
+    overflow-y: hidden;
+    /* padding: 10px; */
+}
+/* Expanding movie details div */
+.detailsExpanded {
+    /* Layout */
+    height: 100%;
+    overflow-y: hidden;
+    width: 740px;
+    /* Effects */
+    opacity: 1;             /* Render visible on click */
+    /* transition: 1s;         /* Animation delay */
+}
+div.movieHeader {
+    padding-bottom: 30px;
+    padding-left: 32px;
+    position: relative;
+}
+
 /* Movie Title */
 p.movieTitle-Expanded {
     /* Layout */
@@ -137,8 +170,79 @@ p.movieRating-text {
     font-size: 22px;
     font-weight: 400;
 }
+p.details-Overview {
+    white-space: pre-wrap;
+    /* overflow-x: hidden; */
+    padding: 0px 22px;
+    font-weight: 300;
+    color: #ccc;
+    font-size: 16px;
+}
 
-/* AWARDS SECTION */
+div.movieTitleWrapper {
+    padding-top: 30px;
+    /* display: inline-block; */
+}
+
+div.overview-container {
+    display: inline-block;
+    width: 60%;
+}
+div.movieDetails-container {
+    /* padding: 0px 30px; */
+    display: inline-block;
+    vertical-align: top;
+    width: 40%;
+    white-space: pre-wrap;
+}
+div.movieInfo-wrapper {
+    padding: 20px 40px 34px 40px;
+}
+div.readMore {
+    text-align: right;
+    padding-top: 15px;
+}
+p.overview-heading, p.movie_details_heading {
+    font-size: 22px;
+    font-weight: 600;
+}
+p.overview-heading {
+    padding: 0px 22px 22px 22px;
+}
+p.movie_details_heading {
+    padding: 0px 0px 22px 0px;
+}
+p.movieGenres {
+    padding-top: 4px;
+    font-weight: 300;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+p.movieDetails > span:nth-child(1) {
+    font-weight: 600;
+    font-size: 16px;
+}
+p.movieDetails > span:nth-child(2) {
+    color: #ccc;
+}
+.simplebar-scrollbar {
+    background-color: #444;
+    border-radius: 100px;
+    margin-left: 2px;
+
+}
+.simplebar-track{
+    background-color: #bbb;
+    border-radius: 100px 100px 100px 100px;
+    margin: 0px 20px 0px 19px;
+}
+.simplebar-offset {
+    top: -15px !important;
+}
+
+/*************
+AWARDS SECTION
+*************/
 div#award-content {
     margin: 0 5vw;
 }
@@ -154,10 +258,8 @@ p.award-value {
     /* Style */
     font-size: 13vh;
     font-weight: 100;
-
     /* Layout */
     margin: 0;
-
     /* Position */
     position: relative;
     top: -2.5vh;
@@ -166,23 +268,23 @@ img.award-img {
     /* Size */
     height: 10vh;
     width: auto;
-
     /* Layout */
     padding-top: 4px;
     margin-left: 10px;
 }
 p.award-name {
-    margin: 0;
-    text-align: center;
-
     /* Style */
     font-size: 19px;
     font-weight: 200;
-    /*letter-spacing: 2px;*/
     letter-spacing: 0.4em;
+    text-align: center;
+    /* Layout */
+    margin: 0;
 }
 
-/* BUDGET/REVENUE */
+/*************
+BUDGET/REVENUE
+*************/
 div#percentage-container {
     /* Style */
     border: 1px solid white;
@@ -205,176 +307,12 @@ div.percentage-section {
     padding: 10px 0;
 }
 
-/* Revenue chart dimensions - Might be obselete*/
-div#revenue-chart-container {
-    /* Layout */
-    height: 500px;
-    width: 800px;
-}
-
-.movieWrapper {
-    /* Layout*/
-    width: 122px;
-    /* Effects*/
-    transition: 1s;
-}
-
-.wrapperExpanded {
-    /* Layout */
-      width: 872px;
-}
-
-/* Movie Details in scroll */
-.inline-movie-details {
-    /* Layout */
-    height: 0;
-    width: 0;
-    margin-left: 10px;
-    /* Style */
-    background-color: rgba(66,66,66,.3);
-    border-radius: 6px;
-    /* Effects */
-    opacity: 0;         /* Hid div until clicked on poster */
-    /* transition: 1s; */
-    overflow-y: hidden;
-    /* padding: 10px; */
-}
-/* Expanding movie details div */
-.detailsExpanded {
-    /* Layout */
-    height: 100%;
-    overflow-y: hidden;
-    width: 740px;
-    /* Effects */
-    opacity: 1;             /* Render visible on click */
-    /* transition: 1s;         /* Animation delay */
-
-}
-
-p.details-Overview {
-    white-space: pre-wrap;
-    /* overflow-x: hidden; */
-    padding: 0px 22px;
-    font-weight: 300;
-    color: #ccc;
-    font-size: 16px;
-}
 
 
 
-/*NEW*/
-div.movieTitleWrapper {
-  padding-top: 30px;
-      /* display: inline-block; */
-}
-div.movieHeader {
-  padding-bottom: 30px;
-  padding-left: 32px;
-  position: relative;
-}
-div.overview-container {
-  display: inline-block;
-      width: 60%;
-}
-div.movieDetails-container {
-  /* padding: 0px 30px; */
-    display: inline-block;
-    vertical-align: top;
-        width: 40%;
-        white-space: pre-wrap;
-}
-div.movieInfo-wrapper {
-  padding: 20px 40px 34px 40px;
-}
-div.readMore {
-  text-align: right;
-  padding-top: 15px;
-}
-p.overview-heading, p.movie_details_heading {
-    font-size: 22px;
-    font-weight: 600;
-}
-p.overview-heading {
-    padding: 0px 22px 22px 22px;
-}
-p.movie_details_heading {
-  padding: 0px 0px 22px 0px;
-}
-p.movieGenres {
-  padding-top: 4px;
-  font-weight: 300;
-  font-size: 18px;
-  letter-spacing: 1px;
-}
-p.movieDetails > span:nth-child(1) {
-  font-weight: 600;
-  font-size: 16px;
-}
-p.movieDetails > span:nth-child(2) {
-  color: #ccc;
-}
-.simplebar-scrollbar {
-     background-color: #444;
-     border-radius: 100px;
-     margin-left: 2px;
-
- }
- .simplebar-track{
-     background-color: #bbb;
-     border-radius: 100px 100px 100px 100px;
-     margin: 0px 20px 0px 19px;
- }
- .simplebar-offset {
-     top: -15px !important;
- }
-
-/*Mobile*/
-@media only screen and (max-width: 600px) {
-  #bgImage {
-   background-size: 146% !important;
-   background-position: center center !important;
-   height: 350px;
-   background-repeat: repeat-y;
-  }
-  .wrapperExpanded {
-   width: 78vw;
- }
- div.movieDetails-container, div.overview-container {
-   display: block;
-   width: 100%;
- }
-  div.movieDetails-container {
-    padding-bottom: 26px;
-  }
- p.overview-heading, p.details-Overview {
-    padding: 0px;
-  }
-  p.overview-heading {
-    padding-bottom: 20px;
-  }
-  p.movieTitle-Expanded {
-    font-size: 22px;
-  }
-  div.movieRating-container {
-    display: none;
-  }
-  div.movieHeader {
-    padding-left: 0px;
-  }
-  p.movieGenres {
-    font-size: 16px;
-    white-space: pre-wrap;
-    margin-left: 20px;
-  }
-  div.movieInfo-wrapper{
-    padding: 20px 18px 34px 18px;
-  }
-  div.detailsExpanded {
-    width: 47vw;
-  }
-}
-
-/* Visualisations */
+/*************
+Visualisations
+*************/
 h2.viz-title {
     /* style */
     font-size: 20px;
@@ -385,15 +323,65 @@ h2.viz-title {
     margin: 10px;
 }
 
-/* Footer */
+/*****
+FOOTER
+*****/
 p#footer-text {
     font-size: 14px;
     font-weight: 100;
     text-align: center;
 }
 
-/* Helper classes */
+/*************
+HELPER CLASSES
+*************/
 .center {
     display: flex;
     justify-content: center;
+}
+
+/* Mobile Responsiveness */
+@media only screen and (max-width: 600px) {
+    #bgImage {
+        background-size: 146% !important;
+        background-position: center center !important;
+        height: 350px;
+        background-repeat: repeat-y;
+    }
+    .wrapperExpanded {
+        width: 78vw;
+    }
+    div.movieDetails-container, div.overview-container {
+        display: block;
+        width: 100%;
+    }
+    div.movieDetails-container {
+        padding-bottom: 26px;
+    }
+    p.overview-heading, p.details-Overview {
+        padding: 0;
+    }
+    p.overview-heading {
+        padding-bottom: 20px;
+    }
+    p.movieTitle-Expanded {
+        font-size: 22px;
+    }
+    div.movieRating-container {
+        display: none;
+    }
+    div.movieHeader {
+        padding-left: 0;
+    }
+    p.movieGenres {
+        font-size: 16px;
+        white-space: pre-wrap;
+        margin-left: 20px;
+    }
+    div.movieInfo-wrapper{
+        padding: 20px 18px 34px 18px;
+    }
+    div.detailsExpanded {
+        width: 47vw;
+    }
 }

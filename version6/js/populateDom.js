@@ -74,13 +74,13 @@ function addTrending(formattedData) {
         detailElement.id = 'movieDetail_' + index;
 
         // Append elements to Dom
-        document.getElementById('scrollWrapper1').appendChild(movieWrapper);
+        document.getElementById('trending-movies-container').appendChild(movieWrapper);
         movieWrapper.appendChild(moviePoster);
         movieWrapper.appendChild(detailElement);
     });
 
     // Initialise custom scrollbar
-    new SimpleBar(document.getElementById('scrollWrapper1'));
+    new SimpleBar(document.getElementById('trending-movies-container'));
 
 } // END: addTrending
 
