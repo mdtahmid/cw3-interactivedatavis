@@ -11,12 +11,8 @@ body, footer {
     font-weight: 400;
 }
 
-/* Grid container*/
-div.gridWrapper {
-    /*padding: 50px;*/
-}
-
-/* Grid Cards*/
+/* Grid Cards */
+/* ARE WE STILL USING THIS? */
 div.uk-card {
     /* Layout */
     border-radius: 14px;
@@ -26,35 +22,43 @@ div.uk-card {
     color: #888;
 }
 
+/* MOVIE CAROUSEL */
 /* Movie image */
 img.movieImage {
+    /* Style */
+    border-radius: 10px;
+    opacity: .7;
     /* Layout */
     width:122px;
-    border-radius: 10px;
     /* Effects */
     cursor: pointer;
-    opacity: .7;
     transition: all 0.2s ease;
 }
 img.movieImage:hover {
+    /* Style */
     opacity: 1;
 }
 p.movieTitle {
+    /* Style*/
     width: 125px;
     word-break: break-all;
     white-space: normal;
 }
 div.movieWrapper {
-    display: -webkit-inline-box;
+    /* Style */
     padding: 20px;
     vertical-align: top;
+    /* Layout */
+    display: -webkit-inline-box;
 }
 div#scrollWrapper1 {
-    overflow-x: auto;
+    /* Style */
     white-space: nowrap;
-    /* margin: -20px 0px; */
+    /* Layout */
+    overflow-x: auto;
 }
 p.card-title {
+    /* Style */
     font-size: 20px;
     font-weight: 500;
     color: #000000;
