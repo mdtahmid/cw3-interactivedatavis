@@ -172,8 +172,7 @@ p.movieRating-text {
 }
 p.details-Overview {
     white-space: pre-wrap;
-    /* overflow-x: hidden; */
-    padding: 0px 22px;
+    padding: 0 22px;
     font-weight: 300;
     color: #ccc;
     font-size: 16px;
@@ -181,7 +180,6 @@ p.details-Overview {
 
 div.movieTitleWrapper {
     padding-top: 30px;
-    /* display: inline-block; */
 }
 
 div.overview-container {
@@ -207,10 +205,10 @@ p.overview-heading, p.movie_details_heading {
     font-weight: 600;
 }
 p.overview-heading {
-    padding: 0px 22px 22px 22px;
+    padding: 0 22px 22px 22px;
 }
 p.movie_details_heading {
-    padding: 0px 0px 22px 0px;
+    padding: 0 0 22px 0;
 }
 p.movieGenres {
     padding-top: 4px;
@@ -234,7 +232,7 @@ p.movieDetails > span:nth-child(2) {
 .simplebar-track{
     background-color: #bbb;
     border-radius: 100px 100px 100px 100px;
-    margin: 0px 20px 0px 19px;
+    margin: 0 20px 0 19px;
 }
 .simplebar-offset {
     top: -15px !important;
