@@ -130,6 +130,15 @@ function toggleClassName(targetElementClassName, toggledClassName, elementIndex)
     domElements[elementIndex].className += " "+toggledClassName;
 } // END removeOthersAddClass
 
+// Get & clear DOM container, add title
+function getContainerWithTitle(containerId, containerTitle) {
+    let element_container = document.getElementById(containerId);
+    element_container.textContent = '';
+    element_container.appendChild(customElement('h2', 'viz-title', containerTitle));
+    return element_container
+}
+
+
 
 // Library to set the number of visible words in a div, toggleable
 function readMoreText() {
