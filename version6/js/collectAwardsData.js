@@ -37,12 +37,12 @@ function awardsDetails(data, movieData, item) {
     // If OMDb returned only two numbers, then movie had no oscars
     // Fill entries of dict accordingly
     if (awardNumbers.length === 2) {
-        movieData[item]['awards'].oscars = {value: 0, src: 'media/oscar_icon.png'};
-        movieData[item]['awards'].wins = {value: awardNumbers[0], src: 'media/award_icon.png'};
-        movieData[item]['awards'].nominations = {value: awardNumbers[1], src: 'media/nomination_icon.png'};
+        movieData[item]['awards'].Oscars = {value: 0, src: 'media/oscar_icon.png'};
+        movieData[item]['awards'].Awards = {value: awardNumbers[0], src: 'media/award_icon.png'};
+        movieData[item]['awards'].Nominations = {value: awardNumbers[1], src: 'media/nomination_icon.png'};
     } else {
-        movieData[item]['awards'].oscars = {value: awardNumbers[0], src: 'media/oscar_icon.png'};
-        movieData[item]['awards'].wins = {value: awardNumbers[1], src: 'media/award_icon.png'};
-        movieData[item]['awards'].nominations = {value: awardNumbers[2], src: 'media/nomination_icon.png'};
+        movieData[item]['awards'].Oscars = {value: awardNumbers[0], src: 'media/oscar_icon.png'};
+        movieData[item]['awards'].Awards = {value: awardNumbers[1], src: 'media/award_icon.png'};
+        movieData[item]['awards'].Nominations = {value: awardNumbers[2], src: 'media/nomination_icon.png'};
     }
 } // END: awardsDetails
