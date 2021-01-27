@@ -176,7 +176,7 @@ function addMovieDetails(formattedData, movie_id, index) {
 
 function addAwardsDetails(formattedData, movieId) {
     let awards_container = getContainerWithTitle('movieAwards', 'Awards & Nominations');
-    let award_content_container = customElement('div', '', '', 'award-content');
+    let award_content_container = customElement('div', 'center', '', 'award-content');
 
     for (const element in formattedData[movieId].awards) {
         let el_container = document.createElement('div');
