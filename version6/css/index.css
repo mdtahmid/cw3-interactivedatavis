@@ -308,6 +308,10 @@ div.percentage-section {
 /*************
 FILM LOCATIONS
 *************/
+div#filmLocations {
+    display: inline-block;
+    max-width: 45vw;
+}
 div#film-map {
     width: 45vw;
     min-height: 40vh;
@@ -318,6 +322,10 @@ div#film-map {
 /************
 GENDER DIVIDE
 ************/
+div#genderDivide {
+    display: inline-block;
+    max-width: 45vw;
+}
 div#gender-chart-container {
     position: relative;
     width: 45vw;
