@@ -315,6 +315,13 @@ div#film-map {
 }
 
 
+/************
+GENDER DIVIDE
+************/
+div#gender-chart-container {
+    position: relative;
+    width: 45vw;
+}
 
 /*************
 Visualisations
