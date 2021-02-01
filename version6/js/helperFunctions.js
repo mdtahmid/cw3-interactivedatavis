@@ -106,6 +106,32 @@ function getMembers(role, formattedData, movie_id) {
 } // END: getDirectors
 
 
+// Get data for a given set of countries into the correct iso6331 alpha3 format
+async function getMapData(formattedData, movieId) {
+    let film_countries = formattedData[movieId].production_countries;
+    let country_codes = [];
+    film_countries.forEach(element => country_codes.push(element.iso_3166_1));
+
+    let country_conversion = {};
+    let mapData = {};
+
+    await $.ajax({
+        type: 'GET',
+        url: 'iso_3166_a2_a3.csv',
+        dataType: 'text',
+        success: function(response) {
+            country_conversion = Papa.parse(response)['data'];
+            for (let i=0; i<country_conversion.length; i++) {
+                for (let j=0; j<country_codes.length; j++) {
+                    if (country_codes[j] === country_conversion[i][1]) {
+                        mapData[country_conversion[i][2]] = {fillKey: 'active'};
+                    }
+                }
+            }
+        }
+    });
+    return mapData
+}
 
 // ************
 // DOM ELEMENTS
@@ -137,10 +163,10 @@ function toggleClassName(targetElementClassName, toggledClassName, elementIndex)
 } // END removeOthersAddClass
 
 // Get & clear DOM container, add title
-function getContainerWithTitle(containerId, containerTitle) {
+function getContainerWithTitle(containerId, containerTitle, id='') {
     let element_container = document.getElementById(containerId);
     element_container.textContent = '';
-    element_container.appendChild(customElement('h2', 'viz-title', containerTitle));
+    element_container.appendChild(customElement('h2', 'viz-title', containerTitle, id));
     return element_container
 }
 
