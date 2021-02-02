@@ -7,7 +7,22 @@ html, body, footer {
     font-family: 'Lato', sans-serif;
     font-weight: 400;
 }
-
+/**********
+Play Button
+***********/
+div#play-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+div#play-btn {
+    height: 30px;
+    width: 30px;
+    border: 1px solid white;
+    border-radius: 50%;
+    background-color: white;
+}
 
 /*************
 MOVIE CAROUSEL
