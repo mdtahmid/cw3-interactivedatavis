@@ -347,40 +347,33 @@ function addGenderDivide(formattedData, movieId) {
         ]
     };
 
+    function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (list[i].label === obj.label ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Chart Options
     let chartOptions = {
         responsive: true,
-        legend: {
-            position: 'bottom',
-            display: false,
-            reverse: true
-        },
-        // CODE FROM Abdul Rehman Sayed
-        legendCallback: function(chart) {
-            var text = [];
-            var legs = [];
-            for( var j=0; j<chart.data.datasets.length;j++)
-            {
-                for (var i = 0; i < chart.data.datasets[j].data.length; i++)
-                {
-                    var newd = { label: chart.data.datasets[j].labels[i] , color: chart.data.datasets[j].backgroundColor[i]  };
-
-                    if( !containsObject (newd,legs) )
-                    {
-                        legs.push(newd);
-                    }
+        tooltips: {
+            callbacks: {
+                title: function(tooltipItem, data) {
+                    var data_Category = data['datasets'][tooltipItem[0]['datasetIndex']]['label'];  // Get Category Label
+                    var data_type = data['labels'][tooltipItem[0]['index']];    // Get Data Type
+                    return data_type + ' ' + data_Category
+                },
+                label: function(tooltipItem, data) {
+                    var data_value = data['datasets'][0]['data'][tooltipItem['index']] + ' members';    // Get Data Value
+                    var dataset = data['datasets'][0];                                                  // Calculate data percentage
+                    var data_percent = '(' + Math.round((dataset['data'][tooltipItem['index']] / dataset["_meta"][0]['total']) * 100) + '%)';
+                    return data_value + ' ' + data_percent
                 }
             }
-
-            text.push('<ul class="Mylegend ' + chart.id + '-legend">');
-            for( var k =0;k<legs.length;k++)
-            {
-                text.push('<li><span style="background-color:' + legs[k].color + '"></span>');
-                text.push(legs[k].label);
-                text.push('</li>');
-            }
-            text.push('</ul>');
-            return text.join("");
         }
     };
 
