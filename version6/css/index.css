@@ -344,7 +344,17 @@ div#film-map {
     overflow: hidden;
 }
 
-
+/************
+GENDER DIVIDE
+************/
+div#genderDivide {
+    display: inline-block;
+    max-width: 45vw;
+}
+div#gender-chart-container {
+    position: relative;
+    width: 45vw;
+}
 
 /*************
 Visualisations
