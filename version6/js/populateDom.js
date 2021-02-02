@@ -267,7 +267,8 @@ function buildMap(mapData) {
         projection: 'equirectangular',
         responsive: false,
         fills: {
-            active: "#ffffff",
+            // active: '#B687E4',
+            active: '#2d98da',
             defaultFill: 'rgba(0,0,0,0)'
         },
         height: null,
@@ -275,7 +276,8 @@ function buildMap(mapData) {
         geographyConfig: {
             highlightOnHover: false,
             popupOnHover: false,
-            borderWidth: .4
+            borderWidth: .4,
+            borderColor: '#45aaf2'
         },
         data: mapData
     });
@@ -309,42 +311,82 @@ async function getMapData(formattedData, movieId) {
 }
 
 function addGenderDivide(formattedData, movieId) {
-    let gender_divide_container = getContainerWithTitle('genderDivide', 'Cast & Crew Gender Divide');
+    // Create Containers and Canvas
+    let gender_divide_container = getContainerWithTitle('genderDivide', 'Gender Divide : <span class="g-title">Cast</span> & <span class="g-title">Crew</span>', 'gender-title');
+
+    // Chart Legend
+    let chart_legend = createChartLegend();
+
     let gender_chart_container = customElement('div', 'chart-container', '', 'gender-chart-container');
     let gender_chart = customElement('canvas', '', '', 'gender-split');
+
+    // Append Elements
+    gender_divide_container.appendChild(chart_legend);
     gender_chart_container.appendChild(gender_chart);
     gender_divide_container.appendChild(gender_chart_container);
 
+    // Get Data
     let genderData = formattedData[movieId]['cast_crew_stats'];
 
+    // Popluate Data
     let chartData = {
         labels: Object.keys(genderData['overall']).slice(0,2),
         datasets: [{
             label: 'Cast',
             data: Object.values(genderData['cast']).slice(0,2),
-            backgroundColor: ['rgba(235,235,235,1)', 'rgba(0,0,0,0)'],
-            // backgroundColor: ['rgba(248,249,250,1)', 'rgba(0,0,0,0)'],	// Backup color
-            hoverBackgroundColor: 'rgba(255,255,255,1)'
+            backgroundColor: ['rgba(122,95,208,1)', 'rgba(161, 146, 209, 1)'],
+            hoverBackgroundColor: ['rgba(122,95,208, 1)', 'rgba(252, 235, 233, 1)'],
+            borderColor: 'rgba(0,0,0,0)'
         },{
             label: 'Crew',
             data: Object.values(genderData['crew']).slice(0,2),
-            backgroundColor: ['rgba(235,235,235,1)', 'rgba(0,0,0,0)'],
-            hoverBackgroundColor: 'rgba(255,255,255,1)'
+            backgroundColor: ['rgba(255, 92, 108, 1)', 'rgba(255, 136, 153, 1)'],
+            hoverBackgroundColor: 'rgba(122,95,208, 1)',
+            borderColor: 'rgba(0,0,0,0)'
         }
         ]
     };
 
+    // Chart Options
     let chartOptions = {
         responsive: true,
         legend: {
             position: 'bottom',
-            display: true,
+            display: false,
             reverse: true
         },
+        // CODE FROM Abdul Rehman Sayed
+        legendCallback: function(chart) {
+            var text = [];
+            var legs = [];
+            for( var j=0; j<chart.data.datasets.length;j++)
+            {
+                for (var i = 0; i < chart.data.datasets[j].data.length; i++)
+                {
+                    var newd = { label: chart.data.datasets[j].labels[i] , color: chart.data.datasets[j].backgroundColor[i]  };
+
+                    if( !containsObject (newd,legs) )
+                    {
+                        legs.push(newd);
+                    }
+                }
+            }
+
+            text.push('<ul class="Mylegend ' + chart.id + '-legend">');
+            for( var k =0;k<legs.length;k++)
+            {
+                text.push('<li><span style="background-color:' + legs[k].color + '"></span>');
+                text.push(legs[k].label);
+                text.push('</li>');
+            }
+            text.push('</ul>');
+            return text.join("");
+        }
     };
 
     // var gender_ctx = document.getElementById('gender-split').getContext('2d');
 
+    // Build Chart
     var genderChart = new Chart($('#gender-split'), {
         type: 'doughnut',
         data: chartData,
