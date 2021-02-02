@@ -2,7 +2,7 @@
 /* Entire document*/
 html, body, footer {
     /* Style*/
-    background-color: rgb(37,37,37);
+    background-color: rgb(37, 37, 37);
     color: white;
     font-family: 'Lato', sans-serif;
     font-weight: 400;
@@ -23,16 +23,19 @@ img.movieImage {
     cursor: pointer;
     transition: all 0.2s ease;
 }
+
 img.movieImage:hover {
     /* Style */
     opacity: 1;
 }
+
 p.movieTitle {
     /* Style*/
     width: 125px;
     word-break: break-all;
     white-space: normal;
 }
+
 div.movieWrapper {
     /* Style */
     padding: 20px;
@@ -40,12 +43,14 @@ div.movieWrapper {
     /* Layout */
     display: -webkit-inline-box;
 }
+
 div#trending-movies-container {
     /* Style */
     white-space: nowrap;
     /* Layout */
     overflow-x: auto;
 }
+
 p.card-title {
     /* Style */
     font-size: 20px;
@@ -53,13 +58,14 @@ p.card-title {
     color: #000000;
     padding: 14px 0 0 14px;
 }
+
 #bgImage {
     background-repeat: no-repeat;
     background-position: center;
     height: 450px;
     width: auto;
-    -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+    -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 1)), to(rgba(0, 0, 0, 0)));
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
 }
 
 
@@ -73,6 +79,7 @@ Movie Details
     /* Effects*/
     transition: 1s;
 }
+
 /* Toggle for currently selecetd movie */
 .wrapperExpanded {
     /* Layout */
@@ -86,14 +93,15 @@ Movie Details
     width: 0;
     margin-left: 10px;
     /* Style */
-    background-color: rgba(66,66,66,.3);
+    background-color: rgba(66, 66, 66, .3);
     border-radius: 6px;
     /* Effects */
-    opacity: 0;         /* Hid div until clicked on poster */
+    opacity: 0; /* Hid div until clicked on poster */
     /* transition: 1s; */
     overflow-y: hidden;
     /* padding: 10px; */
 }
+
 /* Expanding movie details div */
 .detailsExpanded {
     /* Layout */
@@ -101,9 +109,10 @@ Movie Details
     overflow-y: hidden;
     width: 755px;
     /* Effects */
-    opacity: 1;             /* Render visible on click */
+    opacity: 1; /* Render visible on click */
     /* transition: 1s;         /* Animation delay */
 }
+
 div.movieHeader {
     padding-bottom: 30px;
     padding-left: 32px;
@@ -120,6 +129,7 @@ p.movieTitle-Expanded {
     font-size: 30px;
     white-space: pre-wrap;
 }
+
 /* Add border bottom that goes past margin */
 /* p.movieTitle-Expanded:after {
     content: "";
@@ -161,15 +171,17 @@ div.movieRating-container {
 
     /* margin-left: 100px; */
 }
+
 div.movieTextWrapper {
-      padding: 6px 6px;
-      /* border: 1px solid #ffffff5c; */
-      border-radius: 38px;
-      margin-bottom: 6px;
-      color: white;
-      background-image: linear-gradient(-20deg, #da6f7e 0%, #ff9a44 100%);
-      cursor: pointer;
+    padding: 6px 6px;
+    /* border: 1px solid #ffffff5c; */
+    border-radius: 38px;
+    margin-bottom: 6px;
+    color: white;
+    background-image: linear-gradient(-20deg, #da6f7e 0%, #ff9a44 100%);
+    cursor: pointer;
 }
+
 p.movieRating-text {
     /* Layout */
     margin: 0;
@@ -177,6 +189,7 @@ p.movieRating-text {
     font-size: 22px;
     font-weight: 700;
 }
+
 p.details-Overview {
     white-space: pre-wrap;
     padding: 0 22px;
@@ -193,6 +206,7 @@ div.overview-container {
     display: inline-block;
     width: 60%;
 }
+
 div.movieDetails-container {
     /* padding: 0px 30px; */
     display: inline-block;
@@ -200,47 +214,58 @@ div.movieDetails-container {
     width: 40%;
     white-space: pre-wrap;
 }
+
 div.movieInfo-wrapper {
     padding: 14px 40px 34px 40px;
 }
+
 div.readMore {
     text-align: right;
     padding-top: 15px;
 }
+
 p.overview-heading, p.movie_details_heading {
     font-size: 22px;
     font-weight: 600;
 }
+
 p.overview-heading {
     padding: 0 22px 22px 22px;
 }
+
 p.movie_details_heading {
     padding: 0 0 22px 0;
 }
+
 p.movieGenres {
     padding-top: 4px;
     font-weight: 300;
     font-size: 18px;
     letter-spacing: 1px;
 }
+
 p.movieDetails > span:nth-child(1) {
     font-weight: 600;
     font-size: 16px;
 }
+
 p.movieDetails > span:nth-child(2) {
     color: #ccc;
 }
+
 .simplebar-scrollbar {
     background-color: #444;
     border-radius: 100px;
     margin-left: 2px;
 
 }
-.simplebar-track{
+
+.simplebar-track {
     background-color: #bbb;
     border-radius: 100px 100px 100px 100px;
     margin: 0 20px 0 19px;
 }
+
 .simplebar-offset {
     top: -15px !important;
 }
@@ -251,14 +276,17 @@ AWARDS SECTION
 div#award-content {
     margin: 0 5vw;
 }
+
 div.award-container {
-    margin: 0 10%;
+    margin: 0 8%;
 }
+
 div.icon-value-container {
     /* Layout */
     display: flex;
     margin-bottom: -3.5vh;
 }
+
 p.award-value {
     /* Style */
     font-size: 12vh;
@@ -269,6 +297,7 @@ p.award-value {
     position: relative;
     top: -2.5vh;
 }
+
 img.award-img {
     /* Size */
     height: 9vh;
@@ -277,6 +306,7 @@ img.award-img {
     padding-top: 4px;
     margin-left: 10px;
 }
+
 p.award-name {
     /* Style */
     font-size: 19px;
@@ -287,12 +317,15 @@ p.award-name {
     /* Layout */
     margin: 0;
 }
+
 div#movieAwards {
-  padding-bottom: 40px;
+    padding-bottom: 40px;
 }
+
 div#budgetRevenue {
-  padding-bottom: 30px;
+    padding-bottom: 30px;
 }
+
 /*************
 BUDGET/REVENUE
 *************/
@@ -303,6 +336,7 @@ div#percentage-container {
     display: flex;
     margin: 2vh 5vw;
 }
+
 div#percentage-one {
     /* Style*/
     background-color: #2d287c;
@@ -325,13 +359,14 @@ div#percentage-two {
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
 }
+
 div.percentage-section {
     /* Style */
     font-weight: 400;
     text-align: center;
     font-size: 4vh;
     /* Layout */
-    padding: 10px 44px;
+    padding: 10px 44px 10px 11px;
     background-color: #6c5ce7;
 }
 
@@ -341,6 +376,7 @@ FILM LOCATIONS
 div#filmLocations {
 
 }
+
 div#film-map {
     min-height: 40vh;
     /*overflow: hidden;*/
@@ -349,12 +385,60 @@ div#film-map {
 /************
 GENDER DIVIDE
 ************/
-div#genderDivide {
+h2#gender-title:after {
+    width: 65%;
+}
+h2#gender-title > span:nth-child(1) {
+    background-color: rgba(122, 95, 208, 1);
+}
+h2#gender-title > span:nth-child(2) {
+    background-color: rgba(255, 92, 108, 1);
+}
+span.g-title {
+    font-style: inherit;
+    font-size: inherit;
+    padding: .05em 1em;
+    border-radius: 6px;
+    text-align: center;
+}
+
+div#gender-full-container {
+    flex-direction: column;
 }
 div#gender-chart-container {
     position: relative;
-    width: 45vw;
+    width: 35vw;
+    height: 35vh;
+    margin: 0 auto;
 }
+div.legend-container {
+    margin-bottom: 10px;
+}
+div.legend-content {
+    display: inline-block;
+    font-size: 20px;
+}
+div#legend-txt-female {
+    border-right: 1px solid white;
+    width: 49%;
+    text-align: right;
+    padding-right: 1%;
+    color: rgba(255,255,255,.6);
+}
+div#legend-txt-male {
+    padding-left: 1%;
+}
+
+
+div#gender-chart-legend {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    padding-left: 7px;
+}
+
+
 
 /*************
 Visualisations
@@ -368,13 +452,14 @@ h2.viz-title {
     margin: 40px 20px 48px 20px;
     position: relative;
 }
+
 h2.viz-title:after {
     content: '';
     height: 1px;
     width: 40%;
     position: absolute;
     left: -10px;
-    bottom: -4px;
+    bottom: -16px;
     /* Style */
     background: #ffffff;
     opacity: 0.4;
@@ -400,6 +485,7 @@ HELPER CLASSES
 .inline {
     display: inline-block;
     width: 45vw;
+    height: 60vh;
     vertical-align: top;
 }
 
@@ -407,55 +493,62 @@ HELPER CLASSES
 STICKY HEADER
 *************/
 div#stickyHeader {
-  position: fixed;
-  /* bottom:0;
-  right:0; */
-  z-index:999999999;
-  display: none;
-  background: #2E2E2E;  /* fallback for old browsers */
-  /* background: -webkit-linear-gradient(to right, #4389A2, #5C258D);
-  background: linear-gradient(to right, #4389A2, #5C258D);  */
-  border-bottom: 2px solid #ff9a44;
-  cursor: pointer;
-  width: 100%;
-  height: 135px;
+    position: fixed;
+    /* bottom:0;
+    right:0; */
+    z-index: 999999999;
+    display: none;
+    background: #2E2E2E; /* fallback for old browsers */
+    /* background: -webkit-linear-gradient(to right, #4389A2, #5C258D);
+    background: linear-gradient(to right, #4389A2, #5C258D);  */
+    border-bottom: 2px solid #ff9a44;
+    cursor: pointer;
+    width: 100%;
+    height: 135px;
 }
+
 img.movie-img-sticky {
-  height: 100px;
-  margin: 18px 35px 16px 35px;
-  border-radius: 4px;
-  position: absolute;
+    height: 100px;
+    margin: 18px 35px 16px 35px;
+    border-radius: 4px;
+    position: absolute;
 }
+
 p.movie-title-sticky {
-  margin: 26px 36px 4px 125px;
-  font-size: 20px;
-  font-weight: 600;
+    margin: 26px 36px 4px 125px;
+    font-size: 20px;
+    font-weight: 600;
 
 }
+
 p.movie-genres-sticky {
-  margin: 0px 36px 6px 125px;
-  font-size: 16px;
-  font-weight: 400;
+    margin: 0px 36px 6px 125px;
+    font-size: 16px;
+    font-weight: 400;
 }
+
 p.movie-release-sticky {
-  margin: 6px 36px 15px 125px;
-  font-size: 14px;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  background: #6054bd;
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 42px;
+    margin: 6px 36px 15px 125px;
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: #6054bd;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 42px;
 }
+
 div.movie-rating-wrapper-sticky {
-  position: absolute;
-  right: 80px;
-  top: 48px;
-  color: white;background-image: linear-gradient(-20deg, #da6f7e 0%, #ff9a44 100%);
-  padding: 8px 20px;
-  border-radius: 38px;
+    position: absolute;
+    right: 80px;
+    top: 48px;
+    color: white;
+    background-image: linear-gradient(-20deg, #da6f7e 0%, #ff9a44 100%);
+    padding: 8px 20px;
+    border-radius: 38px;
 }
+
 p.movie-rating-sticky {
     font-size: 21px;
     font-weight: 500;
@@ -469,83 +562,107 @@ p.movie-rating-sticky {
         height: 350px;
         background-repeat: repeat-y;
     }
+
     .wrapperExpanded {
         width: 80vw;
     }
+
     div.movieDetails-container, div.overview-container {
         display: block;
         width: 100%;
     }
+
     div.movieDetails-container {
         padding-bottom: 26px;
     }
+
     p.overview-heading, p.details-Overview {
         padding: 0;
     }
+
     p.overview-heading {
         padding-bottom: 20px;
     }
+
     p.movieTitle-Expanded {
         font-size: 22px;
     }
+
     div.movieRating-container {
         display: none;
     }
+
     div.movieHeader {
         padding-left: 0;
     }
+
     p.movieGenres {
         font-size: 16px;
         white-space: pre-wrap;
         margin-left: 20px;
     }
+
     p.movieTitle-Expanded {
         margin-left: 20px;
     }
-    div.movieInfo-wrapper{
+
+    div.movieInfo-wrapper {
         padding: 20px 18px 34px 18px;
     }
+
     div.detailsExpanded {
         width: 47vw;
     }
+
     div#award-content {
-      margin: 0;
+        margin: 0;
     }
+
     div.award-container {
-      margin: 0 10px;
+        margin: 0 10px;
         display: block;
-        padding: 27px 0px;
+        padding: 27px 0;
     }
+
     p.award-value {
-          font-size: 10vh;
+        font-size: 10vh;
     }
+
     img.award-img {
-      height: 7vh;
+        height: 7vh;
     }
+
     p.award-name {
-      font-size: 16px;
+        font-size: 16px;
     }
+
     div.center {
         display: block;
     }
+
     div.icon-value-container {
-      justify-content: center;
+        justify-content: center;
     }
+
     div.percentage-section {
-      font-size: 16px;
-      padding: 21px 51px 21px 12px;
-      font-weight: 600;
+        font-size: 16px;
+        padding: 21px 51px 21px 12px;
+        font-weight: 600;
     }
+
     h2.viz-title {
-      font-size: 26px;
+        font-size: 26px;
     }
+
     p.movie-title-sticky {
-      margin: 26px 36px 0px 125px;
+        margin: 26px 36px 0px 125px;
     }
-    p.movie-release-sticky{
-      margin: 8px 36px 6px 125px;
+
+    p.movie-release-sticky {
+        margin: 8px 36px 6px 125px;
     }
+
     div.movie-rating-wrapper-sticky {
-      display: none;
+        display: none;
     }
 }
