@@ -105,7 +105,16 @@ function getMembers(role, formattedData, movie_id) {
     return directors.slice(0, directors.length-2);
 } // END: getDirectors
 
+function createChartLegend() {
+    let legend_container = customElement('div', 'legend-container', '');
+    let legend_one = customElement('div', 'legend-content', 'Female', 'legend-txt-female');
+    let legend_two = customElement('div', 'legend-content', 'Male', 'legend-txt-male');
 
+    legend_container.appendChild(legend_one);
+    legend_container.appendChild(legend_two);
+
+    return legend_container;
+}
 
 // ************
 // DOM ELEMENTS
@@ -137,12 +146,13 @@ function toggleClassName(targetElementClassName, toggledClassName, elementIndex)
 } // END removeOthersAddClass
 
 // Get & clear DOM container, add title
-function getContainerWithTitle(containerId, containerTitle) {
+function getContainerWithTitle(containerId, containerTitle, id='') {
     let element_container = document.getElementById(containerId);
     element_container.textContent = '';
-    element_container.appendChild(customElement('h2', 'viz-title', containerTitle));
+    element_container.appendChild(customElement('h2', 'viz-title', containerTitle, id));
     return element_container
 }
+
 
 
 
