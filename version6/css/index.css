@@ -388,16 +388,21 @@ GENDER DIVIDE
 h2#gender-title:after {
     width: 65%;
 }
-h2#gender-title > span:nth-child(1) {
+div#gender-chart-label {
+    display: inline-block;
+    font-style: inherit;
+    font-size: 22px;
+}
+div#gender-chart-label > span:nth-child(1) {
     background-color: rgba(122, 95, 208, 1);
 }
-h2#gender-title > span:nth-child(2) {
+div#gender-chart-label > span:nth-child(2) {
     background-color: rgba(255, 92, 108, 1);
 }
 span.g-title {
     font-style: inherit;
     font-size: inherit;
-    padding: .05em 1em;
+    padding: .2em 1em;
     border-radius: 6px;
     text-align: center;
 }
@@ -564,7 +569,7 @@ p.movie-rating-sticky {
     }
 
     .wrapperExpanded {
-        width: 80vw;
+        width: 85vw;
     }
 
     div.movieDetails-container, div.overview-container {
@@ -664,5 +669,25 @@ p.movie-rating-sticky {
 
     div.movie-rating-wrapper-sticky {
         display: none;
+    }
+    div#gender-chart-container {
+        width: 100vw;
+    }
+    p#footer-text {
+        font-size: 12px;
+    }
+    div.legend-container {
+        width: 100vw;
+    }
+    div#filmLocations {
+        margin: 0 auto;
+    }
+    div#gender-chart-label {
+        margin-top: 5px;
+    }
+    .inline {
+        display: block;
+        width: 90vw;
+        height: 90%;
     }
 }
