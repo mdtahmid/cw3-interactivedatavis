@@ -312,7 +312,7 @@ async function getMapData(formattedData, movieId) {
 
 function addGenderDivide(formattedData, movieId) {
     // Create Containers and Canvas
-    let gender_divide_container = getContainerWithTitle('genderDivide', 'Gender Divide : <span class="g-title">Cast</span> & <span class="g-title">Crew</span>', 'gender-title');
+    let gender_divide_container = getContainerWithTitle('genderDivide', 'Gender Divide : <div id="gender-chart-label"><span class="g-title">CAST</span> & <span class="g-title">CREW</span></div>', 'gender-title');
 
     // Chart Legend
     let chart_legend = createChartLegend();
