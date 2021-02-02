@@ -18,7 +18,7 @@ img.movieImage {
     border-radius: 10px;
     opacity: .7;
     /* Layout */
-    width:122px;
+    width: 154px;
     /* Effects */
     cursor: pointer;
     transition: all 0.2s ease;
@@ -69,14 +69,14 @@ Movie Details
 /* All individual movie details container*/
 .movieWrapper {
     /* Layout*/
-    width: 122px;
+    width: 136px;
     /* Effects*/
     transition: 1s;
 }
 /* Toggle for currently selecetd movie */
 .wrapperExpanded {
     /* Layout */
-    width: 872px;
+    width: 904px;
 }
 
 /* Movie Details in scroll */
@@ -99,7 +99,7 @@ Movie Details
     /* Layout */
     height: 100%;
     overflow-y: hidden;
-    width: 740px;
+    width: 755px;
     /* Effects */
     opacity: 1;             /* Render visible on click */
     /* transition: 1s;         /* Animation delay */
@@ -115,32 +115,36 @@ p.movieTitle-Expanded {
     /* Layout */
     position: relative; /* needed for adjustable border (technically)  */
     max-width: 500px;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     /* Style */
     font-size: 30px;
     white-space: pre-wrap;
 }
 /* Add border bottom that goes past margin */
-p.movieTitle-Expanded:after {
+/* p.movieTitle-Expanded:after {
     content: "";
-    /* Layout */
+
     height: 1px;
     width: 100%;
     position: absolute;
     left: -10px;
     bottom: 0;
-    /* Style */
+
     background: #ffffff;
     opacity: 0.4;
-}
+} */
 /* Movie Year (within title) */
 span.movieYear {
     /* Layout */
     margin-left: 10px;
     /* Style */
     font-size: 16px;
-    font-weight: 300;
-    color: #ffffffa3;
+    font-weight: 500;
+    color: #ffffff;
+    background-color: #6c5ce7;
+    padding: 3px 7px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 /* Movie Rating */
@@ -158,17 +162,20 @@ div.movieRating-container {
     /* margin-left: 100px; */
 }
 div.movieTextWrapper {
-      padding: 6px 3px;
-      border: 1px solid #ffffff5c;
-      border-radius: 5px;
+      padding: 6px 6px;
+      /* border: 1px solid #ffffff5c; */
+      border-radius: 38px;
       margin-bottom: 6px;
+      color: white;
+      background-image: linear-gradient(-20deg, #da6f7e 0%, #ff9a44 100%);
+      cursor: pointer;
 }
 p.movieRating-text {
     /* Layout */
     margin: 0;
     /* Style*/
     font-size: 22px;
-    font-weight: 400;
+    font-weight: 700;
 }
 p.details-Overview {
     white-space: pre-wrap;
@@ -194,7 +201,7 @@ div.movieDetails-container {
     white-space: pre-wrap;
 }
 div.movieInfo-wrapper {
-    padding: 20px 40px 34px 40px;
+    padding: 14px 40px 34px 40px;
 }
 div.readMore {
     text-align: right;
@@ -254,8 +261,8 @@ div.icon-value-container {
 }
 p.award-value {
     /* Style */
-    font-size: 13vh;
-    font-weight: 100;
+    font-size: 12vh;
+    font-weight: 300;
     /* Layout */
     margin: 0;
     /* Position */
@@ -264,7 +271,7 @@ p.award-value {
 }
 img.award-img {
     /* Size */
-    height: 10vh;
+    height: 9vh;
     width: auto;
     /* Layout */
     padding-top: 4px;
@@ -273,36 +280,59 @@ img.award-img {
 p.award-name {
     /* Style */
     font-size: 19px;
-    font-weight: 200;
+    font-weight: 300;
     letter-spacing: 0.4em;
     text-align: center;
+    text-transform: uppercase;
     /* Layout */
     margin: 0;
 }
-
+div#movieAwards {
+  padding-bottom: 40px;
+}
+div#budgetRevenue {
+  padding-bottom: 30px;
+}
 /*************
 BUDGET/REVENUE
 *************/
 div#percentage-container {
     /* Style */
-    border: 1px solid white;
+    /* border: 1px solid white; */
     /* Layout */
     display: flex;
     margin: 2vh 5vw;
 }
 div#percentage-one {
     /* Style*/
-    background-color: white;
-    color: black;
+    background-color: #2d287c;
+    color: white;
     text-align: center;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+div#percentage-two {
+    /* Style*/
+    -webkit-border-top-right-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+    -moz-border-radius-topright: 6px;
+    -moz-border-radius-bottomright: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 div.percentage-section {
     /* Style */
-    font-weight: 100;
+    font-weight: 400;
     text-align: center;
     font-size: 4vh;
     /* Layout */
-    padding: 10px 0;
+    padding: 10px 44px;
+    background-color: #6c5ce7;
 }
 
 /*************
@@ -322,10 +352,10 @@ Visualisations
 h2.viz-title {
     /* style */
     font-size: 30px;
-    font-weight: 300;
+    font-weight: 400;
 
     /* Layout */
-    margin: 40px 20px;
+    margin: 40px 20px 48px 20px;
     position: relative;
 }
 h2.viz-title:after {
@@ -345,7 +375,7 @@ FOOTER
 *****/
 p#footer-text {
     font-size: 14px;
-    font-weight: 100;
+    font-weight: 300;
     text-align: center;
 }
 
@@ -358,7 +388,7 @@ HELPER CLASSES
 }
 
 /* Mobile Responsiveness */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
     #bgImage {
         background-size: 146% !important;
         background-position: center center !important;
@@ -366,7 +396,7 @@ HELPER CLASSES
         background-repeat: repeat-y;
     }
     .wrapperExpanded {
-        width: 78vw;
+        width: 80vw;
     }
     div.movieDetails-container, div.overview-container {
         display: block;
@@ -395,10 +425,44 @@ HELPER CLASSES
         white-space: pre-wrap;
         margin-left: 20px;
     }
+    p.movieTitle-Expanded {
+        margin-left: 20px;
+    }
     div.movieInfo-wrapper{
         padding: 20px 18px 34px 18px;
     }
     div.detailsExpanded {
         width: 47vw;
+    }
+    div#award-content {
+      margin: 0;
+    }
+    div.award-container {
+      margin: 0 10px;
+        display: block;
+        padding: 27px 0px;
+    }
+    p.award-value {
+          font-size: 10vh;
+    }
+    img.award-img {
+      height: 7vh;
+    }
+    p.award-name {
+      font-size: 16px;
+    }
+    div.center {
+        display: block;
+    }
+    div.icon-value-container {
+      justify-content: center;
+    }
+    div.percentage-section {
+      font-size: 16px;
+      padding: 21px 51px 21px 12px;
+      font-weight: 600;
+    }
+    h2.viz-title {
+      font-size: 26px;
     }
 }
