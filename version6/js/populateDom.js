@@ -328,7 +328,7 @@ function addGenderDivide(formattedData, movieId) {
     // Get Data
     let genderData = formattedData[movieId]['cast_crew_stats'];
 
-    // Popluate Data
+    // Populate Data
     let chartData = {
         labels: Object.keys(genderData['overall']).slice(0,2),
         datasets: [{
@@ -404,5 +404,16 @@ function addPosters(formattedData) {
     bgImg.style.backgroundPosition = "center 8%";     // Forces poster to start from top of screen
     bgImg.style.backgroundSize = "100%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
 
+    addPlayButton(bgImg, formattedData);
     // addTrending(formattedData);
+}
+
+// Create Play btn within BgImg Poster
+function addPlayButton(bgImg, formattedData) {
+    let play_container = customElement('div', '', '', 'play-container');
+    let play_btn = customElement('div', '', '', 'play-btn');
+
+    play_container.appendChild(play_btn);
+
+    bgImg.appendChild(play_container);
 }
