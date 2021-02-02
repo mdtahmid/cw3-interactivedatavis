@@ -334,32 +334,23 @@ function addGenderDivide(formattedData, movieId) {
         datasets: [{
             label: 'Cast',
             data: Object.values(genderData['cast']).slice(0,2),
-            backgroundColor: ['rgba(122,95,208,1)', 'rgba(161, 146, 209, 1)'],
-            hoverBackgroundColor: ['rgba(122,95,208, 1)', 'rgba(252, 235, 233, 1)'],
+            backgroundColor: ['rgb(122, 95, 208)', 'rgb(170, 147, 245)'],
+            hoverBackgroundColor: ['rgb(161, 146, 209)', 'rgb(220, 214, 247)'],
             borderColor: 'rgba(0,0,0,0)'
         },{
             label: 'Crew',
             data: Object.values(genderData['crew']).slice(0,2),
-            backgroundColor: ['rgba(255, 92, 108, 1)', 'rgba(255, 136, 153, 1)'],
-            hoverBackgroundColor: 'rgba(122,95,208, 1)',
+            backgroundColor: ['rgb(255, 92, 108)', 'rgb(250, 179, 183)'],
+            hoverBackgroundColor: ['rgb(251, 162, 171)', 'rgb(247, 205, 208)'],
             borderColor: 'rgba(0,0,0,0)'
-        }
-        ]
+        }]
     };
 
-    function containsObject(obj, list) {
-        var i;
-        for (i = 0; i < list.length; i++) {
-            if (list[i].label === obj.label ) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     // Chart Options
     let chartOptions = {
         responsive: true,
+        legend: { display: false},
         tooltips: {
             callbacks: {
                 title: function(tooltipItem, data) {
