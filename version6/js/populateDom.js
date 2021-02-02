@@ -152,7 +152,42 @@ function addMovieDetails(formattedData, movie_id, index) {
     movieInfoWrapper.appendChild(overview_container);
 
     readMoreText(); //run read more function
+
+    stickyHeader();
+
 } // END: addMovieDetails
+
+function stickyHeader(){
+  var stickyHeader = document.getElementById("stickyHeader");
+  stickyHeader.innerHTML = '';
+  let movieImgSticky = customElement('img', 'movie-img-sticky', '');
+
+  stickyHeader.appendChild(movieImgSticky);
+
+
+  var srctest = document.querySelector(".wrapperExpanded img").src;
+  var titletest = document.querySelector(".wrapperExpanded .movieTitle-Expanded").innerHTML;
+  var releaseDatetest = document.querySelectorAll(".wrapperExpanded .details-Release span")[1].innerHTML;
+  var genretest = document.querySelector(".wrapperExpanded .movieGenres").innerHTML;
+  var movieRatingtest = document.querySelector(".wrapperExpanded .movieRating-text").innerHTML;
+  movieImgSticky.src = srctest;
+
+  var desired = titletest.split('<')[0];
+  var desired2 = releaseDatetest.split(':')[1];
+  let movieTitleSticky = customElement('p', 'movie-title-sticky', desired);
+  let movieGenresSticky = customElement('p', 'movie-genres-sticky', genretest);
+  let releaseDataSticky = customElement('p', 'movie-release-sticky', desired2);
+
+  let movieRatingSticky = customElement('p', 'movie-rating-sticky', movieRatingtest+"/10");
+  let movieRatingWrapperSticky = customElement('div', 'movie-rating-wrapper-sticky', '');
+
+  movieRatingWrapperSticky.appendChild(movieRatingSticky);
+
+  stickyHeader.appendChild(movieTitleSticky);
+  stickyHeader.appendChild(movieGenresSticky);
+  stickyHeader.appendChild(releaseDataSticky);
+  stickyHeader.appendChild(movieRatingWrapperSticky);
+}
 
 
 // Awards Section of Dom
