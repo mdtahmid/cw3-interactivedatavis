@@ -15,6 +15,7 @@ function addAllDomElements(formattedData) {
     addAwardsDetails(formattedData, default_id);
     addBudgetRevenue(formattedData, default_id);
     addFilmLocation(formattedData, default_id);
+    addGenderDivide(formattedData, default_id);
 
     //addCharts(formattedData);                     // Add charts to corresponding sections
 } // END: addAllDomElements
@@ -307,20 +308,48 @@ async function getMapData(formattedData, movieId) {
     return mapData
 }
 
+function addGenderDivide(formattedData, movieId) {
+    let gender_divide_container = getContainerWithTitle('genderDivide', 'Cast & Crew Gender Divide');
+    let gender_chart_container = customElement('div', 'chart-container', '', 'gender-chart-container');
+    let gender_chart = customElement('canvas', '', '', 'gender-split');
+    gender_chart_container.appendChild(gender_chart);
+    gender_divide_container.appendChild(gender_chart_container);
 
-// Abstract function to add an object of data into a given container, specifying a title
-function addDomElements(container_id, elements, element_title) {
-    // Get and clear container
-    let element_container = document.getElementById(container_id);
-    element_container.textContent = '';
+    let genderData = formattedData[movieId]['cast_crew_stats'];
 
-    // Add title
-    element_container.appendChild(customElement('h2', 'viz-title', element_title));
+    let chartData = {
+        labels: Object.keys(genderData['overall']).slice(0,2),
+        datasets: [{
+            label: 'Cast',
+            data: Object.values(genderData['cast']).slice(0,2),
+            backgroundColor: ['rgba(235,235,235,1)', 'rgba(0,0,0,0)'],
+            // backgroundColor: ['rgba(248,249,250,1)', 'rgba(0,0,0,0)'],	// Backup color
+            hoverBackgroundColor: 'rgba(255,255,255,1)'
+        },{
+            label: 'Crew',
+            data: Object.values(genderData['crew']).slice(0,2),
+            backgroundColor: ['rgba(235,235,235,1)', 'rgba(0,0,0,0)'],
+            hoverBackgroundColor: 'rgba(255,255,255,1)'
+        }
+        ]
+    };
 
-    // Add all elements to dom
-    for (const el in elements) {
-        element_container.appendChild(customElement('p', el, elements[el]));
-    }
+    let chartOptions = {
+        responsive: true,
+        legend: {
+            position: 'bottom',
+            display: true,
+            reverse: true
+        },
+    };
+
+    // var gender_ctx = document.getElementById('gender-split').getContext('2d');
+
+    var genderChart = new Chart($('#gender-split'), {
+        type: 'doughnut',
+        data: chartData,
+        options: chartOptions
+    });
 }
 
 
