@@ -403,10 +403,13 @@ function addPosters(formattedData) {
 
 // Create Play btn within BgImg Poster
 function addPlayButton(bgImg, formattedData) {
-    let play_container = customElement('div', '', '', 'play-container');
-    let play_btn = customElement('div', '', '', 'play-btn');
+    if (bgImg.childElementCount < 1) {      // Check no element exist first
+        // Create container & btn
+        let play_container = customElement('div', '', '', 'play-container');
+        let play_btn = customElement('div', '', '', 'play-btn');
 
-    play_container.appendChild(play_btn);
-
-    bgImg.appendChild(play_container);
+        // Append btn to container, container to bg
+        play_container.appendChild(play_btn);
+        bgImg.appendChild(play_container);
+    }
 }
