@@ -338,18 +338,18 @@ div.percentage-section {
 /*************
 FILM LOCATIONS
 *************/
+div#filmLocations {
+
+}
 div#film-map {
-    width: 45vw;
     min-height: 40vh;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 /************
 GENDER DIVIDE
 ************/
 div#genderDivide {
-    display: inline-block;
-    max-width: 45vw;
 }
 div#gender-chart-container {
     position: relative;
@@ -395,6 +395,12 @@ HELPER CLASSES
 .center {
     display: flex;
     justify-content: center;
+}
+
+.inline {
+    display: inline-block;
+    width: 45vw;
+    vertical-align: top;
 }
 
 /*************
