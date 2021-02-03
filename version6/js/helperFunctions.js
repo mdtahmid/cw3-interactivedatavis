@@ -271,3 +271,19 @@ function addPlayButton(bgImg, formattedData) {
         bgImg.appendChild(play_container);
     }
 }
+
+// Append elements to dom, everwritting if they exist
+function appendToDomCheck(element, container_id, checkElement_id, returnResult=false) {
+    let check_element = document.getElementById(checkElement_id);
+    if (check_element) {
+        check_element = element;
+        if (returnResult) {
+            return true
+        }
+    } else {
+        document.getElementById(container_id).appendChild(element)
+        if (returnResult) {
+            return null
+        }
+    }
+}

@@ -203,8 +203,10 @@ function addAwardsDetails(formattedData, movieId) {
         award_content_container.appendChild(el_container);
     }
     // Append container to DOM
-    document.getElementById('movieAwards').appendChild(award_content_container);
+    appendToDomCheck(award_content_container, 'movieAwards', 'award-content');
 }
+
+
 
 // Add Budget vs Box Office Section
 function addBudgetRevenue(formattedData, movieId) {
@@ -228,17 +230,19 @@ function addBudgetRevenue(formattedData, movieId) {
     percentage_container.appendChild(percentage_two);
 
     // Append to awards container
-    document.getElementById('budgetRevenue').appendChild(percentage_container);
+    appendToDomCheck(percentage_container, 'budgetRevenue', 'percentage-container');
 }
 
 
 // Add Film Location Map
 function addFilmLocation(formattedData, movieId) {
     let film_map = customElement('div', '', '', 'film-map');
-    document.getElementById('filmLocations').appendChild(film_map);
+    let component_exists = appendToDomCheck(film_map, 'filmLocations', 'film-map', true);
 
-    getMapData(formattedData, movieId)
-        .then(mapData => buildMap(mapData));
+    if (!component_exists) {
+        getMapData(formattedData, movieId)
+            .then(mapData => buildMap(mapData));
+    }
 }
 
 // Build a map (used for Film location
@@ -276,7 +280,8 @@ function addGenderDivide(formattedData, movieId) {
     let gender_chart = customElement('canvas', '', '', 'gender-split');
 
     // Append Elements
-    gender_divide_container.appendChild(chart_legend);
+    appendToDomCheck(chart_legend, 'genderDivide', 'legend-container');
+    // gender_divide_container.appendChild(chart_legend);
     gender_chart_container.appendChild(gender_chart);
     gender_divide_container.appendChild(gender_chart_container);
 
