@@ -9,6 +9,8 @@ function addAllDomElements(formattedData) {
     let default_id = '299534';                          // Default is currently #1 movie Avengers:Endgame
     let default_index = 0;
 
+    removeAnimation();
+
     addTrending(formattedData);                         // Add trending posters to top of Dom
     expandMovieDetails(formattedData, default_id, default_index);   // Expand 1st Movie Details
     addMovieDetails(formattedData, default_id, default_index);         // Add movie details
