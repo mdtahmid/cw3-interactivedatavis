@@ -16,7 +16,7 @@ div#play-container {
     align-items: center;
     height: 400px;
 }
-div#play-btn {
+button#play-btn {
     height: 45px;
     width: 45px;
     border: 1px solid white;
