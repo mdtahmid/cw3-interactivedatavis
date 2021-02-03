@@ -520,7 +520,27 @@ div.poster-placeholder {
     height: 231px;
     border-radius: 10px;
     background-color: #444444;
+
+    display: flex;
+    justify-content: center;
 }
+div.poster-load-animation {
+    width: 5px;
+    height: 5px;
+    background-color: white;
+    border-radius: 50%;
+
+    align-self: center;
+
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
 /*****
 FOOTER
 *****/
