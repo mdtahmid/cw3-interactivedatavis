@@ -86,33 +86,11 @@
 </body>
 <footer>
     <p id="footer-text" class="center">
-        Project coded by Damien Pilat & Mohammed Tahmid.<br>
-        Visuals and Artwork created by authors, unless otherwise specified.<br>
+        Project coded by Damien Pilat & Mohammed Tahmid | Visuals and Artwork created by authors.<br>
         Prototyping explored by Chenjun Wu & Xiaojing Wang.<br>
-        Project made use of: Chart.js, ReadMoreJs, SipmleBar & Google Fonts.
+        Project made use of: Chart.js, DataMaps, ReadMoreJs, SipmleBar & Google Fonts.
     </p>
 </footer>
-
-<!-- Can we move this to a seperate file? -->
-<script type="text/javascript">
-//credits: https://stackoverflow.com/questions/11340789/make-an-element-visible-only-when-scrolled-down-to-px
-
-var isVisible = false;
-
-$(window).scroll(function(){
-   var shouldBeVisible = $(window).scrollTop()>700;
-   if (shouldBeVisible && !isVisible) {
-        isVisible = true;
-        $('#stickyHeader').fadeIn(400);
-   } else if (isVisible && !shouldBeVisible) {
-        isVisible = false;
-        $('#stickyHeader').fadeOut(400);
-  }
-});
-
-$('#stickyHeader').click(function(){
-    $(window).scrollTop(0);
-});
-</script>
+<!-- Script to run once Dom loaded -->
 <script src="js/documentSetup.js"></script>
 </html>
