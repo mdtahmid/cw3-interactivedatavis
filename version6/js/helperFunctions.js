@@ -135,7 +135,7 @@ function getMembers(role, formattedData, movie_id) {
 } // END: getDirectors
 
 function createChartLegend() {
-    let legend_container = customElement('div', 'legend-container', '');
+    let legend_container = customElement('div', '', '', 'legend-container');
     let legend_one = customElement('div', 'legend-content', 'Female', 'legend-txt-female');
     let legend_two = customElement('div', 'legend-content', 'Male', 'legend-txt-male');
 
@@ -265,9 +265,29 @@ function addPlayButton(bgImg, formattedData) {
         // Create container & btn
         let play_container = customElement('div', '', '', 'play-container');
         let play_btn = customElement('button', '', '', 'play-btn');
+        let play_btn_wrapper = customElement('div', '', '', 'play-btn-wrapper');
+        let play_icon = customElement('i', 'videoPlayIcon fas fa-play', '', '');
 
         // Append btn to container, container to bg
         play_container.appendChild(play_btn);
         bgImg.appendChild(play_container);
+        play_btn.appendChild(play_icon);
+    }
+}
+
+// Append elements to dom, overwriting if they exist
+function appendToDomCheck(element, container_id, checkElement_id, returnResult=false) {
+    let check_element = document.getElementById(checkElement_id);
+    console.log("check_element:", check_element);
+    if (check_element) {
+        check_element = element;
+        if (returnResult) {
+            return true
+        }
+    } else {
+        document.getElementById(container_id).appendChild(element);
+        if (returnResult) {
+            return null
+        }
     }
 }
