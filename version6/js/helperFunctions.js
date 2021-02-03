@@ -258,16 +258,18 @@ function addPosters(formattedData) {
     // addTrending(formattedData);
 }
 
-// Create Play btn within BgImg Poster
 function addPlayButton(bgImg, formattedData) {
     if (bgImg.childElementCount < 1) {      // Check no element exist first
         // Create container & btn
         let play_container = customElement('div', '', '', 'play-container');
         let play_btn = customElement('button', '', '', 'play-btn');
+        let play_btn_wrapper = customElement('div', '', '', 'play-btn-wrapper');
+        let play_icon = customElement('i', 'videoPlayIcon fas fa-play', '', '');
 
         // Append btn to container, container to bg
         play_container.appendChild(play_btn);
         bgImg.appendChild(play_container);
+        play_btn.appendChild(play_icon);
     }
 }
 
