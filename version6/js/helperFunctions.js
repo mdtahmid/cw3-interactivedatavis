@@ -178,10 +178,10 @@ function removeAnimation() {
 // Library to set the number of visible words in a div, toggleable
 function readMoreText() {
     $readMoreJS.init({
-        target: '.details-Overview',           // Selector of the element the plugin applies to (any CSS selector, eg: '#', '.'). Default: ''
-        numOfWords: 40,               // Number of words to initially display (any number). Default: 50
-        toggle: true,                 // If true, user can toggle between 'read more' and 'read less'. Default: true
-        moreLink: 'Read more',    // The text of 'Read more' link. Default: 'read more ...'
-        lessLink: 'Read less'         // The text of 'Read less' link. Default: 'read less'
+        target: '.details-Overview',    // Selector of the element the plugin applies to (any CSS selector, eg: '#', '.'). Default: ''
+        numOfWords: 40,                 // Number of words to initially display (any number). Default: 50
+        toggle: true,                   // If true, user can toggle between 'read more' and 'read less'. Default: true
+        moreLink: 'Read more',          // The text of 'Read more' link. Default: 'read more ...'
+        lessLink: 'Read less'           // The text of 'Read less' link. Default: 'read less'
     });
 }
