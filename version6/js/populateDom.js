@@ -279,11 +279,12 @@ function addGenderDivide(formattedData, movieId) {
     let gender_chart_container = customElement('div', 'chart-container', '', 'gender-chart-container');
     let gender_chart = customElement('canvas', '', '', 'gender-split');
 
-    // Append Elements
-    appendToDomCheck(chart_legend, 'genderDivide', 'legend-container');
-    // gender_divide_container.appendChild(chart_legend);
-    gender_chart_container.appendChild(gender_chart);
-    gender_divide_container.appendChild(gender_chart_container);
+    // Append Elements if they dont exist
+    let elementExists = appendToDomCheck(chart_legend, 'genderDivide', 'legend-container', true);
+    if (!elementExists) {
+        gender_chart_container.appendChild(gender_chart);
+        gender_divide_container.appendChild(gender_chart_container);
+    }
 
     // Get Data
     let genderData = formattedData[movieId]['cast_crew_stats'];
