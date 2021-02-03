@@ -235,19 +235,19 @@ function addBudgetRevenue(formattedData, movieId) {
 
 
 // Add Film Location Map
+let filmMap;
 function addFilmLocation(formattedData, movieId) {
     let film_map = customElement('div', '', '', 'film-map');
     let component_exists = appendToDomCheck(film_map, 'filmLocations', 'film-map', true);
 
-    if (!component_exists) {
-        getMapData(formattedData, movieId)
-            .then(mapData => buildMap(mapData));
-    }
+    getMapData(formattedData, movieId)
+        .then(mapData => buildMap(mapData));
+
 }
 
 // Build a map (used for Film location
 function buildMap(mapData) {
-    let filmMap = new Datamap({
+    filmMap = new Datamap({
         element: document.getElementById("film-map"),
         scope: 'world',
         projection: 'equirectangular',
