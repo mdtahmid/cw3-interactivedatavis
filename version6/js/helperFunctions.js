@@ -80,7 +80,36 @@ function formatRunTime(time) {
     return rhours + "h " + rminutes + "min";
 }
 
+// ********
+// GET DATA
 
+
+// Get data for a given set of countries into the correct iso6331 alpha3 format
+async function getMapData(formattedData, movieId) {
+    let film_countries = formattedData[movieId].production_countries;
+    let country_codes = [];
+    film_countries.forEach(element => country_codes.push(element.iso_3166_1));
+
+    let country_conversion = {};
+    let mapData = {};
+
+    await $.ajax({
+        type: 'GET',
+        url: 'iso_3166_a2_a3.csv',
+        dataType: 'text',
+        success: function (response) {
+            country_conversion = Papa.parse(response)['data'];
+            for (let i = 0; i < country_conversion.length; i++) {
+                for (let j = 0; j < country_codes.length; j++) {
+                    if (country_codes[j] === country_conversion[i][1]) {
+                        mapData[country_conversion[i][2]] = {fillKey: 'active'};
+                    }
+                }
+            }
+        }
+    });
+    return mapData
+}
 // Get count of gender in a dict
 function getCount(list, gender) {
     let count = 0;                                          // let to store gender count
