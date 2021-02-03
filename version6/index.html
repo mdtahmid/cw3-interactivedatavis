@@ -73,15 +73,15 @@
     </div>
 
     <!--  Movie Data section  -->
-    <div id="movieDetails" class="loader"></div>
+    <div id="movieDetails"></div>
     <!--  Movie Awards section  -->
-    <div id="movieAwards" class="loader"></div>
+    <div id="movieAwards"></div>
     <!--  Movie Budget vs Revenue section  -->
-    <div id="budgetRevenue" class="loader"></div>
+    <div id="budgetRevenue"></div>
     <!--  Movie Film Location section  -->
-    <div id="filmLocations" class="inline loader"></div>
+    <div id="filmLocations" class="inline"></div>
     <!--  Gender Divide Chart -->
-    <div id="genderDivide" class="inline loader"></div>
+    <div id="genderDivide" class="inline"></div>
 
 </body>
 <footer>
@@ -92,6 +92,8 @@
         Project made use of: Chart.js, ReadMoreJs, SipmleBar & Google Fonts.
     </p>
 </footer>
+
+<!-- Can we move this to a seperate file? -->
 <script type="text/javascript">
 //credits: https://stackoverflow.com/questions/11340789/make-an-element-visible-only-when-scrolled-down-to-px
 
@@ -112,4 +114,5 @@ $('#stickyHeader').click(function(){
     $(window).scrollTop(0);
 });
 </script>
+<script src="js/documentSetup.js"></script>
 </html>
