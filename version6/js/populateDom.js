@@ -196,7 +196,6 @@ function stickyHeader() {
 
 // Awards Section of Dom
 function addAwardsDetails(formattedData, movieId) {
-    let awards_container = getContainerWithTitle('movieAwards', 'Awards & Nominations');
     let award_content_container = customElement('div', 'center', '', 'award-content');
 
     for (const element in formattedData[movieId].awards) {
@@ -220,14 +219,12 @@ function addAwardsDetails(formattedData, movieId) {
 
         award_content_container.appendChild(el_container);
     }
-    awards_container.appendChild(award_content_container);
-
+    // Append container to DOM
+    document.getElementById('movieAwards').appendChild(award_content_container);
 }
 
 // Add Budget vs Box Office Section
 function addBudgetRevenue(formattedData, movieId) {
-    let budget_container = getContainerWithTitle('budgetRevenue', 'Budget vs. Box Office');
-
     let percentage_filled = formattedData[movieId].budget / formattedData[movieId].revenue * 100;
 
     // Percentage container
@@ -248,15 +245,14 @@ function addBudgetRevenue(formattedData, movieId) {
     percentage_container.appendChild(percentage_two);
 
     // Append to awards container
-    budget_container.appendChild(percentage_container);
+    document.getElementById('budgetRevenue').appendChild(percentage_container);
 }
 
 
 // Add Film Location Map
 function addFilmLocation(formattedData, movieId) {
-    let film_container = getContainerWithTitle('filmLocations', 'Film Shoot Locations');
     let film_map = customElement('div', '', '', 'film-map');
-    film_container.appendChild(film_map);
+    document.getElementById('filmLocations').appendChild(film_map);
 
     getMapData(formattedData, movieId)
         .then(mapData => buildMap(mapData));
@@ -314,9 +310,7 @@ async function getMapData(formattedData, movieId) {
 }
 
 function addGenderDivide(formattedData, movieId) {
-    // Create Containers and Canvas
-    let gender_divide_container = getContainerWithTitle('genderDivide', 'Gender Divide : <div id="gender-chart-label"><span class="g-title">CAST</span> & <span class="g-title">CREW</span></div>', 'gender-title');
-
+    let gender_divide_container = document.getElementById('genderDivide');
     // Chart Legend
     let chart_legend = createChartLegend();
 
@@ -405,5 +399,20 @@ function addPlayButton(bgImg, formattedData) {
         // Append btn to container, container to bg
         play_container.appendChild(play_btn);
         bgImg.appendChild(play_container);
+    }
+}
+
+// Add Section Titles and loading animations
+function addSectionTitles() {
+    let sections = {
+        awards: getContainerWithTitle('movieAwards', 'Awards & Nominations'),
+        budget: getContainerWithTitle('budgetRevenue', 'Budget vs. Box Office'),
+        filmLocation: getContainerWithTitle('filmLocations', 'Film Shoot Locations'),
+        genderChart: getContainerWithTitle('genderDivide', 'Gender Divide : <div id="gender-chart-label"><span class="g-title">CAST</span> & <span class="g-title">CREW</span></div>', 'gender-title')
+    };
+
+    // Add Loader div to each element
+    for (const key in sections) {
+        sections[key].appendChild(customElement('div', 'loader', ''));
     }
 }
