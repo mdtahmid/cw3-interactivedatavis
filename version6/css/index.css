@@ -511,6 +511,16 @@ div.loader {
     100% { transform: rotate(360deg); }
 }
 
+
+/*****************
+Poster Placeholder
+*****************/
+div.poster-placeholder {
+    width: 154px;
+    height: 231px;
+    border-radius: 10px;
+    background-color: #444444;
+}
 /*****
 FOOTER
 *****/
@@ -730,5 +740,8 @@ p.movie-rating-sticky {
         display: block;
         width: 90vw;
         height: 90%;
+    }
+    div.loader {
+        margin: 5% auto;
     }
 }
