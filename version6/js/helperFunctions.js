@@ -264,7 +264,7 @@ function addPlayButton(bgImg, formattedData) {
     if (bgImg.childElementCount < 1) {      // Check no element exist first
         // Create container & btn
         let play_container = customElement('div', '', '', 'play-container');
-        let play_btn = customElement('div', '', '', 'play-btn');
+        let play_btn = customElement('button', '', '', 'play-btn');
 
         // Append btn to container, container to bg
         play_container.appendChild(play_btn);
