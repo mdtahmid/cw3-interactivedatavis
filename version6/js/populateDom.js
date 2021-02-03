@@ -42,6 +42,11 @@ function updateContents(movieId, index) {
 function addTrending(formattedData) {
     let moviesSorted = sortMoviesByRevenue(formattedData);
     // Loop through all movies
+
+    let movie_poster_container = document.getElementById('trending-movies-container');
+    movie_poster_container.innerHTML = '';
+    movie_poster_container.appendChild(customElement('h2', 'viz-title', 'Top Trending Movies'));
+
     moviesSorted.forEach((movieData, index) => {
         // Create wrapper div container
         let movieWrapper = document.createElement('div');
@@ -64,7 +69,7 @@ function addTrending(formattedData) {
         detailElement.id = 'movieDetail_' + index;
 
         // Append elements to Dom
-        document.getElementById('trending-movies-container').appendChild(movieWrapper);
+        movie_poster_container.appendChild(movieWrapper);
         movieWrapper.appendChild(moviePoster);
         movieWrapper.appendChild(detailElement);
     });
@@ -160,38 +165,6 @@ function addMovieDetails(formattedData, movie_id, index) {
     stickyHeader();
 
 } // END: addMovieDetails
-
-function stickyHeader() {
-    var stickyHeader = document.getElementById("stickyHeader");
-    stickyHeader.innerHTML = '';
-    let movieImgSticky = customElement('img', 'movie-img-sticky', '');
-
-    stickyHeader.appendChild(movieImgSticky);
-
-
-    var srctest = document.querySelector(".wrapperExpanded img").src;
-    var titletest = document.querySelector(".wrapperExpanded .movieTitle-Expanded").innerHTML;
-    var releaseDatetest = document.querySelectorAll(".wrapperExpanded .details-Release span")[1].innerHTML;
-    var genretest = document.querySelector(".wrapperExpanded .movieGenres").innerHTML;
-    var movieRatingtest = document.querySelector(".wrapperExpanded .movieRating-text").innerHTML;
-    movieImgSticky.src = srctest;
-
-    var desired = titletest.split('<')[0];
-    var desired2 = releaseDatetest.split(':')[1];
-    let movieTitleSticky = customElement('p', 'movie-title-sticky', desired);
-    let movieGenresSticky = customElement('p', 'movie-genres-sticky', genretest);
-    let releaseDataSticky = customElement('p', 'movie-release-sticky', desired2);
-
-    let movieRatingSticky = customElement('p', 'movie-rating-sticky', movieRatingtest + "/10");
-    let movieRatingWrapperSticky = customElement('div', 'movie-rating-wrapper-sticky', '');
-
-    movieRatingWrapperSticky.appendChild(movieRatingSticky);
-
-    stickyHeader.appendChild(movieTitleSticky);
-    stickyHeader.appendChild(movieGenresSticky);
-    stickyHeader.appendChild(releaseDataSticky);
-    stickyHeader.appendChild(movieRatingWrapperSticky);
-}
 
 
 // Awards Section of Dom
@@ -350,43 +323,3 @@ function addGenderDivide(formattedData, movieId) {
     });
 }
 
-
-// Add Posters once api call made
-function addPosters(formattedData) {
-    // Set BgImg to be first Trending Movie
-    let bgImg = document.getElementById('bgImage');
-    bgImg.style.backgroundImage = "url('" + formattedData[299534].backdrop_path + "')";
-    bgImg.style.backgroundPosition = "center 8%";     // Forces poster to start from top of screen
-    bgImg.style.backgroundSize = "100%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
-
-    addPlayButton(bgImg, formattedData);
-    // addTrending(formattedData);
-}
-
-// Create Play btn within BgImg Poster
-function addPlayButton(bgImg, formattedData) {
-    if (bgImg.childElementCount < 1) {      // Check no element exist first
-        // Create container & btn
-        let play_container = customElement('div', '', '', 'play-container');
-        let play_btn = customElement('div', '', '', 'play-btn');
-
-        // Append btn to container, container to bg
-        play_container.appendChild(play_btn);
-        bgImg.appendChild(play_container);
-    }
-}
-
-// Add Section Titles and loading animations
-function addSectionTitles() {
-    let sections = {
-        awards: getContainerWithTitle('movieAwards', 'Awards & Nominations'),
-        budget: getContainerWithTitle('budgetRevenue', 'Budget vs. Box Office'),
-        filmLocation: getContainerWithTitle('filmLocations', 'Film Shoot Locations'),
-        genderChart: getContainerWithTitle('genderDivide', 'Gender Divide : <div id="gender-chart-label"><span class="g-title">CAST</span> & <span class="g-title">CREW</span></div>', 'gender-title')
-    };
-
-    // Add Loader div to each element
-    for (const key in sections) {
-        sections[key].appendChild(customElement('div', 'loader', ''));
-    }
-}
