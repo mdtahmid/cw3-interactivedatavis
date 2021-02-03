@@ -485,6 +485,23 @@ h2.viz-title:after {
     opacity: 0.4;
 }
 
+/***************
+LOADER ANIMATION
+***************/
+div.loader {
+    border: 10px solid rgba(50,50,50,1);
+    border-top: 10px solid white;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    animation: spin 2s cubic-bezier(.1, .7,.2,.1) infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 /*****
 FOOTER
 *****/
