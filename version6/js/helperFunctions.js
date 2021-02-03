@@ -203,6 +203,38 @@ function removeAnimation() {
     }
 }
 
+// Create a sticky Header on page scroll
+function stickyHeader() {
+    var stickyHeader = document.getElementById("stickyHeader");
+    stickyHeader.innerHTML = '';
+    let movieImgSticky = customElement('img', 'movie-img-sticky', '');
+
+    stickyHeader.appendChild(movieImgSticky);
+
+
+    var srctest = document.querySelector(".wrapperExpanded img").src;
+    var titletest = document.querySelector(".wrapperExpanded .movieTitle-Expanded").innerHTML;
+    var releaseDatetest = document.querySelectorAll(".wrapperExpanded .details-Release span")[1].innerHTML;
+    var genretest = document.querySelector(".wrapperExpanded .movieGenres").innerHTML;
+    var movieRatingtest = document.querySelector(".wrapperExpanded .movieRating-text").innerHTML;
+    movieImgSticky.src = srctest;
+
+    var desired = titletest.split('<')[0];
+    var desired2 = releaseDatetest.split(':')[1];
+    let movieTitleSticky = customElement('p', 'movie-title-sticky', desired);
+    let movieGenresSticky = customElement('p', 'movie-genres-sticky', genretest);
+    let releaseDataSticky = customElement('p', 'movie-release-sticky', desired2);
+
+    let movieRatingSticky = customElement('p', 'movie-rating-sticky', movieRatingtest + "/10");
+    let movieRatingWrapperSticky = customElement('div', 'movie-rating-wrapper-sticky', '');
+
+    movieRatingWrapperSticky.appendChild(movieRatingSticky);
+
+    stickyHeader.appendChild(movieTitleSticky);
+    stickyHeader.appendChild(movieGenresSticky);
+    stickyHeader.appendChild(releaseDataSticky);
+    stickyHeader.appendChild(movieRatingWrapperSticky);
+}
 
 // Library to set the number of visible words in a div, toggleable
 function readMoreText() {
@@ -213,4 +245,29 @@ function readMoreText() {
         moreLink: 'Read more',          // The text of 'Read more' link. Default: 'read more ...'
         lessLink: 'Read less'           // The text of 'Read less' link. Default: 'read less'
     });
+}
+
+// Add Posters once api call made
+function addPosters(formattedData) {
+    // Set BgImg to be first Trending Movie
+    let bgImg = document.getElementById('bgImage');
+    bgImg.style.backgroundImage = "url('" + formattedData[299534].backdrop_path + "')";
+    bgImg.style.backgroundPosition = "center 8%";     // Forces poster to start from top of screen
+    bgImg.style.backgroundSize = "100%";         // narrows over screen width but shows more content. Increase percentage and bgImg height
+
+    addPlayButton(bgImg, formattedData);
+    // addTrending(formattedData);
+}
+
+// Create Play btn within BgImg Poster
+function addPlayButton(bgImg, formattedData) {
+    if (bgImg.childElementCount < 1) {      // Check no element exist first
+        // Create container & btn
+        let play_container = customElement('div', '', '', 'play-container');
+        let play_btn = customElement('div', '', '', 'play-btn');
+
+        // Append btn to container, container to bg
+        play_container.appendChild(play_btn);
+        bgImg.appendChild(play_container);
+    }
 }
