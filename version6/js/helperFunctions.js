@@ -116,18 +116,6 @@ function createChartLegend() {
     return legend_container;
 }
 
-// Return total of dataset (for Chart.js donut charts)
-// Loops through metadata total value (index changes per datatype, hence need for recursion)
-function getTotal(dataset, index=0) {
-    var total;
-    try {
-        total = dataset['_meta'][index]['total'];
-    } catch (error) {
-        total = getTotal(dataset, index+1)
-    }
-    return total
-}
-
 // ************
 // DOM ELEMENTS
 
