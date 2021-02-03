@@ -41,6 +41,17 @@ i.videoPlayIcon {
 }
 
 /*************
+Popularity chart
+*************/
+div#popularity-chart-container {
+  width: 50%;
+}
+div#popularityRank {
+  padding-bottom: 150px;
+}
+
+
+/*************
 MOVIE CAROUSEL
 *************/
 /* Movie image */
@@ -794,5 +805,8 @@ p.movie-rating-sticky {
     }
     div.loader {
         margin: 5% auto;
+    }
+    div#popularity-chart-container {
+      width: 100%;
     }
 }

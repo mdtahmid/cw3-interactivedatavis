@@ -362,7 +362,7 @@ function addRankingPopularity(formattedData, movieId) {
         labels: movie_names,
         datasets: [{
             data: movie_popularity,
-            backgroundColor: 'rgb(235,235,235)',
+            backgroundColor: '#16a085',
             hoverBackgroundColor: 'rgba(255,255,255,1)'
         }],
     };
@@ -382,7 +382,16 @@ function addRankingPopularity(formattedData, movieId) {
                 display: true,
                 ticks: {
                     suggestedMin: 0,
-                    beginAtZero: true
+                    beginAtZero: true,
+                    fontColor: 'rgba(255,255,255,1)',
+                }
+            }],
+            yAxes: [{
+                display: true,
+                ticks: {
+                    suggestedMin: 0,
+                    // beginAtZero: true,
+                    fontColor: 'rgba(255,255,255,1)',
                 }
             }]
         },
