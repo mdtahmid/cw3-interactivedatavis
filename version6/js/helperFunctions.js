@@ -135,7 +135,7 @@ function getMembers(role, formattedData, movie_id) {
 } // END: getDirectors
 
 function createChartLegend() {
-    let legend_container = customElement('div', 'legend-container', '');
+    let legend_container = customElement('div', '', '', 'legend-container');
     let legend_one = customElement('div', 'legend-content', 'Female', 'legend-txt-female');
     let legend_two = customElement('div', 'legend-content', 'Male', 'legend-txt-male');
 
@@ -275,6 +275,7 @@ function addPlayButton(bgImg, formattedData) {
 // Append elements to dom, overwriting if they exist
 function appendToDomCheck(element, container_id, checkElement_id, returnResult=false) {
     let check_element = document.getElementById(checkElement_id);
+    console.log("check_element:", check_element);
     if (check_element) {
         check_element = element;
         if (returnResult) {
