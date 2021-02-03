@@ -17,6 +17,15 @@ function addMoviePosterPlaceholder() {
     for (let i=0; i<20; i++) {
         let movie_wrapper = customElement('div','movieWrapper', '');
         let poster_placeholder = customElement('div', 'poster-placeholder', '');
+        let load_animation = customElement('div', 'poster-load-animation', '');
+        if (i%3 === 0) {
+            load_animation.style.animationDelay = '0s';
+        } else if (i%3 === 1) {
+            load_animation.style.animationDelay = '.2s';
+        } else {
+            load_animation.style.animationDelay = '.4s';
+        }
+        poster_placeholder.appendChild(load_animation);
         movie_wrapper.appendChild(poster_placeholder);
         movie_poster_container.appendChild(movie_wrapper);
     }
