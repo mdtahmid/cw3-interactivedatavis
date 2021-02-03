@@ -31,8 +31,7 @@ function updateContents(movieId, index) {
     addMovieDetails(finalData, movieId, index);     // Update Movie Details
     addAwardsDetails(finalData, movieId);           // Update Awards
     addBudgetRevenue(finalData, movieId);           // Update Budget Revenue
-    addFilmLocation(finalData, movieId);            // Update Film Locations
-    addGenderDivide(finalData, movieId);
+    addFilmLocation(finalData, movieId);
 } // END: updateBgImg
 
 
@@ -76,7 +75,7 @@ function addTrending(formattedData) {
 // Add Movie Details to DOM
 function addMovieDetails(formattedData, movie_id, index) {
     // Get movie details container
-    let details_container = document.getElementById('movieDetail_' + index);
+    let details_container = document.getElementById('movieDetail_'+index);
     details_container.textContent = '';         // Remove content before adding new elements
 
     // Header for movie main details
@@ -94,14 +93,14 @@ function addMovieDetails(formattedData, movie_id, index) {
     movieTitle.appendChild(movieYear);
 
     // Movie Genres
-    let movieGenres = customElement('p', 'movieGenres', formattedData[movie_id].genres.map((key) => key.name).join(', '));
+    let movieGenres = customElement('p', 'movieGenres', formattedData[movie_id].genres.map((key) => key.name ).join(', '));
 
     // Rating container & Text element
     let movieRating = document.createElement('div');
     movieRating.className = "movieRating-container";
     let movieTextWrapper = document.createElement('div');
     movieTextWrapper.className = "movieTextWrapper";
-    let rating = customElement('p', "movieRating-text", formattedData[movie_id]['vote_average']);
+    let rating = customElement('p',"movieRating-text", formattedData[movie_id]['vote_average']);
     movieTextWrapper.appendChild(rating);
     movieRating.appendChild(movieTextWrapper);        // Append rating text to rating div
 
@@ -137,7 +136,7 @@ function addMovieDetails(formattedData, movie_id, index) {
 
     // Add all Elements to Div as paragraphs
     for (const elements in detailsElements) {
-        movieDetails.appendChild(customElement('p', "movieDetails details-" + elements, "<span>" + elements + "</span><span>: " + detailsElements[elements] + "</span>"));
+        movieDetails.appendChild(customElement('p', "movieDetails details-"+elements, "<span>" + elements + "</span><span>: " + detailsElements[elements] + "</span>"));
     }
 
     // Create div and content for Details Overview
@@ -159,38 +158,36 @@ function addMovieDetails(formattedData, movie_id, index) {
 
 } // END: addMovieDetails
 
+function stickyHeader(){
+  var stickyHeader = document.getElementById("stickyHeader");
+  stickyHeader.innerHTML = '';
+  let movieImgSticky = customElement('img', 'movie-img-sticky', '');
 
-// Sticky header when scrolling down
-function stickyHeader() {
-    var stickyHeader = document.getElementById("stickyHeader");
-    stickyHeader.innerHTML = '';
-    let movieImgSticky = customElement('img', 'movie-img-sticky', '');
-
-    stickyHeader.appendChild(movieImgSticky);
+  stickyHeader.appendChild(movieImgSticky);
 
 
-    var srctest = document.querySelector(".wrapperExpanded img").src;
-    var titletest = document.querySelector(".wrapperExpanded .movieTitle-Expanded").innerHTML;
-    var releaseDatetest = document.querySelectorAll(".wrapperExpanded .details-Release span")[1].innerHTML;
-    var genretest = document.querySelector(".wrapperExpanded .movieGenres").innerHTML;
-    var movieRatingtest = document.querySelector(".wrapperExpanded .movieRating-text").innerHTML;
-    movieImgSticky.src = srctest;
+  var srctest = document.querySelector(".wrapperExpanded img").src;
+  var titletest = document.querySelector(".wrapperExpanded .movieTitle-Expanded").innerHTML;
+  var releaseDatetest = document.querySelectorAll(".wrapperExpanded .details-Release span")[1].innerHTML;
+  var genretest = document.querySelector(".wrapperExpanded .movieGenres").innerHTML;
+  var movieRatingtest = document.querySelector(".wrapperExpanded .movieRating-text").innerHTML;
+  movieImgSticky.src = srctest;
 
-    var desired = titletest.split('<')[0];
-    var desired2 = releaseDatetest.split(':')[1];
-    let movieTitleSticky = customElement('p', 'movie-title-sticky', desired);
-    let movieGenresSticky = customElement('p', 'movie-genres-sticky', genretest);
-    let releaseDataSticky = customElement('p', 'movie-release-sticky', desired2);
+  var desired = titletest.split('<')[0];
+  var desired2 = releaseDatetest.split(':')[1];
+  let movieTitleSticky = customElement('p', 'movie-title-sticky', desired);
+  let movieGenresSticky = customElement('p', 'movie-genres-sticky', genretest);
+  let releaseDataSticky = customElement('p', 'movie-release-sticky', desired2);
 
-    let movieRatingSticky = customElement('p', 'movie-rating-sticky', movieRatingtest + "/10");
-    let movieRatingWrapperSticky = customElement('div', 'movie-rating-wrapper-sticky', '');
+  let movieRatingSticky = customElement('p', 'movie-rating-sticky', movieRatingtest+"/10");
+  let movieRatingWrapperSticky = customElement('div', 'movie-rating-wrapper-sticky', '');
 
-    movieRatingWrapperSticky.appendChild(movieRatingSticky);
+  movieRatingWrapperSticky.appendChild(movieRatingSticky);
 
-    stickyHeader.appendChild(movieTitleSticky);
-    stickyHeader.appendChild(movieGenresSticky);
-    stickyHeader.appendChild(releaseDataSticky);
-    stickyHeader.appendChild(movieRatingWrapperSticky);
+  stickyHeader.appendChild(movieTitleSticky);
+  stickyHeader.appendChild(movieGenresSticky);
+  stickyHeader.appendChild(releaseDataSticky);
+  stickyHeader.appendChild(movieRatingWrapperSticky);
 }
 
 
@@ -236,12 +233,12 @@ function addBudgetRevenue(formattedData, movieId) {
     // Percentage One
     let percentage_one = customElement('div', 'percentage-section', '', 'percentage-one');
     percentage_one.innerText = '$' + addThousandsComma(formattedData[movieId].budget);
-    percentage_one.style.minWidth = percentage_filled + '%';			// Min width as we want content to be always within div if section is smaller
+    percentage_one.style.minWidth = percentage_filled+'%';			// Min width as we want content to be always within div if section is smaller
 
     // Percentage Two
     let percentage_two = customElement('div', 'percentage-section', '', 'percentage-two');
     percentage_two.innerText = '$' + addThousandsComma(formattedData[movieId].revenue);
-    percentage_two.style.width = (100 - percentage_filled) + '%';
+    percentage_two.style.width = (100-percentage_filled)+'%';
 
     // Append to percentage container
     percentage_container.appendChild(percentage_one);
@@ -299,10 +296,10 @@ async function getMapData(formattedData, movieId) {
         type: 'GET',
         url: 'iso_3166_a2_a3.csv',
         dataType: 'text',
-        success: function (response) {
+        success: function(response) {
             country_conversion = Papa.parse(response)['data'];
-            for (let i = 0; i < country_conversion.length; i++) {
-                for (let j = 0; j < country_codes.length; j++) {
+            for (let i=0; i<country_conversion.length; i++) {
+                for (let j=0; j<country_codes.length; j++) {
                     if (country_codes[j] === country_conversion[i][1]) {
                         mapData[country_conversion[i][2]] = {fillKey: 'active'};
                     }
@@ -313,8 +310,6 @@ async function getMapData(formattedData, movieId) {
     return mapData
 }
 
-let genderChart;
-// Gender Split Donut Chart
 function addGenderDivide(formattedData, movieId) {
     // Create Containers and Canvas
     let gender_divide_container = getContainerWithTitle('genderDivide', 'Gender Divide : <div id="gender-chart-label"><span class="g-title">CAST</span> & <span class="g-title">CREW</span></div>', 'gender-title');
@@ -335,53 +330,54 @@ function addGenderDivide(formattedData, movieId) {
 
     // Populate Data
     let chartData = {
-        labels: Object.keys(genderData['overall']).slice(0, 2),
+        labels: Object.keys(genderData['overall']).slice(0,2),
         datasets: [{
             label: 'Cast',
-            data: Object.values(genderData['cast']).slice(0, 2),
+            data: Object.values(genderData['cast']).slice(0,2),
             backgroundColor: ['rgb(122, 95, 208)', 'rgb(170, 147, 245)'],
             hoverBackgroundColor: ['rgb(161, 146, 209)', 'rgb(220, 214, 247)'],
             borderColor: 'rgba(0,0,0,0)'
-        }, {
+        },{
             label: 'Crew',
-            data: Object.values(genderData['crew']).slice(0, 2),
+            data: Object.values(genderData['crew']).slice(0,2),
             backgroundColor: ['rgb(255, 92, 108)', 'rgb(250, 179, 183)'],
             hoverBackgroundColor: ['rgb(251, 162, 171)', 'rgb(247, 205, 208)'],
             borderColor: 'rgba(0,0,0,0)'
         }]
     };
 
+
     // Chart Options
     let chartOptions = {
         responsive: true,
-        legend: {display: false},
-        // Custom Tooltip
+        legend: { display: false},
         tooltips: {
             callbacks: {
-                title: function (tooltipItem, data) {
+                title: function(tooltipItem, data) {
                     var data_Category = data['datasets'][tooltipItem[0]['datasetIndex']]['label'];  // Get Category Label
-                    var data_type = data['labels'][tooltipItem[0]['index']];                        // Get Data Type
+                    var data_type = data['labels'][tooltipItem[0]['index']];    // Get Data Type
                     return data_type + ' ' + data_Category
                 },
-                label: function (tooltipItem, data) {
+                label: function(tooltipItem, data) {
                     var data_value = data['datasets'][0]['data'][tooltipItem['index']] + ' members';    // Get Data Value
                     var dataset = data['datasets'][0];                                                  // Calculate data percentage
-                    var total = getTotal(dataset);
-                    var data_percent = '(' + Math.round((dataset['data'][tooltipItem['index']] / total) * 100) + '%)';
+                    var data_percent = '(' + Math.round((dataset['data'][tooltipItem['index']] / dataset["_meta"][0]['total']) * 100) + '%)';
                     return data_value + ' ' + data_percent
                 }
             }
         }
     };
 
-    // Build Chart (delete previous copy first)
-    if (genderChart) { genderChart.destroy(); }
-    genderChart = new Chart($('#gender-split'), {
+    // var gender_ctx = document.getElementById('gender-split').getContext('2d');
+
+    // Build Chart
+    var genderChart = new Chart($('#gender-split'), {
         type: 'doughnut',
         data: chartData,
         options: chartOptions
     });
 }
+
 
 
 // Add Posters once api call made
