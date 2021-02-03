@@ -19,6 +19,7 @@ function addAllDomElements(formattedData) {
     addBudgetRevenue(formattedData, default_id);
     addFilmLocation(formattedData, default_id);
     addGenderDivide(formattedData, default_id);
+    addRankingPopularity(formattedData);
 } // END: addAllDomElements
 
 
@@ -45,7 +46,7 @@ function addTrending(formattedData) {
 
     let movie_poster_container = document.getElementById('trending-movies-container');
     movie_poster_container.innerHTML = '';
-    movie_poster_container.appendChild(customElement('h2', 'viz-title', 'Top Trending Movies'));
+    movie_poster_container.appendChild(customElement('h2', 'viz-title', 'Highest Grossing Movies'));
 
     moviesSorted.forEach((movieData, index) => {
         // Create wrapper div container
@@ -314,16 +315,16 @@ function addGenderDivide(formattedData, movieId) {
         tooltips: {
             callbacks: {
                 title: function (tooltipItem, data) {
-                    var data_Category = data['datasets'][tooltipItem[0]['datasetIndex']]['label'];  // Get Category Label
-                    var data_type = data['labels'][tooltipItem[0]['index']];    // Get Data Type
+                    let data_Category = data['datasets'][tooltipItem[0]['datasetIndex']]['label'];  // Get Category Label
+                    let data_type = data['labels'][tooltipItem[0]['index']];    // Get Data Type
                     return data_type + ' ' + data_Category
                 },
                 label: function (tooltipItem, data) {
-                    var data_value = data['datasets'][0]['data'][tooltipItem['index']] + ' members';    // Get Data Value
-                    var dataset = data['datasets'][0];                                                  // Calculate data percentage
-                    var total = getTotal(dataset);
-                    var data_percent = '(' + Math.round((dataset['data'][tooltipItem['index']] / total) * 100) + '%)';
-                    return data_value + ' ' + data_percent
+                    let data_value = data['datasets'][0]['data'][tooltipItem['index']] + ' members';    // Get Data Value
+                    let dataset = data['datasets'][0];                                                  // Calculate data percentage
+                    let total = getTotal(dataset);
+                    let data_percent = ' (' + Math.round((dataset['data'][tooltipItem['index']] / total) * 100) + '%)';
+                    return data_value + data_percent
                 }
             }
         }
@@ -335,5 +336,64 @@ function addGenderDivide(formattedData, movieId) {
         type: 'doughnut',
         data: chartData,
         options: chartOptions
+    });
+}
+
+function addRankingPopularity(formattedData, movieId) {
+    // ADD TITLE IN DOCUMENT SETUP
+
+    let popularity_rank_container = document.getElementById('popularityRank');
+
+    let popularity_chart_container = customElement('div', '', '', 'popularity-chart-container');
+    let popularity_chart = customElement('canvas', '', '', 'popularity-rank');
+
+    popularity_chart_container.appendChild(popularity_chart);
+    popularity_rank_container.appendChild(popularity_chart_container);
+
+
+    let movie_names = [];
+    Object.keys(formattedData).forEach(entry => { movie_names.push(formattedData[entry].name); });
+
+    let movie_popularity = [];
+    Object.keys(formattedData).forEach(entry => { movie_popularity.push(formattedData[entry].popularity)});
+
+
+    let barChart_data = {
+        labels: movie_names,
+        datasets: [{
+            data: movie_popularity,
+            backgroundColor: 'rgb(235,235,235)',
+            hoverBackgroundColor: 'rgba(255,255,255,1)'
+        }],
+    };
+    let barChart_options = {
+        tooltips: {
+            callbacks: {
+                title: function(tooltipItem) {
+                    return 'Rank ' + (parseInt(tooltipItem[0]['index'])+1)
+                },
+                label: function(tooltipItem, data) {
+                    return 'Popularity ' + data['datasets'][0]['data'][tooltipItem['index']];    // Get Data Value
+                }
+            }
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                ticks: {
+                    suggestedMin: 0,
+                    beginAtZero: true
+                }
+            }]
+        },
+        legend: {
+            display: false
+        }
+    };
+
+    let barChart = new Chart($('#popularity-rank'),{
+        type: 'horizontalBar',
+        data: barChart_data,
+        options: barChart_options
     });
 }
