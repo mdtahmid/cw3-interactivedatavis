@@ -197,7 +197,6 @@ function getContainerWithTitle(containerId, containerTitle, id='') {
 // Remove animation class from Dom elements
 function removeAnimation() {
     let animation_elements = document.querySelectorAll('.loader');
-    console.log("ANimation_el:", animation_elements);
     for (let i=0; i<animation_elements.length; i++) {
         animation_elements[i].classList.remove('loader');
     }
@@ -275,7 +274,6 @@ function addPlayButton(bgImg, formattedData) {
 // Append elements to dom, overwriting if they exist
 function appendToDomCheck(element, container_id, checkElement_id, returnResult=false) {
     let check_element = document.getElementById(checkElement_id);
-    console.log("check_element:", check_element);
     if (check_element) {
         check_element = element;
         if (returnResult) {

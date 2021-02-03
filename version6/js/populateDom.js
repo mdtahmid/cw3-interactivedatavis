@@ -83,10 +83,35 @@ function addTrending(formattedData) {
 // Add Link to video popup
 function addMoviePopup(formattedData, movie_id) {
     $(function() {
+
         let play_btn = $("button#play-btn");
         play_btn.attr("href", "https://www.youtube.com/watch?v=" + formattedData[movie_id]['video_id']);
         play_btn.YouTubePopUp();
+
+        document.getElementById('play-btn').addEventListener('click', videoBtnClick)
     });
+}
+
+function videoBtnClick() {
+    let wrapper = document.getElementsByClassName("YouTubePopUp-Wrap");
+    let actual_element = wrapper[0];
+
+    console.log("Wrapper-container:", wrapper, "length:", wrapper.length);
+
+    for (let i=0; i<wrapper.length;i++){
+        wrapper[i].remove()
+    }
+
+    document.querySelector("footer").appendChild(actual_element);
+
+    // if (wrapper.length > 1) {
+    //     wrapper[0].style.backgroundColor = 'rgba(0,0,0,.8)';
+    //     for(let i = 1; i < wrapper.length; i++) {
+    //         console.log("indiv_wrap:", wrapper[i]);
+    //         wrapper[i].remove();
+    //     }
+    // }
+    console.log("Wrapper-container-now:", wrapper, "length:", wrapper.length);
 }
 
 
