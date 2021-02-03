@@ -272,7 +272,7 @@ function addPlayButton(bgImg, formattedData) {
     }
 }
 
-// Append elements to dom, everwritting if they exist
+// Append elements to dom, overwriting if they exist
 function appendToDomCheck(element, container_id, checkElement_id, returnResult=false) {
     let check_element = document.getElementById(checkElement_id);
     if (check_element) {
@@ -281,7 +281,7 @@ function appendToDomCheck(element, container_id, checkElement_id, returnResult=f
             return true
         }
     } else {
-        document.getElementById(container_id).appendChild(element)
+        document.getElementById(container_id).appendChild(element);
         if (returnResult) {
             return null
         }
