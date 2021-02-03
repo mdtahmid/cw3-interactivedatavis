@@ -165,6 +165,14 @@ function getContainerWithTitle(containerId, containerTitle, id='') {
 }
 
 
+// Remove animation class from Dom elements
+function removeAnimation() {
+    let animation_elements = document.querySelectorAll('.loader');
+    console.log("ANimation_el:", animation_elements);
+    for (let i=0; i<animation_elements.length; i++) {
+        animation_elements[i].classList.remove('loader');
+    }
+}
 
 
 // Library to set the number of visible words in a div, toggleable
