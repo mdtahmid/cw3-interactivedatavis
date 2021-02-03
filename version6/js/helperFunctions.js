@@ -265,8 +265,6 @@ function addPlayButton(bgImg, formattedData) {
         // Create container & btn
         let play_container = customElement('div', '', '', 'play-container');
         let play_btn = customElement('button', '', '', 'play-btn');
-        let play_btn_wrapper = customElement('div', '', '', 'play-btn-wrapper');
-        let play_icon = customElement('i', 'videoPlayIcon fas fa-play', '', '');
 
         // Append btn to container, container to bg
         play_container.appendChild(play_btn);
