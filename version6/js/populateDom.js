@@ -13,6 +13,7 @@ function addAllDomElements(formattedData) {
 
     addTrending(formattedData);                         // Add trending posters to top of Dom
     expandMovieDetails(formattedData, default_id, default_index);   // Expand 1st Movie Details
+    addMoviePopup(formattedData, default_id);
     addMovieDetails(formattedData, default_id, default_index);         // Add movie details
     addAwardsDetails(formattedData, default_id);
     addBudgetRevenue(formattedData, default_id);
@@ -30,11 +31,12 @@ function updateContents(movieId, index) {
 
     expandMovieDetails(finalData, movieId, index);
 
+    addMoviePopup(finalData, movieId);              // Update Popup Video
     addMovieDetails(finalData, movieId, index);     // Update Movie Details
     addAwardsDetails(finalData, movieId);           // Update Awards
     addBudgetRevenue(finalData, movieId);           // Update Budget Revenue
     addFilmLocation(finalData, movieId);            // Update Film Locations
-    addGenderDivide(finalData, movieId);
+    addGenderDivide(finalData, movieId);            // Update Gender Divide Chart
 } // END: updateBgImg
 
 
@@ -78,6 +80,16 @@ function addTrending(formattedData) {
     new SimpleBar(document.getElementById('trending-movies-container'));
 
 } // END: addTrending
+
+
+// Add Link to video popup
+function addMoviePopup(formattedData, movie_id) {
+    $(function() {
+        let play_btn = $("button#play-btn");
+        play_btn.attr("href", "https://www.youtube.com/watch?v=" + formattedData[movie_id]['video_id']);
+        play_btn.YouTubePopUp();
+    });
+}
 
 
 // Add Movie Details to DOM
