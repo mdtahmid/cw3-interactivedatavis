@@ -19,8 +19,6 @@ function addAllDomElements(formattedData) {
     addBudgetRevenue(formattedData, default_id);
     addFilmLocation(formattedData, default_id);
     addGenderDivide(formattedData, default_id);
-
-    //addCharts(formattedData);                     // Add charts to corresponding sections
 } // END: addAllDomElements
 
 
