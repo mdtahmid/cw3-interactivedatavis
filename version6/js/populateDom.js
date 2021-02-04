@@ -335,11 +335,8 @@ function addRankingPopularity(formattedData, movieId) {
     // Get and Create Dom elements
     let popularity_rank_container = document.getElementById('popularityRank');
 
-    let popularity_chart_container = customElement('div', '', '', 'popularity-chart-container');
-    let popularity_chart = customElement('canvas', '', '', 'popularity-rank');
-
-    popularity_chart_container.appendChild(popularity_chart);
-    popularity_rank_container.appendChild(popularity_chart_container);
+    appendToDomCheck(customElement('div', '', '', 'popularity-chart-container'), 'popularityRank', 'popularity-chart-container');
+    appendToDomCheck(customElement('canvas', '', '', 'popularity-rank'), 'popularity-chart-container', 'popularity-rank');
 
     // Get Movie names & popularity, ordered by rank
     let movie_names = new Array(19);
@@ -416,13 +413,9 @@ function addRankingPopularity(formattedData, movieId) {
 let productionChart;
 function addProductionCompanies(formattedData, movieId) {
     // Get & Create DOM Elements
-    let productionCompany_container = document.getElementById('productionCompanies');
+    appendToDomCheck(customElement('div', '', '', 'productionCompany-chart-container'), 'productionCompanies', 'productionCompany-chart-container');
+    appendToDomCheck(customElement('canvas', '', '', 'production-companies'), 'productionCompany-chart-container', 'production-companies');
 
-    let productionCompany_chart_container = customElement('div', '', '', 'productionCompany-chart-container');
-    let productionCompany_chart = customElement('canvas', '', '', 'production-companies');
-
-    productionCompany_chart_container.appendChild(productionCompany_chart);
-    productionCompany_container.appendChild(productionCompany_chart_container);
 
     // Get all production companies
     let all_production_companies = [];
