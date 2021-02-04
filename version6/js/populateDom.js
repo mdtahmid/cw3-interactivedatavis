@@ -46,7 +46,6 @@ function addTrending(formattedData) {
 
     let movie_poster_container = document.getElementById('trending-movies-container');
     movie_poster_container.innerHTML = '';
-    movie_poster_container.appendChild(customElement('h2', 'viz-title', 'Highest Grossing Movies'));
 
     moviesSorted.forEach((movieData, index) => {
         // Create wrapper div container
