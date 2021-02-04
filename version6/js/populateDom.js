@@ -7,14 +7,14 @@
 // Add all elements to dom
 function addAllDomElements(formattedData) {
     let default_id = '299534';                          // Default is currently #1 movie Avengers:Endgame
-    let default_index = 0;
+    let default_index = 0;                              // Opens 1st movie poster
 
-    removeAnimation();
+    removeAnimation();                                  // Once data loaded, remove loading animation
 
-    addTrending(formattedData);                         // Add trending posters to top of Dom
+    addTrending(formattedData);                                     // Add trending posters to top of Dom
     expandMovieDetails(formattedData, default_id, default_index);   // Expand 1st Movie Details
-    addMoviePopup(formattedData, default_id);
-    addMovieDetails(formattedData, default_id, default_index);         // Add movie details
+    addMoviePopup(formattedData, default_id);                       // Add Movie Popup
+    addMovieDetails(formattedData, default_id, default_index);      // Add movie details
     addAwardsDetails(formattedData, default_id);
     addBudgetRevenue(formattedData, default_id);
     addFilmLocation(formattedData, default_id);
@@ -37,6 +37,8 @@ function updateContents(movieId, index) {
     addBudgetRevenue(finalData, movieId);           // Update Budget Revenue
     addFilmLocation(finalData, movieId);            // Update Film Locations
     addGenderDivide(finalData, movieId);            // Update Gender Divide Chart
+    addRankingPopularity(finalData, movieId);       // Update Ranking vs Popularity Chart
+    addProductionCompanies(finalData, movieId);     // Update Production Companies movie count
 } // END: updateBgImg
 
 
@@ -326,6 +328,7 @@ function addGenderDivide(formattedData, movieId) {
     createChart(label=Object.keys(genderData['overall']).slice(0, 2), datasets=genderDatasets, chartOptions=genderChartOptions, canvasId='#gender-split', type='doughnut', chartCanvas=genderChart);
 }
 
+let rankingChart;
 function addRankingPopularity(formattedData, movieId) {
     // Get and Create Dom elements
     let popularity_rank_container = document.getElementById('popularityRank');
@@ -364,10 +367,10 @@ function addRankingPopularity(formattedData, movieId) {
         tooltips: {
             callbacks: {
                 title: function(tooltipItem) {
-                    return 'Rank ' + (parseInt(tooltipItem[0]['index'])+1)
+                    return 'Popularity'
                 },
                 label: function(tooltipItem, data) {
-                    return 'Popularity ' + data['datasets'][0]['data'][tooltipItem['index']];    // Get Data Value
+                    return data['datasets'][0]['data'][tooltipItem['index']];    // Get Data Value
                 }
             }
         },
@@ -403,11 +406,12 @@ function addRankingPopularity(formattedData, movieId) {
         }
     };
 
-    createChart(label=movie_names, datasets=popularityDataset, chartOptions=barChart_options, canvasId='#popularity-rank', type='horizontalBar');
+    createChart(label=movie_names, datasets=popularityDataset, chartOptions=barChart_options, canvasId='#popularity-rank', type='horizontalBar', chartCanvas=rankingChart);
 }
 
 
 // Add Movie Production Companies
+let productionChart;
 function addProductionCompanies(formattedData, movieId) {
     // Get & Create DOM Elements
     let productionCompany_container = document.getElementById('productionCompanies');
@@ -464,7 +468,6 @@ function addProductionCompanies(formattedData, movieId) {
         tooltips: {
             callbacks: {
                 title: function(tooltipItem) {
-                    // return 'Rank ' + (parseInt(tooltipItem[0]['index'])+1)
                 },
                 label: function(tooltipItem, data) {
                     return 'Number of movies: ' + data['datasets'][0]['data'][tooltipItem['index']];    // Get Data Value
@@ -500,5 +503,5 @@ function addProductionCompanies(formattedData, movieId) {
         }
     };
 
-    createChart(Object.keys(frequency), productionDataset, productionChart_options, '#production-companies','horizontalBar');
+    createChart(Object.keys(frequency), productionDataset, productionChart_options, '#production-companies', 'horizontalBar', productionChart);
 }
