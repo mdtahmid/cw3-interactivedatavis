@@ -39,7 +39,8 @@ function addSectionTitles() {
         budget: getContainerWithTitle('budgetRevenue', 'Budget vs. Box Office'),
         filmLocation: getContainerWithTitle('filmLocations', 'Film Shoot Locations'),
         genderChart: getContainerWithTitle('genderDivide', 'Gender Divide : <div id="gender-chart-label"><span class="g-title">CAST</span> & <span class="g-title">CREW</span></div>', 'gender-title'),
-        popularityRanking: getContainerWithTitle('popularityRank', 'Popularity of Movies')
+        popularityRanking: getContainerWithTitle('popularityRank', 'Popularity of Movies'),
+        productionCompanies: getContainerWithTitle('productionCompanies', 'Production Companies')
     };
 
     // Add Loader div to each element

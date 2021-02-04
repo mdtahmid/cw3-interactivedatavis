@@ -80,6 +80,14 @@ function formatRunTime(time) {
     return rhours + "h " + rminutes + "min";
 }
 
+function formatNames(array) {
+    let index_mov = array.indexOf("Harry Potter and the Deathly Hallows: Part 2 : #13");
+    if (index_mov !== -1) {
+        array[index_mov] = "Harry Potter - Deathly Hallows P2 : #13"
+    }
+    return array
+}
+
 // ********
 // GET DATA
 
@@ -287,4 +295,19 @@ function appendToDomCheck(element, container_id, checkElement_id, returnResult=f
             return null
         }
     }
+}
+
+// CHART.JS
+function createChart(label, chartDatasets, chartOptions, canvasId, chartType, chartCanvas=null) {
+    let chartData = {
+        labels: label,
+        datasets: chartDatasets
+    };
+
+    if (chartCanvas) { chartCanvas.destroy() }
+    chartCanvas = new Chart($(canvasId), {
+        type: chartType,
+        data: chartData,
+        options: chartOptions
+    });
 }

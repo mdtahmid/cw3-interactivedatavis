@@ -19,7 +19,8 @@ function addAllDomElements(formattedData) {
     addBudgetRevenue(formattedData, default_id);
     addFilmLocation(formattedData, default_id);
     addGenderDivide(formattedData, default_id);
-    addRankingPopularity(formattedData);
+    addRankingPopularity(formattedData, default_id);
+    addProductionCompanies(formattedData, default_id);
 } // END: addAllDomElements
 
 
@@ -287,28 +288,21 @@ function addGenderDivide(formattedData, movieId) {
 
     // Get Data
     let genderData = formattedData[movieId]['cast_crew_stats'];
-
-    // Populate Data
-    let chartData = {
-        labels: Object.keys(genderData['overall']).slice(0, 2),
-        datasets: [{
-            label: 'Cast',
-            data: Object.values(genderData['cast']).slice(0, 2),
-            backgroundColor: ['rgb(122, 95, 208)', 'rgb(170, 147, 245)'],
-            hoverBackgroundColor: ['rgb(161, 146, 209)', 'rgb(220, 214, 247)'],
-            borderColor: 'rgba(0,0,0,0)'
-        }, {
-            label: 'Crew',
-            data: Object.values(genderData['crew']).slice(0, 2),
-            backgroundColor: ['rgb(255, 92, 108)', 'rgb(250, 179, 183)'],
-            hoverBackgroundColor: ['rgb(251, 162, 171)', 'rgb(247, 205, 208)'],
-            borderColor: 'rgba(0,0,0,0)'
-        }]
-    };
-
-
-    // Chart Options
-    let chartOptions = {
+    let genderDatasets = [{
+        label: 'Cast',
+        data: Object.values(genderData['cast']).slice(0, 2),
+        backgroundColor: ['rgb(122, 95, 208)', 'rgb(170, 147, 245)'],
+        hoverBackgroundColor: ['rgb(161, 146, 209)', 'rgb(220, 214, 247)'],
+        borderColor: 'rgba(0,0,0,0)'
+    }, {
+        label: 'Crew',
+        data: Object.values(genderData['crew']).slice(0, 2),
+        backgroundColor: ['rgb(255, 92, 108)', 'rgb(250, 179, 183)'],
+        hoverBackgroundColor: ['rgb(251, 162, 171)', 'rgb(247, 205, 208)'],
+        borderColor: 'rgba(0,0,0,0)'
+    }];
+    // Define Chart Options
+    let genderChartOptions = {
         responsive: true,
         legend: {display: false},
         tooltips: {
@@ -329,18 +323,11 @@ function addGenderDivide(formattedData, movieId) {
         }
     };
 
-    // Build Chart
-    if (genderChart) { genderChart.destroy() }
-    genderChart = new Chart($('#gender-split'), {
-        type: 'doughnut',
-        data: chartData,
-        options: chartOptions
-    });
+    createChart(label=Object.keys(genderData['overall']).slice(0, 2), datasets=genderDatasets, chartOptions=genderChartOptions, canvasId='#gender-split', type='doughnut', chartCanvas=genderChart);
 }
 
 function addRankingPopularity(formattedData, movieId) {
-    // ADD TITLE IN DOCUMENT SETUP
-
+    // Get and Create Dom elements
     let popularity_rank_container = document.getElementById('popularityRank');
 
     let popularity_chart_container = customElement('div', '', '', 'popularity-chart-container');
@@ -349,22 +336,30 @@ function addRankingPopularity(formattedData, movieId) {
     popularity_chart_container.appendChild(popularity_chart);
     popularity_rank_container.appendChild(popularity_chart_container);
 
+    // Get Movie names & popularity, ordered by rank
+    let movie_names = new Array(19);
+    let movie_popularity = new Array(19);
 
-    let movie_names = [];
-    Object.keys(formattedData).forEach(entry => { movie_names.push(formattedData[entry].name); });
+    Object.keys(formattedData).forEach(entry => {
+        let rank = formattedData[entry].rank || 19;
+        movie_names.splice(rank-1, 1, (formattedData[entry].name + ' : #' + rank));
+        movie_popularity.splice(rank-1, 1, formattedData[entry].popularity);
+    });
+    movie_names = formatNames(movie_names);
 
-    let movie_popularity = [];
-    Object.keys(formattedData).forEach(entry => { movie_popularity.push(formattedData[entry].popularity)});
 
+    // Highlight given movie data
+    let color = new Array(19);
+    color.fill('#16a085');
+    color.splice(formattedData[movieId].rank-1, 1, '#ffffff');
 
-    let barChart_data = {
-        labels: movie_names,
-        datasets: [{
-            data: movie_popularity,
-            backgroundColor: '#16a085',
-            hoverBackgroundColor: 'rgba(255,255,255,1)'
-        }],
-    };
+    // Define Chart data & Options
+    let popularityDataset = [{
+        data: movie_popularity,
+        backgroundColor: color,
+        hoverBackgroundColor: 'rgba(255,255,255,1)'
+    }];
+    // Chart Options
     let barChart_options = {
         tooltips: {
             callbacks: {
@@ -383,13 +378,22 @@ function addRankingPopularity(formattedData, movieId) {
                     suggestedMin: 0,
                     beginAtZero: true,
                     fontColor: 'rgba(255,255,255,1)',
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Popularity Metric',
+                    fontColor: 'rgba(255,255,255,1)',
                 }
             }],
             yAxes: [{
                 display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Movie Rank',
+                    fontColor: 'rgba(255,255,255,1)',
+                },
                 ticks: {
                     suggestedMin: 0,
-                    // beginAtZero: true,
                     fontColor: 'rgba(255,255,255,1)',
                 }
             }]
@@ -399,9 +403,102 @@ function addRankingPopularity(formattedData, movieId) {
         }
     };
 
-    let barChart = new Chart($('#popularity-rank'),{
-        type: 'horizontalBar',
-        data: barChart_data,
-        options: barChart_options
+    createChart(label=movie_names, datasets=popularityDataset, chartOptions=barChart_options, canvasId='#popularity-rank', type='horizontalBar');
+}
+
+
+// Add Movie Production Companies
+function addProductionCompanies(formattedData, movieId) {
+    // Get & Create DOM Elements
+    let productionCompany_container = document.getElementById('productionCompanies');
+
+    let productionCompany_chart_container = customElement('div', '', '', 'productionCompany-chart-container');
+    let productionCompany_chart = customElement('canvas', '', '', 'production-companies');
+
+    productionCompany_chart_container.appendChild(productionCompany_chart);
+    productionCompany_container.appendChild(productionCompany_chart_container);
+
+    // Get all production companies
+    let production_companies = [];
+    Object.keys(formattedData).forEach(entry => {
+        let production_companies_data = formattedData[entry]['production_companies'];
+        Object.keys(production_companies_data).forEach(value => {
+            production_companies.push(production_companies_data[value].name);
+        });
     });
+
+    // Get frequency of each production company
+    let frequency = {};
+    production_companies.forEach(value => frequency[value] = (frequency[value] || 0) +1);
+
+    console.log("frequency:", frequency);
+
+    let sortedFrequency = Object.values(frequency).sort(function(a, b){return b-a});
+
+    // Highlight given movie data
+    let color = new Array(sortedFrequency.length);
+    color.fill('#16a085');
+
+    console.log("Sorted_0:", Object.keys(frequency));
+
+    let movie_production_companies = formattedData[movieId].production_companies;
+    for (let i=0; i < sortedFrequency.length; i++) {
+        for (let j=0; j < Object.keys(movie_production_companies).length; j++) {
+            if (sortedFrequency[i] === movie_production_companies[j].name) {
+                console.log("Same");
+                color.splice(i, 1, '#ffffff');
+            }
+        }
+    }
+
+
+    // Chart Data
+    let productionDataset = [{
+        data: sortedFrequency,
+        backgroundColor: color,
+        hoverBackgroundColor: 'rgba(255,255,255,1)'
+    }];
+
+    // Chart options
+    let productionChart_options = {
+        tooltips: {
+            callbacks: {
+                title: function(tooltipItem) {
+                    // return 'Rank ' + (parseInt(tooltipItem[0]['index'])+1)
+                },
+                label: function(tooltipItem, data) {
+                    return 'Number of movies: ' + data['datasets'][0]['data'][tooltipItem['index']];    // Get Data Value
+                }
+            }
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                ticks: {
+                    beginAtZero: true,
+                    fontColor: 'rgba(255,255,255,1)',
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Number of Movies',
+                    fontColor: 'rgba(255,255,255,1)',
+                }
+            }],
+            yAxes: [{
+                display: true,
+                ticks: {
+                    fontColor: 'rgba(255,255,255,1)',
+                },
+                scaleLabel: {
+                    display: true,
+                    fontColor: 'rgba(255,255,255,1)',
+                }
+            }]
+        },
+        legend: {
+            display: false
+        }
+    };
+
+    createChart(Object.keys(frequency), productionDataset, productionChart_options, '#production-companies','horizontalBar');
 }
