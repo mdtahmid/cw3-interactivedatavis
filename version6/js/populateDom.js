@@ -328,6 +328,8 @@ function addGenderDivide(formattedData, movieId) {
     createChart(label=Object.keys(genderData['overall']).slice(0, 2), datasets=genderDatasets, chartOptions=genderChartOptions, canvasId='#gender-split', type='doughnut', chartCanvas=genderChart);
 }
 
+
+// Chart that shows popularity of movies mapped to their ranking
 let rankingChart;
 function addRankingPopularity(formattedData, movieId) {
     // Get and Create Dom elements
@@ -352,14 +354,14 @@ function addRankingPopularity(formattedData, movieId) {
 
 
     // Highlight given movie data
-    let color = new Array(19);
-    color.fill('#16a085');
-    color.splice(formattedData[movieId].rank-1, 1, '#ffffff');
+    let highlightColor = new Array(19);
+    highlightColor.fill('#16a085');
+    highlightColor.splice(formattedData[movieId].rank-1, 1, '#ffffff');
 
     // Define Chart data & Options
     let popularityDataset = [{
         data: movie_popularity,
-        backgroundColor: color,
+        backgroundColor: highlightColor,
         hoverBackgroundColor: 'rgba(255,255,255,1)'
     }];
     // Chart Options
@@ -423,43 +425,75 @@ function addProductionCompanies(formattedData, movieId) {
     productionCompany_container.appendChild(productionCompany_chart_container);
 
     // Get all production companies
-    let production_companies = [];
-    Object.keys(formattedData).forEach(entry => {
-        let production_companies_data = formattedData[entry]['production_companies'];
-        Object.keys(production_companies_data).forEach(value => {
-            production_companies.push(production_companies_data[value].name);
-        });
-    });
+    let all_production_companies = [];
+    // Get formattedData keys
+    let movie_data_keys = Object.keys(formattedData);
 
-    // Get frequency of each production company
-    let frequency = {};
-    production_companies.forEach(value => frequency[value] = (frequency[value] || 0) +1);
+    // Loop through movie Data
+    for (let i=0; i< movie_data_keys.length; i++) {
+        // Get current movie name id
+        let movie_id = movie_data_keys[i];
+        // Get all production companies of given movie
+        let movie_data_production_companies = formattedData[movie_data_keys[i]].production_companies;
+        // Loop throurgh production companios (can add line above as inline)
+        for (let j=0; j<movie_data_production_companies.length; j++) {
+            // Get current production company name
+            let prod_name = movie_data_production_companies[j].name;
 
-    console.log("frequency:", frequency);
-
-    let sortedFrequency = Object.values(frequency).sort(function(a, b){return b-a});
-
-    // Highlight given movie data
-    let color = new Array(sortedFrequency.length);
-    color.fill('#16a085');
-
-    console.log("Sorted_0:", Object.keys(frequency));
-
-    let movie_production_companies = formattedData[movieId].production_companies;
-    for (let i=0; i < sortedFrequency.length; i++) {
-        for (let j=0; j < Object.keys(movie_production_companies).length; j++) {
-            if (sortedFrequency[i] === movie_production_companies[j].name) {
-                console.log("Same");
-                color.splice(i, 1, '#ffffff');
+            // Check if production company already added
+            const found = all_production_companies.some(el => el.production_company === prod_name);
+            // If not added, created detail object and append
+            if (!found) {
+                let details = {production_company: prod_name, value: 1, movies: [movie_id]}
+                all_production_companies.push(details)
+            } else {
+                // If found, get index, update value and add movie name
+                let index = all_production_companies.findIndex(val => val.production_company === prod_name)
+                all_production_companies[index].value += 1;
+                all_production_companies[index].movies.push(movie_id);
             }
         }
     }
 
+    // Sort array of objects based on 'value'
+    all_production_companies.sort(function (a,b) {
+        return b.value - a.value;
+    });
+
+    // Get all production company names
+    let production_names = [];
+    all_production_companies.forEach(el => {
+        production_names.push(el.production_company)
+    });
+
+    // Get production companies to highlight
+    let highlight_production_companies = [];
+    all_production_companies.forEach(el => {
+        el.movies.forEach(id => {
+            if(id === movieId) {
+                highlight_production_companies.push(el.production_company)
+            }
+        })
+    });
+
+    // Set default highlight color
+    let highlightColor = new Array(all_production_companies.length);
+    highlightColor.fill('#16a085');
+
+    // Update highlight color for movie production companies
+    highlight_production_companies.forEach(el => {
+        let index = production_names.findIndex(val => val === el);
+        highlightColor[index] = '#fff'
+    });
+
+    let chartData = [];
+    all_production_companies.forEach(el => { chartData.push(el.value) });
+
 
     // Chart Data
     let productionDataset = [{
-        data: sortedFrequency,
-        backgroundColor: color,
+        data: chartData,
+        backgroundColor: highlightColor,
         hoverBackgroundColor: 'rgba(255,255,255,1)'
     }];
 
@@ -503,5 +537,5 @@ function addProductionCompanies(formattedData, movieId) {
         }
     };
 
-    createChart(Object.keys(frequency), productionDataset, productionChart_options, '#production-companies', 'horizontalBar', productionChart);
+    createChart(production_names, productionDataset, productionChart_options, '#production-companies', 'horizontalBar', productionChart);
 }
