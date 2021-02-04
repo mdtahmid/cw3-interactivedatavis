@@ -12,7 +12,7 @@ function runOnceDomLoaded() {
 function addMoviePosterPlaceholder() {
 
     let movie_poster_container = document.getElementById('trending-movies-container');
-    movie_poster_container.appendChild(customElement('h2', 'viz-title', 'Highest Grossing Movies'));
+    document.getElementById("poster-detail-container").prepend(customElement('h2', 'viz-title', 'Highest Grossing Movies'));
 
     for (let i=0; i<20; i++) {
         let movie_wrapper = customElement('div','movieWrapper', '');
