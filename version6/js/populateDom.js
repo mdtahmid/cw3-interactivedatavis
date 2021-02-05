@@ -453,6 +453,7 @@ function addProductionCompanies(formattedData, movieId) {
         return b.value - a.value;
     });
 
+
     // Get all production company names
     let production_names = [];
     all_production_companies.forEach(el => {
@@ -463,7 +464,7 @@ function addProductionCompanies(formattedData, movieId) {
     let highlight_production_companies = [];
     all_production_companies.forEach(el => {
         el.movies.forEach(id => {
-            if(id === movieId) {
+            if(id === String(movieId)) {
                 highlight_production_companies.push(el.production_company)
             }
         })
@@ -476,6 +477,7 @@ function addProductionCompanies(formattedData, movieId) {
     // Update highlight color for movie production companies
     highlight_production_companies.forEach(el => {
         let index = production_names.findIndex(val => val === el);
+        console.log("Index:", index);
         highlightColor[index] = '#fff'
     });
 
