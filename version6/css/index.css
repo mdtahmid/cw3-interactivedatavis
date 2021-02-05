@@ -502,7 +502,6 @@ div.provider-content {
     display: flex;
     column-gap: 15px;
     margin: 0 0 5vh 5vw;
-    overflow-y: scroll;
 }
 div.provider-title {
     /* Style */
@@ -620,6 +619,9 @@ p#footer-text {
 /*************
 HELPER CLASSES
 *************/
+.section {
+    margin-left: 2vw;
+}
 .center {
     display: flex;
     justify-content: center;
@@ -695,6 +697,12 @@ div.movie-rating-wrapper-sticky {
 p.movie-rating-sticky {
     font-size: 21px;
     font-weight: 500;
+}
+
+@media only screen and (max-width: 900px) {
+    div.provider-content {
+        overflow-y: scroll;
+    }
 }
 
 /* Mobile Responsiveness */
