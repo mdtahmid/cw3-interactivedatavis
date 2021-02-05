@@ -142,10 +142,11 @@ function getMembers(role, formattedData, movie_id) {
     return directors.slice(0, directors.length-2);
 } // END: getDirectors
 
-function createChartLegend() {
-    let legend_container = customElement('div', '', '', 'legend-container');
-    let legend_one = customElement('div', 'legend-content', 'Female', 'legend-txt-female');
-    let legend_two = customElement('div', 'legend-content', 'Male', 'legend-txt-male');
+
+function createChartLegend(value1, value2, name){
+    let legend_container = customElement('div', '', '', name+'-legend-container');
+    let legend_one = customElement('div', 'legend-content legend-content-left', value1, name+'-legend-txt-one');
+    let legend_two = customElement('div', 'legend-content legend-content-right', value2, name+'-legend-txt-two');
 
     legend_container.appendChild(legend_one);
     legend_container.appendChild(legend_two);
@@ -310,4 +311,19 @@ function createChart(label, chartDatasets, chartOptions, canvasId, chartType, ch
         data: chartData,
         options: chartOptions
     });
+}
+
+// Create Legend & chart container/canvas. Check exists first
+function instantiateChartElements(mainContainerId, legendOne, legendTwo, name) {
+    let container = document.getElementById(mainContainerId);
+    // Chart Legend
+    let chart_legend = createChartLegend(legendOne, legendTwo, name);
+    // Append Elements if they dont exist
+    let elementExists = appendToDomCheck(chart_legend, mainContainerId, name+'-legend-container', true);
+    if (!elementExists) {
+        let chart_container = customElement('div', 'chart-container', '', name+'-chart-container');
+        let chart_element = customElement('canvas', '', '', name+'-canvas');
+        chart_container.appendChild(chart_element);
+        container.appendChild(chart_container);
+    }
 }
