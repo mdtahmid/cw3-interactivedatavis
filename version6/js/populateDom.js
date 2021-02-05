@@ -21,6 +21,7 @@ function addAllDomElements(formattedData) {
     addGenderDivide(formattedData, default_id);
     addRankingPopularity(formattedData, default_id);
     addProductionCompanies(formattedData, default_id);
+    addWatchProviders(formattedData, default_id);
 } // END: addAllDomElements
 
 
@@ -39,6 +40,7 @@ function updateContents(movieId, index) {
     addGenderDivide(finalData, movieId);            // Update Gender Divide Chart
     addRankingPopularity(finalData, movieId);       // Update Ranking vs Popularity Chart
     addProductionCompanies(finalData, movieId);     // Update Production Companies movie count
+    addWatchProviders(finalData, movieId);          // Update Watch Providers
 } // END: updateBgImg
 
 
@@ -477,7 +479,6 @@ function addProductionCompanies(formattedData, movieId) {
     // Update highlight color for movie production companies
     highlight_production_companies.forEach(el => {
         let index = production_names.findIndex(val => val === el);
-        console.log("Index:", index);
         highlightColor[index] = '#fff'
     });
 
@@ -533,4 +534,42 @@ function addProductionCompanies(formattedData, movieId) {
     };
 
     createChart(production_names, productionDataset, productionChart_options, '#production-companies', 'horizontalBar', productionChart);
+}
+
+
+// Add Watch Providers for each movie
+function addWatchProviders(formattedData, moiveId) {
+    appendToDomCheck(customElement('div', '', '', 'watch-provider-container'), 'watchProviders', 'watch-provider-container');
+
+    addProviders(formattedData[moiveId].watch_providers.buy_providers, 'buy');
+    addProviders(formattedData[moiveId].watch_providers.rent_providers, 'rent');
+    addProviders(formattedData[moiveId].watch_providers.flatrate_providers, 'flatrate');
+}
+
+function addProviders(data, type) {
+    if (data.length > 0) {
+        // Create & append global container
+        appendToDomCheck(customElement('div', 'providers', '', type+'-providers'), 'watch-provider-container', type+'-providers');
+
+        // Create & append Section Title
+        document.getElementById(type+'-providers').appendChild(customElement('div', 'provider-title', type, type+'-provider-title'));
+
+        // Create & Append content container
+        let content_container = document.getElementById(type+'-providers').appendChild(customElement('div', 'provider-content', '', type+'-provider-content'));
+        // Loop over each provider
+        data.forEach(provider => {
+            // Create Provider element
+            let provider_detail_container = customElement('div', 'provider-detail-container', '');
+            let provider_name = customElement('p', 'provider-name', provider.name, 'indiv-provider-name');
+            let provider_img = customElement('div', 'indiv-provider-el', '', 'indiv-provider-img-container').appendChild(customElement('img', 'indiv-provider-img img-'+provider.name, ''));
+            // Append contents
+            provider_detail_container.appendChild(provider_img);
+            provider_detail_container.appendChild(provider_name);
+            content_container.appendChild(provider_detail_container);
+            // Add Img src
+            const images = document.getElementsByClassName('img-'+provider.name);
+            images.forEach(img => { img.src = provider.logo_path });
+
+        });
+    }
 }
