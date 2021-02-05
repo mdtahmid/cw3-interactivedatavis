@@ -427,13 +427,8 @@ div.percentage-section {
 /*************
 FILM LOCATIONS
 *************/
-div#filmLocations {
-
-}
-
 div#film-map {
     min-height: 40vh;
-    /*overflow: hidden;*/
 }
 
 /************
@@ -502,6 +497,7 @@ div.provider-content {
     display: flex;
     column-gap: 15px;
     margin: 0 0 5vh 5vw;
+    overflow-x: auto;
 }
 div.provider-title {
     /* Style */
@@ -697,12 +693,6 @@ div.movie-rating-wrapper-sticky {
 p.movie-rating-sticky {
     font-size: 21px;
     font-weight: 500;
-}
-
-@media only screen and (max-width: 900px) {
-    div.provider-content {
-        overflow-y: scroll;
-    }
 }
 
 /* Mobile Responsiveness */
