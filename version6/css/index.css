@@ -427,13 +427,8 @@ div.percentage-section {
 /*************
 FILM LOCATIONS
 *************/
-div#filmLocations {
-
-}
-
 div#film-map {
     min-height: 40vh;
-    /*overflow: hidden;*/
 }
 
 /************
@@ -620,6 +615,9 @@ p#footer-text {
 /*************
 HELPER CLASSES
 *************/
+.section {
+    margin-left: 2vw;
+}
 .center {
     display: flex;
     justify-content: center;
