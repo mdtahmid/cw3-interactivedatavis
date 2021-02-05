@@ -369,20 +369,10 @@ function addRankingPopularity(formattedData, movieId) {
                     suggestedMin: 0,
                     beginAtZero: true,
                     fontColor: 'rgba(255,255,255,1)',
-                },
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Popularity Metric',
-                    fontColor: 'rgba(255,255,255,1)',
                 }
             }],
             yAxes: [{
                 display: true,
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Movie Rank',
-                    fontColor: 'rgba(255,255,255,1)',
-                },
                 ticks: {
                     suggestedMin: 0,
                     fontColor: 'rgba(255,255,255,1)',
@@ -494,11 +484,6 @@ function addProductionCompanies(formattedData, movieId) {
                 display: true,
                 ticks: {
                     beginAtZero: true,
-                    fontColor: 'rgba(255,255,255,1)',
-                },
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Number of Movies',
                     fontColor: 'rgba(255,255,255,1)',
                 }
             }],
