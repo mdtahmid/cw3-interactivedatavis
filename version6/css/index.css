@@ -501,15 +501,17 @@ WATCH PROVIDERS
 div.provider-content {
     display: flex;
     column-gap: 15px;
-    margin: 0 0 2vh 5vw;
+    margin: 0 0 5vh 5vw;
     overflow-y: scroll;
-
 }
 div.provider-title {
+    /* Style */
     text-transform: capitalize;
+    font-size: 25px;
+    /* Layout */
     margin-left: 5vw;
-    margin-bottom: 1vh;
-    font-size: 20px;
+    margin-bottom: 2vh;
+    display: inline-block;
 }
 div.provider-detail-container {
     text-align: left;
