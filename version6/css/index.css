@@ -502,7 +502,7 @@ div.provider-content {
     display: flex;
     column-gap: 15px;
     margin: 0 0 5vh 5vw;
-    overflow-y: scroll;
+    overflow-x: auto;
 }
 div.provider-title {
     /* Style */
