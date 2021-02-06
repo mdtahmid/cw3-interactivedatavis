@@ -513,9 +513,9 @@ function addProductionCompanies(formattedData, movieId) {
 function addWatchProviders(formattedData, moiveId) {
     appendToDomCheck(customElement('div', '', '', 'watch-provider-container'), 'watchProviders', 'watch-provider-container');
 
+    addProviders(formattedData[moiveId].watch_providers.stream_providers, 'stream');
     addProviders(formattedData[moiveId].watch_providers.buy_providers, 'buy');
     addProviders(formattedData[moiveId].watch_providers.rent_providers, 'rent');
-    addProviders(formattedData[moiveId].watch_providers.stream_providers, 'stream');
 }
 
 function addProviders(data, type) {
