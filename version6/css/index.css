@@ -641,7 +641,9 @@ p#footer-text {
     font-weight: 300;
     text-align: center;
 }
-
+a.footer-link {
+    color: rgb(160, 220, 250)
+}
 /*************
 HELPER CLASSES
 *************/
