@@ -44,7 +44,7 @@ i.videoPlayIcon {
 Popularity chart
 *************/
 div#popularityRank {
-  padding-bottom: 150px;
+  padding-bottom: 80px;
 }
 
 
@@ -428,7 +428,13 @@ div.percentage-section {
 FILM LOCATIONS
 *************/
 div#film-map {
-    min-height: 40vh;
+    /* min-height: 40vh; */
+    padding-bottom: 50%;
+}
+
+
+div#filmLocations {
+  height: unset;
 }
 
 /************
@@ -528,12 +534,14 @@ div.provider-title {
     display: inline-block;
 }
 div.provider-detail-container {
-    text-align: left;
+    text-align: center;
     width: 100px;
     overflow-wrap: anywhere;
 }
 img.indiv-provider-img {
-    border-radius: 20px;
+    border-radius: 16px;
+    width: 70px;
+    height: 70px;
 }
 p.provider-name {
     margin-top: 4px;
@@ -650,7 +658,7 @@ HELPER CLASSES
 .inline {
     display: inline-block;
     width: 45vw;
-    height: 60vh;
+    /* height: 60vh; */
     vertical-align: top;
 }
 

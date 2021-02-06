@@ -256,13 +256,13 @@ function buildMap(mapData) {
         element: document.getElementById("film-map"),
         scope: 'world',
         projection: 'equirectangular',
-        responsive: false,
+        responsive: true,
         fills: {
             // active: '#B687E4',
             active: '#2d98da',
             defaultFill: 'rgba(0,0,0,0)'
         },
-        height: null,
+        height: 350,
         width: null,
         geographyConfig: {
             highlightOnHover: false,
@@ -271,6 +271,10 @@ function buildMap(mapData) {
             borderColor: '#45aaf2'
         },
         data: mapData
+    });
+
+    $(window).on('resize', function() {
+       filmMap.resize();
     });
 }
 
@@ -341,8 +345,8 @@ function addRankingPopularity(formattedData, movieId) {
 
     // Highlight given movie data
     let highlightColor = new Array(19);
-    highlightColor.fill('#16a085');
-    highlightColor.splice(formattedData[movieId].rank-1, 1, '#ffffff');
+    highlightColor.fill('#CC6677');
+    highlightColor.splice(formattedData[movieId].rank-1, 1, '#DDCC77');
 
     // Define Chart data & Options
     let popularityDataset = [{
@@ -449,12 +453,12 @@ function addProductionCompanies(formattedData, movieId) {
 
     // Set default highlight color
     let highlightColor = new Array(all_production_companies.length);
-    highlightColor.fill('#16a085');
+    highlightColor.fill('#4477AA');
 
     // Update highlight color for movie production companies
     highlight_production_companies.forEach(el => {
         let index = production_names.findIndex(val => val === el);
-        highlightColor[index] = '#fff'
+        highlightColor[index] = '#DDCC77'
     });
 
     let chartData = [];
@@ -465,7 +469,7 @@ function addProductionCompanies(formattedData, movieId) {
     let productionDataset = [{
         data: chartData,
         backgroundColor: highlightColor,
-        hoverBackgroundColor: 'rgba(255,255,255,1)'
+        hoverBackgroundColor: 'rgba(255,255,255,1)',
     }];
 
     // Chart options
