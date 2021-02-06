@@ -31,6 +31,7 @@ async function getMovieDetails_Requested(movieData) {
     for (let i=0; i<Object.keys(movieData).length; i++) {
         await getSpecificMovieDetails(movieData, Object.keys(movieData)[i]);
     }
+
     return movieData
 }
 
