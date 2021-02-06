@@ -328,7 +328,7 @@ function addGenderDivide(formattedData, movieId) {
 let rankingChart;
 function addRankingPopularity(formattedData, movieId) {
 
-    instantiateChartElements('popularityRank', 'Rank', 'Popularity', 'popularity');
+    instantiateChartElements('popularityRank', 'Rank', 'Popularity', 'popularity', 'Popularity is a metric used to optimise search and rankings. It is based on several elements including the number of votes, views, and interactions in a given day.');
 
 
     // Get Movie names & popularity, ordered by rank
@@ -373,19 +373,19 @@ function addRankingPopularity(formattedData, movieId) {
                     suggestedMin: 0,
                     beginAtZero: true,
                     fontColor: 'rgba(255,255,255,1)',
-                }
+                },
+                gridLines: { display: false, }
             }],
             yAxes: [{
                 display: true,
                 ticks: {
                     suggestedMin: 0,
                     fontColor: 'rgba(255,255,255,1)',
-                }
+                },
+                gridLines: { display: false, }
             }]
         },
-        legend: {
-            display: false
-        }
+        legend: { display: false }
     };
 
     createChart(label=movie_names, datasets=popularityDataset, chartOptions=barChart_options, canvasId='#popularity-canvas', type='horizontalBar', chartCanvas=rankingChart);
@@ -396,7 +396,7 @@ function addRankingPopularity(formattedData, movieId) {
 let productionChart;
 function addProductionCompanies(formattedData, movieId) {
 
-    instantiateChartElements('productionCompanies', 'Production Companies', 'Number of Movies', 'production');
+    instantiateChartElements('productionCompanies', 'Production Companies', 'Number of Movies', 'production', 'Chart of all the production companies that created the highest grossing movies, ordered by number of movies. Highlighted is the production companies behind the selected movie.');
 
     // Get all production companies
     let all_production_companies = [];
@@ -489,22 +489,20 @@ function addProductionCompanies(formattedData, movieId) {
                 ticks: {
                     beginAtZero: true,
                     fontColor: 'rgba(255,255,255,1)',
-                }
+                },
+                gridLines: { display: false, }
             }],
             yAxes: [{
                 display: true,
-                ticks: {
-                    fontColor: 'rgba(255,255,255,1)',
-                },
+                ticks: { fontColor: 'rgba(255,255,255,1)' },
                 scaleLabel: {
                     display: true,
                     fontColor: 'rgba(255,255,255,1)',
-                }
+                },
+                gridLines: { display: false, }
             }]
         },
-        legend: {
-            display: false
-        }
+        legend: { display: false }
     };
 
     createChart(production_names, productionDataset, productionChart_options, '#production-canvas', 'horizontalBar', productionChart);
@@ -517,7 +515,7 @@ function addWatchProviders(formattedData, moiveId) {
 
     addProviders(formattedData[moiveId].watch_providers.buy_providers, 'buy');
     addProviders(formattedData[moiveId].watch_providers.rent_providers, 'rent');
-    addProviders(formattedData[moiveId].watch_providers.flatrate_providers, 'flatrate');
+    addProviders(formattedData[moiveId].watch_providers.stream_providers, 'stream');
 }
 
 function addProviders(data, type) {
