@@ -314,7 +314,7 @@ function createChart(label, chartDatasets, chartOptions, canvasId, chartType, ch
 }
 
 // Create Legend & chart container/canvas. Check exists first
-function instantiateChartElements(mainContainerId, legendOne, legendTwo, name) {
+function instantiateChartElements(mainContainerId, legendOne, legendTwo, name, chartDesc=null) {
     let container = document.getElementById(mainContainerId);
     // Chart Legend
     let chart_legend = createChartLegend(legendOne, legendTwo, name);
@@ -325,5 +325,8 @@ function instantiateChartElements(mainContainerId, legendOne, legendTwo, name) {
         let chart_element = customElement('canvas', '', '', name+'-canvas');
         chart_container.appendChild(chart_element);
         container.appendChild(chart_container);
+        if (chartDesc) {
+            container.appendChild(customElement('div', 'chart-description', chartDesc))
+        }
     }
 }
