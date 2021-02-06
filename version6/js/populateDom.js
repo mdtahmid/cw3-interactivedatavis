@@ -247,7 +247,6 @@ function addFilmLocation(formattedData, movieId) {
 
     getMapData(formattedData, movieId)
         .then(mapData => buildMap(mapData));
-
 }
 
 // Build a map (used for Film location
