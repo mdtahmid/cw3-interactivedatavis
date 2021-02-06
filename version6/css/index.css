@@ -428,10 +428,8 @@ div.percentage-section {
 FILM LOCATIONS
 *************/
 div#film-map {
-    /* min-height: 40vh; */
     padding-bottom: 50%;
 }
-
 
 div#filmLocations {
   height: unset;
