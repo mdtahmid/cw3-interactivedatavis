@@ -33,21 +33,21 @@ function getWatchProviders(resultData, movieData, movieId) {
     // MUST attribute the source of the data as JustWatch
     let poster_link = "https://www.themoviedb.org/t/p/original/";
 
-    let buy_providers = resultData.results.GB.buy;
     let stream_providers = resultData.results.GB.flatrate;
+    let buy_providers = resultData.results.GB.buy;
     let rent_providers = resultData.results.GB.rent;
-
-    let buy_details = [];
-    if (buy_providers) {
-        buy_providers.forEach(provider => {
-            buy_details.push({ name: provider.provider_name, logo_path: poster_link + provider.logo_path });
-        });
-    }
 
     let stream_details = [];
     if (stream_providers) {
         stream_providers.forEach(provider => {
             stream_details.push({ name: provider.provider_name, logo_path: poster_link + provider.logo_path });
+        });
+    }
+
+    let buy_details = [];
+    if (buy_providers) {
+        buy_providers.forEach(provider => {
+            buy_details.push({ name: provider.provider_name, logo_path: poster_link + provider.logo_path });
         });
     }
 
@@ -58,7 +58,7 @@ function getWatchProviders(resultData, movieData, movieId) {
         });
     }
 
-    movieData[movieId]['watch_providers'] = { buy_providers: buy_details, stream_providers: stream_details, rent_providers: rent_details};
+    movieData[movieId]['watch_providers'] = { stream_providers: stream_details, buy_providers: buy_details, rent_providers: rent_details};
 }
 
 // Store cast & crew details
