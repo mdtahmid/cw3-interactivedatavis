@@ -26,4 +26,5 @@ apiCall(movie_ranking_url)
     .then(value => movieData(value))        // Collect individual movie details
     .then(value => creditsData(value))      // Collect individual credits details
     .then(value => getAwards(value))        // Collect awards from OMDb
+    .then(value => getShootLocations(value))   // Get Movie Locations
     .then(value => addAllDomElements(value));  // Add elements to Dom
