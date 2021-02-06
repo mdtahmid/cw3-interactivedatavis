@@ -539,15 +539,23 @@ function addProviders(data, type) {
             // Create Provider element
             let provider_detail_container = customElement('div', 'provider-detail-container', '');
             let provider_name = customElement('p', 'provider-name', provider.name, 'indiv-provider-name');
-            let provider_img = customElement('div', 'indiv-provider-el', '', 'indiv-provider-img-container').appendChild(customElement('img', 'indiv-provider-img img-'+provider.name, ''));
+            // Provider Image
+            let provider_img_container = customElement('div', 'indiv-provider-el', '', 'indiv-provider-img-container');
+            let provider_img_link = customElement('a', 'provider-img-link img-link'+provider.name, '');
+            let provider_img = customElement('img', 'indiv-provider-img img-'+provider.name, '');
+            provider_img_link.appendChild(provider_img);
+            provider_img_container.append(provider_img_link);
+
             // Append contents
-            provider_detail_container.appendChild(provider_img);
+            provider_detail_container.appendChild(provider_img_container);
             provider_detail_container.appendChild(provider_name);
             content_container.appendChild(provider_detail_container);
             // Add Img src
             const images = document.getElementsByClassName('img-'+provider.name);
             images.forEach(img => { img.src = provider.logo_path });
-
+            // Add img link
+            const image_links = document.getElementsByClassName('img-link'+provider.name);
+            image_links.forEach(link => { link.href = '#'})
         });
     }
 }
