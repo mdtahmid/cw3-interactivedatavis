@@ -257,7 +257,6 @@ function buildMap(mapData) {
         projection: 'equirectangular',
         responsive: true,
         fills: {
-            // active: '#B687E4',
             active: '#2d98da',
             defaultFill: 'rgba(0,0,0,0)'
         },
@@ -265,7 +264,15 @@ function buildMap(mapData) {
         width: null,
         geographyConfig: {
             highlightOnHover: false,
-            popupOnHover: false,
+            popupTemplate: function(geography) {
+                let popupContent;
+                for (const [key] of Object.entries(mapData)) {
+                    if (geography.id === key) {
+                        popupContent = '<div class="map-popup">' + geography.properties.name + '</div>'
+                    }
+                }
+                return popupContent
+            },
             borderWidth: .4,
             borderColor: '#45aaf2'
         },
