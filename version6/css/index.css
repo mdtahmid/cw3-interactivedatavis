@@ -437,7 +437,7 @@ div#filmLocations {
 div.map-popup {
     background-color: rgba(45, 152, 218, 0.2);
     border-radius: 1.5em;
-    padding: .2em;
+    padding: .5em;
 }
 
 /************
