@@ -17,7 +17,7 @@ async function getAwards(movieData) {
         await apiCall(awards_omdb_url)
             .then(value => awardsDetails(value, movieData, movieID[i]))
     }
-    if (verbose !== 0) { console.log("Post Awards Data:", movieData); }
+    if (verbose !== 0) { console.log("Final Processed Data:", movieData); }
 
     // Store final movie data globally
     finalData = movieData;
