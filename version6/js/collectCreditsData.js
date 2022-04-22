@@ -18,7 +18,13 @@ async function creditsData(movieData) {
         // Get Youtube Video Key
         let movie_video_url = "https://api.themoviedb.org/3/movie/" + movie_id[i] + "/videos?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
         await apiCall(movie_video_url)
-            .then(result => { movieData[movie_id[i]]['video_id'] = result['results'][0]['key']; });
+            .then(result => {
+                if (result['results'][0] === undefined) {
+                    movieData[movie_id[i]]['video_id'] = null
+                } else {
+                    movieData[movie_id[i]]['video_id'] = result['results'][0]['key'];
+                }
+            });
 
         // Make TMDb API call, then store general cast/crew details, then store cast/crew statistics
         let moive_credits_url = "https://api.themoviedb.org/3/movie/" + movie_id[i] + "/credits?api_key=54f244c3bc41ade17bb0dcfd25aab606&language=en-US";
@@ -33,32 +39,34 @@ function getWatchProviders(resultData, movieData, movieId) {
     // MUST attribute the source of the data as JustWatch
     let poster_link = "https://www.themoviedb.org/t/p/original/";
 
-    let stream_providers = resultData.results.GB.flatrate;
-    let buy_providers = resultData.results.GB.buy;
-    let rent_providers = resultData.results.GB.rent;
+    if (resultData.results.GB) {
+        let stream_providers = resultData.results.GB.flatrate;
+        let buy_providers = resultData.results.GB.buy;
+        let rent_providers = resultData.results.GB.rent;
 
-    let stream_details = [];
-    if (stream_providers) {
-        stream_providers.forEach(provider => {
-            stream_details.push({ name: provider.provider_name, logo_path: poster_link + provider.logo_path });
-        });
+        let stream_details = [];
+        if (stream_providers) {
+            stream_providers.forEach(provider => {
+                stream_details.push({ name: provider.provider_name, logo_path: poster_link + provider.logo_path });
+            });
+        }
+
+        let buy_details = [];
+        if (buy_providers) {
+            buy_providers.forEach(provider => {
+                buy_details.push({ name: provider.provider_name, logo_path: poster_link + provider.logo_path });
+            });
+        }
+
+        let rent_details = [];
+        if (rent_providers) {
+            rent_providers.forEach(provider => {
+                rent_details.push({ name: provider.provider_name, logo_path: poster_link + provider.logo_path });
+            });
+        }
+        movieData[movieId]['watch_providers'] = { stream_providers: stream_details, buy_providers: buy_details, rent_providers: rent_details};
     }
 
-    let buy_details = [];
-    if (buy_providers) {
-        buy_providers.forEach(provider => {
-            buy_details.push({ name: provider.provider_name, logo_path: poster_link + provider.logo_path });
-        });
-    }
-
-    let rent_details = [];
-    if (rent_providers) {
-        rent_providers.forEach(provider => {
-            rent_details.push({ name: provider.provider_name, logo_path: poster_link + provider.logo_path });
-        });
-    }
-
-    movieData[movieId]['watch_providers'] = { stream_providers: stream_details, buy_providers: buy_details, rent_providers: rent_details};
 }
 
 // Store cast & crew details

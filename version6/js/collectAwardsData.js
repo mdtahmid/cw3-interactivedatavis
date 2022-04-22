@@ -28,21 +28,23 @@ async function getAwards(movieData) {
 
 // Clean OMDb API response and populate main dict
 function awardsDetails(data, movieData, item) {
-    // Remove words from OMDb response, keep only numbres as an array
-    let awardNumbers = data.Awards.match(/\d+/g).map(Number);
+    // Remove words from OMDb response, keep only numbers as an array
+    if (data.Awards) {
+        let awardNumbers = data.Awards.match(/\d+/g).map(Number);
 
-    // Create a new entry in the main movieData dict for awards
-    movieData[item]['awards'] = {};
+        // Create a new entry in the main movieData dict for awards
+        movieData[item]['awards'] = {};
 
-    // If OMDb returned only two numbers, then movie had no oscars
-    // Fill entries of dict accordingly
-    if (awardNumbers.length === 2) {
-        movieData[item]['awards'].Oscars = {value: 0, src: 'media/oscar_icon.png'};
-        movieData[item]['awards'].Awards = {value: awardNumbers[0], src: 'media/award_icon.png'};
-        movieData[item]['awards'].Nominations = {value: awardNumbers[1], src: 'media/nomination_icon.png'};
-    } else {
-        movieData[item]['awards'].Oscars = {value: awardNumbers[0], src: 'media/oscar_icon.png'};
-        movieData[item]['awards'].Awards = {value: awardNumbers[1], src: 'media/award_icon.png'};
-        movieData[item]['awards'].Nominations = {value: awardNumbers[2], src: 'media/nomination_icon.png'};
+        // If OMDb returned only two numbers, then movie had no oscars
+        // Fill entries of dict accordingly
+        if (awardNumbers.length === 2) {
+            movieData[item]['awards'].Oscars = {value: 0, src: 'media/oscar_icon.png'};
+            movieData[item]['awards'].Awards = {value: awardNumbers[0], src: 'media/award_icon.png'};
+            movieData[item]['awards'].Nominations = {value: awardNumbers[1], src: 'media/nomination_icon.png'};
+        } else {
+            movieData[item]['awards'].Oscars = {value: awardNumbers[0], src: 'media/oscar_icon.png'};
+            movieData[item]['awards'].Awards = {value: awardNumbers[1], src: 'media/award_icon.png'};
+            movieData[item]['awards'].Nominations = {value: awardNumbers[2], src: 'media/nomination_icon.png'};
+        }
     }
 } // END: awardsDetails
